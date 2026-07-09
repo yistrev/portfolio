@@ -1,0 +1,906 @@
+---
+// 各「ファイル」の中身（One Dark配色のシンタックスハイライト済みHTML）
+// ※ index.astro のコンテンツと同期させること
+const aboutLines = [
+  '<span class="tk-blue"># about</span>',
+  '',
+  '<span class="tk-bold">技術のわかるディレクター、ビジネスのわかるエンジニア。</span>',
+  '',
+  '単に指示された仕様通りにコードを書くプログラマーではなく、',
+  '仕様書の向こう側にあるクライアントの意図や課題を紐解く',
+  '<span class="tk-bold">「テクニカルディレクション」</span>の視点を大切にしています。',
+  '',
+  '<span class="tk-green">&gt; 仕様書の行間とコードの中身、その両方が読めるから、</span>',
+  '<span class="tk-green">&gt; 「決める人」と「つくる人」のあいだで話が途切れません。</span>',
+  '<span class="tk-green">&gt; プロジェクトに翻訳者を置かずに済む——二つの肩書きを名乗る理由です。</span>',
+  '',
+  '「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を',
+  'ビジネスの場できちんと機能する強固なシステムへと育てること。',
+  'それが、この場所における物作りのスタンスです。',
+  '',
+  '- github: <a class="tk-link" href="https://github.com/yistrev" target="_blank" rel="noopener">yistrev</a>',
+];
+
+const serviceLines = [
+  '<span class="tk-comment">/** 01. ヒアリング・要件定義 — アイデアの根を紐解き、仕様へ翻訳する */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">listen</span> = (worry: <span class="tk-orange">Worry</span>): <span class="tk-orange">Requirement</span> =&gt; clarify(worry);',
+  '<span class="tk-comment">// 仕様書の向こう側にある本音を対話から汲み取り、フィジビリティを</span>',
+  '<span class="tk-comment">// 考慮した破綻のない要件定義で、プロジェクトの土台を設計する。</span>',
+  '',
+  '<span class="tk-comment">/** 02. ディレクション・進行管理 — ビジネスと実装を境目なくつなぐ舵取り */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">direct</span> = (req: <span class="tk-orange">Requirement</span>): <span class="tk-orange">Blueprint</span> =&gt; plan(req);',
+  '<span class="tk-comment">// 立場の異なるメンバーの架け橋となり、技術的な壁打ち相手として、</span>',
+  '<span class="tk-comment">// ドキュメンテーションと品質管理を徹底し公開まで並走する。</span>',
+  '',
+  '<span class="tk-comment">/** 03. フロントエンド実装 — 運用の先を見据えた、破綻のない構築と運用支援 */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">build</span> = (bp: <span class="tk-orange">Blueprint</span>): <span class="tk-orange">Website</span> =&gt; implement(bp);',
+  '<span class="tk-comment">// CMS設計からUI実装、サーバー移行まで一気通貫。公開後のSEO・</span>',
+  '<span class="tk-comment">// セキュリティなど、持続可能な運用の環境整備まで支え続ける。</span>',
+];
+
+const skillsLines = [
+  '{',
+  '  <span class="tk-red">"name"</span>: <span class="tk-str">"reproots"</span>,',
+  '  <span class="tk-red">"dependencies"</span>: {',
+  '    <span class="tk-comment">// markup</span>',
+  '    <span class="tk-red">"html"</span>: <span class="tk-str">"living-standard"</span>,',
+  '    <span class="tk-red">"css"</span>: <span class="tk-str">"sass + bem"</span>,',
+  '    <span class="tk-red">"responsive"</span>: <span class="tk-str">"mobile-first"</span>,',
+  '    <span class="tk-red">"a11y"</span>: <span class="tk-str">"considered"</span>,',
+  '    <span class="tk-comment">// program</span>',
+  '    <span class="tk-red">"javascript"</span>: <span class="tk-str">"es2024"</span>,',
+  '    <span class="tk-red">"jquery"</span>: <span class="tk-str">"legacy-support"</span>,',
+  '    <span class="tk-red">"gsap"</span>: <span class="tk-str">"^3.12"</span>,',
+  '    <span class="tk-red">"php"</span>: <span class="tk-str">"^8"</span>,',
+  '    <span class="tk-comment">// cms / framework</span>',
+  '    <span class="tk-red">"wordpress"</span>: <span class="tk-str">"custom-theme"</span>,',
+  '    <span class="tk-red">"tailwindcss"</span>: <span class="tk-str">"utility-first"</span>,',
+  '    <span class="tk-red">"bulma"</span>: <span class="tk-str">"classic"</span>',
+  '  },',
+  '  <span class="tk-red">"devDependencies"</span>: {',
+  '    <span class="tk-comment">// いま root を伸ばしている領域</span>',
+  '    <span class="tk-red">"react-nextjs"</span>: <span class="tk-str">"learning"</span>,',
+  '    <span class="tk-red">"typescript"</span>: <span class="tk-str">"learning"</span>,',
+  '    <span class="tk-red">"threejs-webgl"</span>: <span class="tk-str">"learning"</span>,',
+  '    <span class="tk-red">"vue-nuxt"</span>: <span class="tk-str">"learning"</span>,',
+  '    <span class="tk-red">"blender"</span>: <span class="tk-str">"learning"</span>',
+  '  }',
+  '}',
+];
+
+const profileLines = [
+  '<span class="tk-red">handle</span>: <span class="tk-str">reproots</span>',
+  '<span class="tk-red">name</span>: <span class="tk-str">YURI ISHIKAWA</span>',
+  '<span class="tk-red">role</span>: <span class="tk-str">Web Engineer / Technical Director</span>',
+  '<span class="tk-red">approach</span>: <span class="tk-purple">&gt;</span>',
+  '  設計から実装、運用にいたる「つくる工程と構造」のすべてに',
+  '  高い解像度で向き合う。破綻のないシステム設計と、細部まで',
+  '  美しく機能する実装を両立させる職人気質を軸とする。',
+  '<span class="tk-red">favorites</span>: [<span class="tk-str">gadget</span>, <span class="tk-str">tactile-audio-gear</span>]',
+  '<span class="tk-red">now</span>: <span class="tk-str">learning Blender</span>',
+];
+
+const worksLines = [
+  '<span class="tk-green">$ git log --works</span>',
+  '<span class="tk-orange">fatal:</span> まだ公開できる実績がありません',
+  '',
+  '<span class="tk-comment"># 実績が溜まりしだい、このログに追加されます。</span>',
+  '<span class="tk-comment"># お仕事のご相談は contact.sh へ。</span>',
+];
+
+const fileMeta = [
+  { id: 'about-md', name: 'about.md', dot: 'md', lang: 'Markdown' },
+  { id: 'service-ts', name: 'service.ts', dot: 'ts', lang: 'TypeScript' },
+  { id: 'skills-json', name: 'skills.json', dot: 'json', lang: 'JSON' },
+  { id: 'profile-yml', name: 'profile.yml', dot: 'yml', lang: 'YAML' },
+  { id: 'works-log', name: 'works.log', dot: 'log', lang: 'Log' },
+  { id: 'contact-sh', name: 'contact.sh', dot: 'sh', lang: 'Shell Script' },
+];
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reproots OS | engineer mode</title>
+    <meta name="description" content="reproots — 仮想デスクトップで閲覧するポートフォリオ（engineer mode）" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- menubar -->
+    <header class="menubar">
+      <div class="menubar__left">
+        <img src="/favicon.svg" alt="" class="menubar__logo" />
+        <strong>reproots OS</strong>
+        <span class="menubar__menu">File</span>
+        <span class="menubar__menu">Edit</span>
+        <span class="menubar__menu">View</span>
+        <span class="menubar__menu">Go</span>
+      </div>
+      <div class="menubar__right">
+        <span id="os-clock">--/-- --:--</span>
+      </div>
+    </header>
+
+    <!-- desktop -->
+    <main class="desktop">
+      <div class="desktop__icons">
+        <button class="dicon" data-open-editor>
+          <span class="dicon__img dicon__img--code" aria-hidden="true">
+            <svg viewBox="0 0 44 34"><rect x="1" y="1" width="42" height="32" rx="5" fill="#fffffe" stroke="#001e1d" stroke-width="2"/><rect x="2" y="2" width="40" height="9" rx="3.5" fill="#f9bc60"/><circle cx="8" cy="6.5" r="1.8" fill="#001e1d"/><circle cx="14" cy="6.5" r="1.8" fill="#001e1d"/><rect x="7" y="15" width="14" height="2.6" rx="1.3" fill="#6246ea"/><rect x="7" y="21" width="22" height="2.6" rx="1.3" fill="#0a7489"/><rect x="12" y="27" width="16" height="2.6" rx="1.3" fill="#00795c"/></svg>
+          </span>
+          <span class="dicon__label">code.app</span>
+        </button>
+        <a class="dicon" href="/">
+          <span class="dicon__img dicon__img--url" aria-hidden="true">
+            <svg viewBox="0 0 44 34"><rect x="1" y="1" width="42" height="32" rx="5" fill="#fffffe" stroke="#001e1d" stroke-width="2"/><circle cx="17" cy="17" r="6.5" fill="none" stroke="#3d63c9" stroke-width="4"/><circle cx="28" cy="17" r="6.5" fill="none" stroke="#e0622c" stroke-width="4"/></svg>
+          </span>
+          <span class="dicon__label">Mode:portfolio</span>
+        </a>
+      </div>
+
+      <!-- editor window -->
+      <section class="window" id="editor-window" hidden aria-label="code editor">
+        <div class="window__titlebar" id="editor-titlebar">
+          <div class="tl" aria-hidden="false">
+            <button class="tl__btn tl__btn--red" data-win-close aria-label="閉じる"></button>
+            <button class="tl__btn tl__btn--yellow" data-win-close aria-label="最小化"></button>
+            <button class="tl__btn tl__btn--green" data-win-max aria-label="最大化"></button>
+          </div>
+          <span class="window__title">reproots — code</span>
+        </div>
+        <div class="window__body">
+          <aside class="explorer">
+            <p class="explorer__head">Explorer</p>
+            <p class="explorer__dir">▾ portfolio</p>
+            {
+              fileMeta.map((f) => (
+                <button class="explorer__file" data-file={f.id}>
+                  <span class={`dot dot--${f.dot}`} />
+                  {f.name}
+                </button>
+              ))
+            }
+          </aside>
+          <div class="editor">
+            <div class="tabbar" id="tabbar">
+              {
+                fileMeta.map((f) => (
+                  <button class="tab" data-tab={f.id} hidden>
+                    <span class={`dot dot--${f.dot}`} />
+                    {f.name}
+                    <span class="tab__close" data-close-tab={f.id} role="button" aria-label={`${f.name} を閉じる`}>×</span>
+                  </button>
+                ))
+              }
+            </div>
+            <div class="panes">
+              <!-- welcome -->
+              <div class="pane pane--welcome" data-pane="welcome">
+                <p>エクスプローラーからファイルを開いてください</p>
+              </div>
+
+              <div class="pane" data-pane="about-md" hidden>
+                <div class="code">
+                  {aboutLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
+                </div>
+              </div>
+              <div class="pane" data-pane="service-ts" hidden>
+                <div class="code">
+                  {serviceLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
+                </div>
+              </div>
+              <div class="pane" data-pane="skills-json" hidden>
+                <div class="code">
+                  {skillsLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
+                </div>
+              </div>
+              <div class="pane" data-pane="profile-yml" hidden>
+                <div class="code">
+                  {profileLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
+                </div>
+              </div>
+              <div class="pane" data-pane="works-log" hidden>
+                <div class="code code--no-num">
+                  {worksLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
+                </div>
+              </div>
+              <div class="pane" data-pane="contact-sh" hidden>
+                <div class="code">
+                  <div class="code__line"><span class="tk-comment">#!/bin/sh</span></div>
+                  <div class="code__line"><span class="tk-comment"># 「まだ相談レベル」が、いちばん歓迎です。</span></div>
+                  <div class="code__line">&nbsp;</div>
+                  <div class="code__line contact-line">
+                    <a href="mailto:hello@reproots.net" class="contact-link">
+                      mail <span class="tk-red">--to</span> reproots <span class="tk-green">↵</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="window__statusbar">
+              <div class="statusbar__left">
+                <span>⎇ main*</span>
+                <span>UTF-8</span>
+              </div>
+              <div class="statusbar__right">
+                <span id="status-lang">—</span>
+                <span>Ln 1, Col 1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- hint toast -->
+      <div class="toast" id="hint-toast" role="status">
+        <strong>reproots OS</strong>
+        <span>code.app を開くと、ポートフォリオを閲覧できます</span>
+        <button data-toast-close aria-label="閉じる">×</button>
+      </div>
+    </main>
+
+    <script define:vars={{ fileMeta }}>
+      /* ---- 時計 ---- */
+      const clock = document.getElementById('os-clock');
+      const tick = () => {
+        clock.textContent = new Date().toLocaleString('ja-JP', {
+          month: '2-digit', day: '2-digit', weekday: 'short',
+          hour: '2-digit', minute: '2-digit',
+        });
+      };
+      tick();
+      setInterval(tick, 10_000);
+
+      /* ---- ウィンドウの開閉・最大化 ---- */
+      const win = document.getElementById('editor-window');
+      const toast = document.getElementById('hint-toast');
+      const langLabel = document.getElementById('status-lang');
+      const langs = Object.fromEntries(fileMeta.map((f) => [f.id, f.lang]));
+
+      const openTabs = [];
+      let active = null;
+
+      function render() {
+        document.querySelectorAll('.tab').forEach((tab) => {
+          const id = tab.dataset.tab;
+          tab.hidden = !openTabs.includes(id);
+          tab.classList.toggle('is-active', id === active);
+        });
+        document.querySelectorAll('.pane').forEach((pane) => {
+          pane.hidden = pane.dataset.pane !== (active ?? 'welcome');
+        });
+        document.querySelectorAll('.explorer__file').forEach((f) => {
+          f.classList.toggle('is-active', f.dataset.file === active);
+        });
+        langLabel.textContent = active ? langs[active] : '—';
+      }
+
+      function openFile(id) {
+        if (!openTabs.includes(id)) openTabs.push(id);
+        active = id;
+        render();
+      }
+
+      function closeTab(id) {
+        const i = openTabs.indexOf(id);
+        if (i > -1) openTabs.splice(i, 1);
+        if (active === id) active = openTabs[openTabs.length - 1] ?? null;
+        render();
+      }
+
+      document.querySelectorAll('[data-open-editor]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          win.hidden = false;
+          requestAnimationFrame(() => win.classList.add('is-open'));
+          toast.classList.add('is-hidden');
+          if (!active) openFile('about-md');
+        });
+      });
+
+      document.querySelectorAll('[data-win-close]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          win.classList.remove('is-open', 'is-max');
+          setTimeout(() => { win.hidden = true; }, 180);
+        });
+      });
+
+      document.querySelector('[data-win-max]').addEventListener('click', () => {
+        win.classList.toggle('is-max');
+        win.style.left = '';
+        win.style.top = '';
+      });
+
+      document.querySelectorAll('.explorer__file').forEach((f) => {
+        f.addEventListener('click', () => openFile(f.dataset.file));
+      });
+
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          if (e.target.closest('[data-close-tab]')) return;
+          openFile(tab.dataset.tab);
+        });
+      });
+
+      document.querySelectorAll('[data-close-tab]').forEach((x) => {
+        x.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeTab(x.dataset.closeTab);
+        });
+      });
+
+      document.querySelector('[data-toast-close]').addEventListener('click', () => {
+        toast.classList.add('is-hidden');
+      });
+
+      /* ---- ウィンドウのドラッグ移動 ---- */
+      const titlebar = document.getElementById('editor-titlebar');
+      let dragging = false;
+      let offX = 0;
+      let offY = 0;
+
+      titlebar.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.tl') || win.classList.contains('is-max')) return;
+        if (window.matchMedia('(max-width: 700px)').matches) return;
+        dragging = true;
+        const r = win.getBoundingClientRect();
+        offX = e.clientX - r.left;
+        offY = e.clientY - r.top;
+        titlebar.setPointerCapture(e.pointerId);
+      });
+
+      titlebar.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const x = Math.min(Math.max(e.clientX - offX, -200), innerWidth - 120);
+        const y = Math.min(Math.max(e.clientY - offY, 34), innerHeight - 80);
+        win.style.left = `${x}px`;
+        win.style.top = `${y}px`;
+        win.style.transform = 'none';
+      });
+
+      titlebar.addEventListener('pointerup', () => { dragging = false; });
+    </script>
+
+    <style is:global>
+      :root {
+        /* Happy Hues palette #10 ベースのソリッド配色 */
+        --od-bg: #fffffe;
+        --od-bg-deep: #e9f2ee;
+        --od-desktop: #004643;
+        --od-line: #001e1d;
+        --od-highlight: #d7eae2;
+        --od-text: #16413c;
+        --od-dim: #6d8a84;
+        --od-red: #d14d61;
+        --od-green: #00795c;
+        --od-yellow: #f9bc60;
+        --od-blue: #0a7489;
+        --od-purple: #6246ea;
+        --od-cyan: #0a7489;
+        --od-orange: #c47c1d;
+        --mono: 'IBM Plex Mono', monospace;
+        --jp: 'Noto Sans JP', sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* display指定より hidden 属性を優先させる */
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        font-family: var(--mono), var(--jp);
+        font-size: 0.88rem;
+        line-height: 1.85;
+        color: var(--od-text);
+        background: var(--od-desktop);
+        overflow: hidden;
+        height: 100svh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: rgba(249, 188, 96, 0.55);
+      }
+
+      /* ---- menubar ---- */
+      .menubar {
+        position: fixed;
+        inset-inline: 0;
+        top: 0;
+        z-index: 50;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 0.9rem;
+        background: #001e1d;
+        font-size: 0.72rem;
+        color: #abd1c6;
+      }
+
+      .menubar__left {
+        display: flex;
+        align-items: center;
+        gap: 1.1rem;
+      }
+
+      .menubar__logo {
+        width: 18px;
+        height: 18px;
+        display: block;
+      }
+
+      .menubar__left strong {
+        color: #fffffe;
+        font-weight: 600;
+      }
+
+      .menubar__menu {
+        opacity: 0.6;
+      }
+
+      /* ---- desktop ---- */
+      .desktop {
+        position: fixed;
+        inset: 34px 0 0;
+        background: var(--od-desktop);
+      }
+
+      .desktop__icons {
+        position: absolute;
+        top: 1.6rem;
+        left: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+      }
+
+      .dicon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.45rem;
+        width: 86px;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 8px;
+        padding: 0.5rem 0.2rem;
+      }
+
+      .dicon:hover {
+        background: rgba(255, 255, 254, 0.16);
+      }
+
+      .dicon__img svg {
+        width: 52px;
+        height: auto;
+        display: block;
+      }
+
+      .dicon__label {
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+        color: #fffffe;
+      }
+
+      /* ---- window ---- */
+      .window {
+        position: fixed;
+        left: 50%;
+        top: 54%;
+        transform: translate(-50%, -50%) scale(0.96);
+        width: min(920px, 94vw);
+        height: min(620px, 80vh);
+        display: flex;
+        flex-direction: column;
+        background: var(--od-bg);
+        border: 2px solid var(--od-line);
+        border-radius: 10px;
+        opacity: 0;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        overflow: hidden;
+      }
+
+      .window.is-open {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .window.is-open[style*='left'] {
+        transform: none;
+      }
+
+      .window.is-max {
+        inset: 34px 10px 10px !important;
+        width: auto;
+        height: auto;
+        transform: none !important;
+      }
+
+      .window__titlebar {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        height: 38px;
+        padding-inline: 0.9rem;
+        background: #f9bc60;
+        border-bottom: 2px solid var(--od-line);
+        cursor: grab;
+        user-select: none;
+        touch-action: none;
+        flex-shrink: 0;
+      }
+
+      .window__titlebar:active {
+        cursor: grabbing;
+      }
+
+      .tl {
+        display: flex;
+        gap: 8px;
+      }
+
+      .tl__btn {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        border: 2px solid var(--od-line);
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .tl__btn--red { background: #e06c75; }
+      .tl__btn--yellow { background: #e5c07b; }
+      .tl__btn--green { background: #98c379; }
+
+      .window__title {
+        font-size: 0.72rem;
+        color: var(--od-line);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+
+      .window__body {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+      }
+
+      /* ---- explorer ---- */
+      .explorer {
+        width: 170px;
+        flex-shrink: 0;
+        background: var(--od-bg-deep);
+        border-right: 2px solid var(--od-line);
+        padding: 0.8rem 0;
+        overflow-y: auto;
+      }
+
+      .explorer__head {
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--od-dim);
+        padding-inline: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .explorer__dir {
+        font-size: 0.74rem;
+        color: var(--od-line);
+        padding-inline: 1rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .explorer__file {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.28rem 1rem 0.28rem 1.6rem;
+        background: none;
+        border: 0;
+        color: var(--od-text);
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .explorer__file:hover {
+        background: var(--od-highlight);
+      }
+
+      .explorer__file.is-active {
+        background: #f9bc60;
+        color: var(--od-line);
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .dot--md { background: var(--od-blue); }
+      .dot--ts { background: var(--od-cyan); }
+      .dot--json { background: var(--od-yellow); }
+      .dot--yml { background: var(--od-red); }
+      .dot--log { background: var(--od-green); }
+      .dot--sh { background: var(--od-purple); }
+
+      /* ---- editor ---- */
+      .editor {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .tabbar {
+        display: flex;
+        background: var(--od-bg-deep);
+        border-bottom: 2px solid var(--od-line);
+        overflow-x: auto;
+        flex-shrink: 0;
+      }
+
+      .tab {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.9rem;
+        background: none;
+        border: 0;
+        border-right: 1px solid #c4d9d1;
+        color: var(--od-dim);
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .tab.is-active {
+        background: var(--od-bg);
+        color: var(--od-line);
+        box-shadow: inset 0 3px 0 var(--od-desktop);
+      }
+
+      .tab__close {
+        opacity: 0.5;
+        padding-inline: 0.15rem;
+      }
+
+      .tab__close:hover {
+        opacity: 1;
+        color: var(--od-red);
+      }
+
+      /* ---- panes / code ---- */
+      .panes {
+        flex: 1;
+        overflow: auto;
+        min-height: 0;
+      }
+
+      .pane--welcome {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.4rem;
+        color: var(--od-dim);
+        font-size: 0.8rem;
+        font-family: var(--jp);
+      }
+
+      .welcome__rings {
+        width: 120px;
+      }
+
+      .code {
+        padding: 1.1rem 0;
+        counter-reset: ln;
+      }
+
+      .code__line {
+        padding-inline: 1rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 0.82rem;
+      }
+
+      .code:not(.code--no-num) .code__line {
+        counter-increment: ln;
+        padding-left: 3.4rem;
+        position: relative;
+      }
+
+      .code:not(.code--no-num) .code__line::before {
+        content: counter(ln);
+        position: absolute;
+        left: 0;
+        width: 2.3rem;
+        text-align: right;
+        color: #9db8b1;
+        font-size: 0.72rem;
+        user-select: none;
+      }
+
+      /* One Dark tokens */
+      .tk-blue { color: var(--od-blue); }
+      .tk-green { color: var(--od-green); }
+      .tk-red { color: var(--od-red); }
+      .tk-purple { color: var(--od-purple); }
+      .tk-orange { color: var(--od-orange); }
+      .tk-str { color: var(--od-green); }
+      .tk-comment { color: var(--od-dim); font-style: italic; }
+      .tk-bold { font-weight: 700; color: var(--od-line); }
+
+      .code .tk-link {
+        color: var(--od-blue);
+        text-underline-offset: 3px;
+      }
+
+      /* works.log */
+      .commit {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem 0.8rem;
+        align-items: baseline;
+        padding: 0.45rem 1rem;
+        text-decoration: none;
+        color: var(--od-text);
+        font-size: 0.8rem;
+      }
+
+      .commit:hover {
+        background: var(--od-highlight);
+      }
+
+      .commit__hash { color: var(--od-orange); font-size: 0.76rem; }
+      .commit__year { color: var(--od-dim); font-size: 0.76rem; }
+      .commit__title { font-weight: 500; font-family: var(--jp); }
+      .commit:hover .commit__title { color: var(--od-blue); text-decoration: underline; text-underline-offset: 3px; }
+      .commit__role { color: var(--od-dim); font-size: 0.74rem; font-family: var(--jp); }
+
+      /* contact.sh */
+      .contact-line { padding-block: 0.6rem; }
+
+      .contact-link {
+        font-size: clamp(1.3rem, 4vw, 2rem);
+        font-weight: 700;
+        color: var(--od-line);
+        text-decoration: none;
+      }
+
+      .contact-link:hover { color: var(--od-blue); }
+
+      /* ---- statusbar ---- */
+      .window__statusbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.3rem 0.9rem;
+        background: #001e1d;
+        border-top: 2px solid var(--od-line);
+        font-size: 0.68rem;
+        color: #abd1c6;
+        flex-shrink: 0;
+      }
+
+      .statusbar__left,
+      .statusbar__right {
+        display: flex;
+        gap: 1.1rem;
+        white-space: nowrap;
+      }
+
+      /* ---- toast ---- */
+      .toast {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1rem;
+        background: var(--od-bg);
+        border: 2px solid var(--od-line);
+        border-radius: 10px;
+        font-size: 0.74rem;
+        font-family: var(--jp);
+        animation: toast-in 0.5s ease 0.8s backwards;
+        max-width: min(340px, 84vw);
+      }
+
+      .toast strong {
+        color: var(--od-line);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+      }
+
+      .toast button {
+        background: none;
+        border: 0;
+        color: var(--od-dim);
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .toast.is-hidden {
+        display: none;
+      }
+
+      @keyframes toast-in {
+        from { opacity: 0; transform: translateY(-8px); }
+      }
+
+      /* ---- mobile ---- */
+      @media (max-width: 700px) {
+        .window,
+        .window.is-open {
+          inset: 34px 0 0;
+          left: auto;
+          top: auto;
+          width: auto;
+          height: auto;
+          transform: none;
+          border-radius: 0;
+        }
+
+        .window__body {
+          flex-direction: column;
+        }
+
+        .explorer {
+          width: auto;
+          display: flex;
+          align-items: center;
+          gap: 0.2rem;
+          padding: 0.4rem 0.6rem;
+          border-right: 0;
+          border-bottom: 1px solid var(--od-line);
+          overflow-x: auto;
+        }
+
+        .explorer__head,
+        .explorer__dir {
+          display: none;
+        }
+
+        .explorer__file {
+          width: auto;
+          padding: 0.3rem 0.6rem;
+          white-space: nowrap;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .window {
+          transition: none;
+        }
+        .toast {
+          animation: none;
+        }
+      }
+    </style>
+  </body>
+</html>

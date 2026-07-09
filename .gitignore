@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+#Astro
+.astro/
+
+
+
+.vscode/
+.DS_Store
+.claude/
+CLAUDE.md

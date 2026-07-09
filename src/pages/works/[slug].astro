@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works.map((work) => ({
+    params: { slug: work.id },
+    props: { work },
+  }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+---
+
+<Base title={`${work.data.title} | yistrev`} description={work.data.description}>
+  <main class="container work-detail">
+    <a href="/#works" class="work-detail__back">← Works に戻る</a>
+    <h1>{work.data.title}</h1>
+    <dl class="work-detail__meta">
+      <div>
+        <dt>Year</dt>
+        <dd>{work.data.year}</dd>
+      </div>
+      <div>
+        <dt>Role</dt>
+        <dd>{work.data.role}</dd>
+      </div>
+      <div>
+        <dt>Stack</dt>
+        <dd>{work.data.stack.join(' / ')}</dd>
+      </div>
+      {
+        work.data.url && (
+          <div>
+            <dt>URL</dt>
+            <dd>
+              <a href={work.data.url} target="_blank" rel="noopener">
+                {work.data.url}
+              </a>
+            </dd>
+          </div>
+        )
+      }
+    </dl>
+    <div class="work-detail__body">
+      <Content />
+    </div>
+  </main>
+</Base>
