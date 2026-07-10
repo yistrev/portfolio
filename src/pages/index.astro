@@ -6,15 +6,9 @@ const works = (await getCollection('works')).sort(
   (a, b) => a.data.order - b.data.order
 );
 
-const marqueeItems = [
-  'HTML', 'CSS / Sass', 'JavaScript', 'PHP', 'WordPress',
-  'GSAP', 'jQuery', 'Tailwind CSS', 'Figma', 'Adobe',
-];
-const marqueeSeps = ['🌱', '✳', '⌨️', '✳', '🎧', '✳'];
-
 // アイソメトリックな線画アイコン（stroke-dashoffset で描画アニメーション）
 const isoIcons = {
-  // 01 聞く: キューブ（スピーカー）＋広がる音波
+  // 1.0 聞く: キューブ（スピーカー）＋広がる音波
   listen: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M46 18l26 15-26 15-26-15Z" />
     <path d="M20 33v22l26 15V48Z" />
@@ -23,13 +17,13 @@ const isoIcons = {
     <path class="accent" d="M93 33c11 8 11 18 0 26" />
     <path class="accent" d="M102 28c15 11 15 25 0 36" />
   </svg>`,
-  // 02 整える: 大きさの違うレイヤーが積み上がって整う
+  // 2.0 整える: 大きさの違うレイヤーが積み上がって整う
   shape: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M60 42l38 22-38 22-38-22Z" />
     <path class="accent" d="M60 26l28 16-28 16-28-16Z" />
     <path d="M60 12l18 10-18 10-18-10Z" />
   </svg>`,
-  // 03 かたちに: ベースのキューブに、最後のピースがはまる
+  // 3.0 かたちにする: ベースのキューブに、最後のピースがはまる
   build: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M52 36l26 15-26 15-26-15Z" />
     <path d="M26 51v20l26 15V66Z" />
@@ -41,31 +35,39 @@ const isoIcons = {
   </svg>`,
 };
 
-const services = [
+// 工程 = サービス。1.0 → 2.0 → 3.0 の順序そのものがページの背骨
+const steps = [
   {
-    num: '01',
+    num: '1.0',
+    verb: '聞く',
+    en: 'Listen',
     icon: isoIcons.listen,
-    title: 'ヒアリング・要件定義',
+    service: 'ヒアリング・要件定義',
     lead: 'アイデアの根を紐解き、仕様へ翻訳する',
     body: '仕様書の向こう側にある、クライアントの本音やプロジェクトの目的を丁寧に対話から汲み取ります。技術的な実現可能性（フィジビリティ）を考慮した破綻のない要件定義、仕組み化による現実的な見積もり算出など、開発者目線の解像度でプロジェクトの強固な土台を設計します。',
   },
   {
-    num: '02',
+    num: '2.0',
+    verb: '整える',
+    en: 'Shape',
     icon: isoIcons.shape,
-    title: 'ディレクション・進行管理',
+    service: 'ディレクション・進行管理',
     lead: 'ビジネスと実装を境目なくつなぐ舵取り',
     body: 'クライアント、デザイナー、外部エンジニアといった立場の異なるメンバーの架け橋となり、プロジェクトを停滞させずに前進させます。チームの技術的な壁打ち相手となりながら、ドキュメンテーションやクオリティ管理を徹底し、公開までスムーズに並走します。',
   },
   {
-    num: '03',
+    num: '3.0',
+    verb: 'かたちにする',
+    en: 'Build',
     icon: isoIcons.build,
-    title: 'フロントエンド実装',
+    service: 'フロントエンド実装',
     lead: '運用の先を見据えた、破綻のない構築と運用支援',
     body: 'WordPressをはじめとするCMS設計から、美しく機能するインタラクティブなUI実装、そしてサイト運用やサーバー移行まで一気通貫で対応します。単に「動くサイトを作る」だけでなく、公開後のSEO対策やセキュリティ対応など、持続可能な運用のための環境整備まで技術面から支え続けます。',
   },
 ];
 
-const skills = [
+// 仕様表（F3 tabular spec sheet）
+const spec = [
   { label: 'Markup', items: ['HTML', 'CSS / Sass', 'BEM', 'レスポンシブ対応', 'アクセシビリティ'] },
   { label: 'Program', items: ['JavaScript', 'jQuery', 'GSAP', 'PHP'] },
   { label: 'CMS / FW', items: ['WordPress 自作テーマ', 'Tailwind CSS', 'Bulma'] },
@@ -96,250 +98,219 @@ const keyboard = [
 
 <Base title="reproots | Web Engineer / Technical Director">
   <main>
-    <!-- Hero -->
+    <!-- Hero: H2 split diptych 7/5（左=言葉・右=機械パネル） -->
     <section class="hero">
-      <div class="hero__meta">
-        <span>rep(resent) + roots</span>
-        <span><a href="/engineer">Mode: engineer →</a></span>
+      <div class="hero__main">
+        <p class="hero__cmd">
+          <span class="prompt">reproots@web</span>:~$
+          <span data-typing data-text="./init --mode=engineer+director">./init --mode=engineer+director</span><span class="block-cursor" aria-hidden="true"></span>
+        </p>
+        <h1 class="hero__title" data-hero-title>
+          <span class="line"><span>Root the web,</span></span>
+          <span class="line"><span>grow it <span class="u-accent">right</span>.</span></span>
+        </h1>
+        <p class="hero__lead">
+          <span>Webサイトの構築において、</span>
+          <span>「言葉」と「実装」のあいだで熱量がすり減っていくのを防ぎたい。</span>
+          <span>だからこそ、対話から生まれたアイデアの「根（ルーツ）」を深く理解し、</span>
+          <span>その本質的な意図をそのままフロントエンドのコードやシステム設計へと直結させます。</span>
+          <span>技術のわかるディレクターとして、そしてビジネスを解するエンジニアとして、</span>
+          <span>プロジェクトを強固で確かな形へと育て上げます。</span>
+        </p>
       </div>
-      <p class="hero__cmd">
-        <span class="prompt">reproots@web</span>:~$
-        <span data-typing data-text="./init --mode=engineer+director">./init --mode=engineer+director</span><span class="block-cursor" aria-hidden="true"></span>
-      </p>
-      <h1 class="hero__title" data-hero-title>
-        <span class="line"><span>Root the web,</span></span>
-        <span class="line"><span>grow it <em>right</em>.</span></span>
-      </h1>
-      <div class="hero__bottom">
-        <div class="hero__left">
-          <p class="hero__lead reveal">
-            <span>Webサイトの構築において、</span>
-            <span>「言葉」と「実装」のあいだで熱量がすり減っていくのを防ぎたい。</span>
-            <span>だからこそ、対話から生まれたアイデアの「根（ルーツ）」を深く理解し、</span>
-            <span>その本質的な意図をそのままフロントエンドのコードやシステム設計へと直結させます。</span>
-            <span>技術のわかるディレクターとして、そしてビジネスを解するエンジニアとして、</span>
-            <span>プロジェクトを強固で確かな形へと育て上げます。</span>
-          </p>
-          <span class="hero__scroll">Scroll</span>
-        </div>
-        <div class="hero__side" data-hero-side>
-          <p class="hero__plate" aria-hidden="true">
-            <span class="stripes"></span>
-            Warning ⊙ do not look directly into the source code
-          </p>
-          <div class="keyboard" aria-hidden="true">
-            {
-              keyboard.map((row) => (
-                <div class="keyboard__row">
-                  {row.map((key) => (
-                    <div class={`keycap${key.variant ? ` keycap--${key.variant}` : ''}`}>
-                      {key.label}
-                    </div>
-                  ))}
-                </div>
-              ))
-            }
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Marquee -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        {
-          [0, 1].map(() => (
-            <div class="marquee__list">
-              {marqueeItems.map((item, i) => (
-                <>
-                  <span>{item}</span>
-                  <span class="sep">{marqueeSeps[i % marqueeSeps.length]}</span>
-                </>
-              ))}
-            </div>
-          ))
-        }
-      </div>
-    </div>
-
-    <!-- Statement (pinned scroll) -->
-    <section class="statement" data-statement>
-      <div>
-        <p class="statement__line">聞いて、<span class="en">Listen</span></p>
-        <p class="statement__line">整えて、<span class="en">Shape</span></p>
-        <p class="statement__line">かたちに。<span class="en">Build</span></p>
-        <p class="statement__sub"><span class="stripes" aria-hidden="true"></span>それが、私のWeb制作の進めかたです</p>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section class="band" id="about">
-      <div class="cell about">
-        <p class="section-label"><span class="idx">01</span>About</p>
-        <div class="about__heading reveal">
-          <h2 class="section-title">
-            <span class="u-block">技術のわかるディレクター、</span><br />
-            <span class="u-block">ビジネスのわかるエンジニア。</span>
-          </h2>
-        </div>
-        <svg class="diag" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"></line>
-        </svg>
-        <div class="about__text reveal">
-          <p>
-            単に指示された仕様通りにコードを書くプログラマーではなく、
-            仕様書の向こう側にあるクライアントの意図や課題を紐解く
-            <span class="accent">「テクニカルディレクション」</span>の視点を大切にしています。
-          </p>
-          <p>
-            仕様書の行間とコードの中身、その両方が読めるから、<br><span class="accent">「決める人」と「つくる人」のあいだ</span>で話が途切れません。<br>
-            プロジェクトに翻訳者を置かずに済む——それが、二つの肩書きを名乗る理由です。
-          </p>
-          <p>
-            「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を<br>
-            ビジネスの場できちんと機能する強固なシステムへと育てること。<br>
-            それが、この場所における物作りのスタンスです。
-          </p>
-          <div class="terminal" aria-hidden="true">
-            <div class="terminal__bar"><span></span><span></span><span></span></div>
-            <div class="terminal__body">
-              <div><span class="prompt">reproots@web</span> $ <span class="cmd">whoami</span></div>
-              <div class="out">web-engineer --with=technical-direction</div>
-              <div><span class="prompt">reproots@web</span> $ <span class="cmd">man reproots</span></div>
-              <div class="out">represent + roots — 根から育てた自分らしさを、かたちにする</div>
-              <div><span class="prompt">reproots@web</span> $ <span class="cmd">npm run motivation</span></div>
-              <div class="out">🎧 → ⌨️ → 🌱 done in ∞ms</div>
-            </div>
-          </div>
-          <div class="about__links">
-            <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Services -->
-    <section class="band" id="services">
-      <div class="cell" style="padding-bottom: 0;">
-        <p class="section-label"><span class="idx">02</span>Service</p>
-      </div>
-      <div class="band__grid services__grid">
-        {
-          services.map((service) => (
-            <div class="cell service reveal">
-              <div class="service__head">
-                <p class="service__num">{service.num}</p>
-                <div set:html={service.icon} />
-              </div>
-              <h3>{service.title}</h3>
-              <p class="service__lead">{service.lead}</p>
-              <p>{service.body}</p>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="band" id="skills">
-      <div class="cell" style="padding-bottom: 0;">
-        <p class="section-label"><span class="idx">03</span>Skills</p>
-      </div>
-      <div>
-        {
-          skills.map((group) => (
-            <div class={`skill-row${group.learning ? ' skill-row--learning' : ''}`}>
-              <p class="skill-row__label">{group.label}</p>
-              <ul class="skill-row__items">
-                {group.items.map((item) => (
-                  <li>{item}</li>
+      <div class="hero__side" data-hero-side>
+        <p class="hero__plate" aria-hidden="true">
+          <span class="stripes"></span>
+          Warning ⊙ do not look directly into the source code
+        </p>
+        <div class="keyboard" aria-hidden="true">
+          {
+            keyboard.map((row) => (
+              <div class="keyboard__row">
+                {row.map((key) => (
+                  <div class={`keycap${key.variant ? ` keycap--${key.variant}` : ''}`}>
+                    {key.label}
+                  </div>
                 ))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Profile（抑えめ・右寄せの小ブロック） -->
-    <section class="band" id="profile">
-      <div class="cell profile">
-        <p class="section-label"><span class="idx">04</span>Profile</p>
-        <svg class="diag diag--short" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"></line>
-        </svg>
-        <div class="profile__inner reveal">
-          <p class="profile__intro">
-            Web制作の現場で、設計から実装までを領域横断的に行き来しています。<br>
-            ツールの枠に捉われず、お気に入りの道具やワークスペースを整え、仕組みを緻密に組み上げていく「つくる工程」そのものが、自分のものづくりの原点。<br>
-            そうして手がけた仕組みやWebサイトが、誰かの役に立ち、誰かの日々を少し良くする瞬間を、何よりのエネルギーにしています。
-          </p>
-          <dl class="profile__list">
-            <div>
-              <dt>Handle</dt>
-              <dd>reproots</dd>
-            </div>
-            <div>
-              <dt>Name</dt>
-              <dd>YURI ISHIKAWA</dd>
-            </div>
-            <div>
-              <dt>Role</dt>
-              <dd>Web Engineer / Technical Director</dd>
-            </div>
-            <div>
-              <dt>Approach</dt>
-              <dd>
-                「単に動くものを作る」だけではなく、設計から実装、運用にいたる
-                “つくる工程と構造” のすべてに高い解像度で向き合う。
-                破綻のないシステム設計と、細部まで美しく機能する実装を両立させる職人気質を軸とする。
-              </dd>
-            </div>
-            <div>
-              <dt>Favorites</dt>
-              <dd>gadget / tactile audio gear</dd>
-            </div>
-            <div>
-              <dt>Now</dt>
-              <dd>Blenderを学習中。</dd>
-            </div>
-          </dl>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
 
-    <!-- Works -->
-    <!-- 実績は溜まったら公開
-    <section class="band" id="works">
-      <div class="cell" style="padding-bottom: 0;">
-        <p class="section-label"><span class="idx">05</span>Works</p>
+    <!-- 序文（About） -->
+    <section class="intro" id="about">
+      <h2 class="intro__title">
+        <span class="u-block">技術のわかるディレクター、</span><br />
+        <span class="u-block">ビジネスのわかるエンジニア。</span>
+      </h2>
+      <svg class="diag" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"></line>
+      </svg>
+      <div class="intro__text" data-reveal>
+        <p>
+          単に指示された仕様通りにコードを書くプログラマーではなく、
+          仕様書の向こう側にあるクライアントの意図や課題を紐解く
+          <span class="accent">「テクニカルディレクション」</span>の視点を大切にしています。
+        </p>
+        <p>
+          仕様書の行間とコードの中身、その両方が読めるから、<br /><span class="accent">「決める人」と「つくる人」のあいだ</span>で話が途切れません。<br />
+          プロジェクトに翻訳者を置かずに済む——それが、二つの肩書きを名乗る理由です。
+        </p>
+        <p>
+          「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を<br />
+          ビジネスの場できちんと機能する強固なシステムへと育てること。<br />
+          それが、この場所における物作りのスタンスです。
+        </p>
+        <p class="intro__origin">
+          rep(resent) + roots — 根から育てた自分らしさを、かたちにする
+          <span class="stripes" aria-hidden="true"></span>
+        </p>
+        <p class="intro__links">
+          <a class="link" href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
+        </p>
       </div>
+    </section>
+
+    <!-- ステートメント（pin + scrub で1文字ずつ立ち上がる） -->
+    <section class="statement" id="process" data-statement>
       <div>
+        <h2 class="statement__title">
+          <span class="statement__line">聞いて、<span class="en">Listen</span></span>
+          <span class="statement__line">整えて、<span class="en">Shape</span></span>
+          <span class="statement__line">かたちに。<span class="en">Build</span></span>
+        </h2>
+        <p class="statement__sub">
+          それが、私のWeb制作の進めかたです
+          <span class="stripes" aria-hidden="true"></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 工程（スタッキングカード: スクロールで次の工程が上に重なる） -->
+    <section class="process">
+      <ol class="steps" data-steps>
         {
-          works.map((work, i) => (
-            <a href={`/works/${work.id}/`} class="work-card">
-              <span class="work-card__num">{String(i + 1).padStart(2, '0')}</span>
-              <span class="work-card__year">{work.data.year}</span>
-              <span class="work-card__title">{work.data.title}</span>
-              <span class="work-card__meta">{work.data.role}</span>
-              <span class="work-card__arrow">↗</span>
-              <span class="work-card__desc">{work.data.description}</span>
-            </a>
+          steps.map((step, i) => (
+            <li
+              class={`step step--${i + 1}${i === steps.length - 1 ? ' step--dark' : ''}`}
+              data-step
+            >
+              <div class="step__rule">
+                <h3 class="step__verb">
+                  <span class="step__num">{step.num}</span>
+                  {step.verb}
+                  <span class="step__en">{step.en}</span>
+                </h3>
+              </div>
+              <div class="step__grid">
+                <div>
+                  <p class="step__service">{step.service}</p>
+                  <p class="step__lead">{step.lead}</p>
+                  <p class="step__body">{step.body}</p>
+                </div>
+                <figure class="step__figure" set:html={step.icon} />
+              </div>
+            </li>
           ))
         }
+      </ol>
+    </section>
+
+    <!-- 仕様（Skills / F3 tabular spec sheet） -->
+    <section class="spec" id="skills">
+      <h2 class="spec__title" data-reveal><span class="en">Specifications</span></h2>
+      <table class="spec-sheet">
+        <tbody>
+          {
+            spec.map((row) => (
+              <tr class={row.learning ? 'is-learning' : undefined}>
+                <th scope="row">{row.label}</th>
+                <td>
+                  {row.items.map((item, i) => (
+                    <>
+                      {i > 0 && <span class="sep">/</span>}
+                      {item}
+                    </>
+                  ))}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="spec__footnote">
+        Learning = いま root を伸ばしている領域
+        <span class="stripes" aria-hidden="true"></span>
+      </p>
+    </section>
+
+    <!-- Profile -->
+    <section class="profile" id="profile">
+      <div class="profile__inner" data-reveal>
+        <p class="profile__intro">
+          Web制作の現場で、設計から実装までを領域横断的に行き来しています。<br />
+          ツールの枠に捉われず、お気に入りの道具やワークスペースを整え、仕組みを緻密に組み上げていく「つくる工程」そのものが、自分のものづくりの原点。<br />
+          そうして手がけた仕組みやWebサイトが、誰かの役に立ち、誰かの日々を少し良くする瞬間を、何よりのエネルギーにしています。
+        </p>
+        <dl class="profile__list">
+          <div>
+            <dt>Handle</dt>
+            <dd>reproots</dd>
+          </div>
+          <div>
+            <dt>Name</dt>
+            <dd>YURI ISHIKAWA</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>Web Engineer / Technical Director</dd>
+          </div>
+          <div>
+            <dt>Approach</dt>
+            <dd>
+              「単に動くものを作る」だけではなく、設計から実装、運用にいたる
+              “つくる工程と構造” のすべてに高い解像度で向き合う。
+              破綻のないシステム設計と、細部まで美しく機能する実装を両立させる職人気質を軸とする。
+            </dd>
+          </div>
+          <div>
+            <dt>Favorites</dt>
+            <dd>gadget / tactile audio gear</dd>
+          </div>
+          <div>
+            <dt>Now</dt>
+            <dd>Blenderを学習中。</dd>
+          </div>
+        </dl>
+        <p class="profile__label">— profile / reproots unit</p>
       </div>
+    </section>
+
+    <!-- Works: 実績は溜まったら公開
+    <section class="band" id="works">
+      {
+        works.map((work) => (
+          <a href={`/works/${work.id}/`} class="work-card">
+            <span class="work-card__year">{work.data.year}</span>
+            <span class="work-card__title">{work.data.title}</span>
+            <span class="work-card__meta">{work.data.role}</span>
+            <span class="work-card__desc">{work.data.description}</span>
+          </a>
+        ))
+      }
     </section>
     -->
 
-    <!-- Contact -->
+    <!-- Contact（銘板ダークバンド） -->
     <section class="contact" id="contact">
-      <div class="cell">
-        <p class="section-label"><span class="idx">06</span>Contact</p>
+      <div class="contact__inner">
         <h2 class="contact__title">
-          <a href="mailto:hello@reproots.net">Let's <em>talk</em> ↗</a>
+          <a href="mailto:hello@reproots.net">Let's talk ↗</a>
         </h2>
-        <p class="contact__note reveal">
-          $ mail --to reproots // 「まだ相談レベル」が、いちばん歓迎です。
+        <p class="contact__note" data-reveal>
+          「まだ相談レベル」が、いちばん歓迎です。
         </p>
       </div>
     </section>

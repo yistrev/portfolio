@@ -1,5 +1,5 @@
 ---
-// 各「ファイル」の中身（One Dark配色のシンタックスハイライト済みHTML）
+// 各「ファイル」の中身（シンタックスハイライト済みHTML）
 // ※ index.astro のコンテンツと同期させること
 const aboutLines = [
   '<span class="tk-blue"># about</span>',
@@ -103,22 +103,22 @@ const fileMeta = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>reproots OS | engineer mode</title>
-    <meta name="description" content="reproots — 仮想デスクトップで閲覧するポートフォリオ（engineer mode）" />
+    <title>reproots OS 7 | engineer mode</title>
+    <meta name="description" content="reproots — 仮想レトロデスクトップで閲覧するポートフォリオ（engineer mode）" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=DotGothic16&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <!-- menubar -->
+    <!-- menubar（System 7風・白いメニューバー） -->
     <header class="menubar">
       <div class="menubar__left">
         <img src="/favicon.svg" alt="" class="menubar__logo" />
-        <strong>reproots OS</strong>
+        <strong>reproots OS 7</strong>
         <span class="menubar__menu">File</span>
         <span class="menubar__menu">Edit</span>
         <span class="menubar__menu">View</span>
@@ -133,37 +133,52 @@ const fileMeta = [
     <main class="desktop">
       <div class="desktop__icons">
         <button class="dicon" data-open-editor>
-          <span class="dicon__img dicon__img--code" aria-hidden="true">
-            <svg viewBox="0 0 44 34"><rect x="1" y="1" width="42" height="32" rx="5" fill="#fffffe" stroke="#001e1d" stroke-width="2"/><rect x="2" y="2" width="40" height="9" rx="3.5" fill="#f9bc60"/><circle cx="8" cy="6.5" r="1.8" fill="#001e1d"/><circle cx="14" cy="6.5" r="1.8" fill="#001e1d"/><rect x="7" y="15" width="14" height="2.6" rx="1.3" fill="#6246ea"/><rect x="7" y="21" width="22" height="2.6" rx="1.3" fill="#0a7489"/><rect x="12" y="27" width="16" height="2.6" rx="1.3" fill="#00795c"/></svg>
+          <span class="dicon__img" aria-hidden="true">
+            <svg viewBox="0 0 44 36">
+              <rect x="1" y="1" width="42" height="34" fill="#fffffe" stroke="#001e1d" stroke-width="2" />
+              <path d="M1 11h42" stroke="#001e1d" stroke-width="2" />
+              <path d="M12 4.2h28M12 6.7h28M12 9.2h28" stroke="#001e1d" stroke-width="1" />
+              <rect x="3.5" y="3.5" width="5" height="5" fill="#fffffe" stroke="#001e1d" stroke-width="1.4" />
+              <rect x="7" y="16" width="14" height="3" fill="#6246ea" />
+              <rect x="7" y="22" width="22" height="3" fill="#0a7489" />
+              <rect x="12" y="28" width="16" height="3" fill="#00795c" />
+            </svg>
           </span>
           <span class="dicon__label">code.app</span>
         </button>
         <a class="dicon" href="/">
-          <span class="dicon__img dicon__img--url" aria-hidden="true">
-            <svg viewBox="0 0 44 34"><rect x="1" y="1" width="42" height="32" rx="5" fill="#fffffe" stroke="#001e1d" stroke-width="2"/><circle cx="17" cy="17" r="6.5" fill="none" stroke="#3d63c9" stroke-width="4"/><circle cx="28" cy="17" r="6.5" fill="none" stroke="#e0622c" stroke-width="4"/></svg>
+          <span class="dicon__img" aria-hidden="true">
+            <svg viewBox="0 0 44 36">
+              <rect x="1" y="1" width="42" height="34" fill="#fffffe" stroke="#001e1d" stroke-width="2" />
+              <circle cx="17" cy="18" r="7" fill="none" stroke="#0a7489" stroke-width="4" />
+              <circle cx="28" cy="18" r="7" fill="none" stroke="#c47c1d" stroke-width="4" />
+            </svg>
           </span>
           <span class="dicon__label">Mode:portfolio</span>
         </a>
       </div>
 
-      <!-- editor window -->
+      <!-- editor window（reproots製の架空エディタ。VSCodeではなくSystem 7の書類ウィンドウ） -->
       <section class="window" id="editor-window" hidden aria-label="code editor">
         <div class="window__titlebar" id="editor-titlebar">
-          <div class="tl" aria-hidden="false">
-            <button class="tl__btn tl__btn--red" data-win-close aria-label="閉じる"></button>
-            <button class="tl__btn tl__btn--yellow" data-win-close aria-label="最小化"></button>
-            <button class="tl__btn tl__btn--green" data-win-max aria-label="最大化"></button>
-          </div>
-          <span class="window__title">reproots — code</span>
+          <button class="wbox" data-win-close aria-label="閉じる"></button>
+          <span class="window__stripes" aria-hidden="true"></span>
+          <span class="window__title">code.app — portfolio</span>
+          <span class="window__stripes" aria-hidden="true"></span>
+          <button class="wbox wbox--zoom" data-win-max aria-label="最大化"></button>
         </div>
+        <p class="window__info" aria-hidden="true">
+          <span>{fileMeta.length} items</span>
+          <span>2,026K in disk</span>
+          <span id="status-lang">—</span>
+        </p>
         <div class="window__body">
           <aside class="explorer">
-            <p class="explorer__head">Explorer</p>
-            <p class="explorer__dir">▾ portfolio</p>
+            <p class="explorer__head">⌸ portfolio</p>
             {
               fileMeta.map((f) => (
                 <button class="explorer__file" data-file={f.id}>
-                  <span class={`dot dot--${f.dot}`} />
+                  <span class={`doc doc--${f.dot}`} aria-hidden="true" />
                   {f.name}
                 </button>
               ))
@@ -174,7 +189,6 @@ const fileMeta = [
               {
                 fileMeta.map((f) => (
                   <button class="tab" data-tab={f.id} hidden>
-                    <span class={`dot dot--${f.dot}`} />
                     {f.name}
                     <span class="tab__close" data-close-tab={f.id} role="button" aria-label={`${f.name} を閉じる`}>×</span>
                   </button>
@@ -184,7 +198,8 @@ const fileMeta = [
             <div class="panes">
               <!-- welcome -->
               <div class="pane pane--welcome" data-pane="welcome">
-                <p>エクスプローラーからファイルを開いてください</p>
+                <p class="welcome__mark" aria-hidden="true">⌸</p>
+                <p>ディスク「portfolio」から書類を開いてください</p>
               </div>
 
               <div class="pane" data-pane="about-md" hidden>
@@ -225,23 +240,13 @@ const fileMeta = [
                 </div>
               </div>
             </div>
-            <div class="window__statusbar">
-              <div class="statusbar__left">
-                <span>⎇ main*</span>
-                <span>UTF-8</span>
-              </div>
-              <div class="statusbar__right">
-                <span id="status-lang">—</span>
-                <span>Ln 1, Col 1</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <!-- hint toast -->
+      <!-- hint（System 7風アラート） -->
       <div class="toast" id="hint-toast" role="status">
-        <strong>reproots OS</strong>
+        <strong>reproots OS 7</strong>
         <span>code.app を開くと、ポートフォリオを閲覧できます</span>
         <button data-toast-close aria-label="閉じる">×</button>
       </div>
@@ -347,7 +352,7 @@ const fileMeta = [
       let offY = 0;
 
       titlebar.addEventListener('pointerdown', (e) => {
-        if (e.target.closest('.tl') || win.classList.contains('is-max')) return;
+        if (e.target.closest('.wbox') || win.classList.contains('is-max')) return;
         if (window.matchMedia('(max-width: 700px)').matches) return;
         dragging = true;
         const r = win.getBoundingClientRect();
@@ -359,7 +364,7 @@ const fileMeta = [
       titlebar.addEventListener('pointermove', (e) => {
         if (!dragging) return;
         const x = Math.min(Math.max(e.clientX - offX, -200), innerWidth - 120);
-        const y = Math.min(Math.max(e.clientY - offY, 34), innerHeight - 80);
+        const y = Math.min(Math.max(e.clientY - offY, 28), innerHeight - 80);
         win.style.left = `${x}px`;
         win.style.top = `${y}px`;
         win.style.transform = 'none';
@@ -369,24 +374,33 @@ const fileMeta = [
     </script>
 
     <style is:global>
+      /* Hallmark · genre: n/a (app page · retro-OS world) · design-system: design.md · designed-as-app
+       * theme: reproots OS 7 — Happy Hues #10 ティール深化 · System 7風チローム
+       * display/chrome: DotGothic16 · code: IBM Plex Mono · prose: Noto Sans JP
+       * メインサイトと配色を揃えないのは意図（モード切替の演出）。共有するのはロゴと
+       * 「ハイライトだけ違う色（yellow = escの思想）」・フォーカス規律・reduced-motion
+       */
       :root {
-        /* Happy Hues palette #10 ベースのソリッド配色 */
-        --od-bg: #fffffe;
-        --od-bg-deep: #e9f2ee;
-        --od-desktop: #004643;
-        --od-line: #001e1d;
-        --od-highlight: #d7eae2;
-        --od-text: #16413c;
-        --od-dim: #6d8a84;
-        --od-red: #d14d61;
-        --od-green: #00795c;
-        --od-yellow: #f9bc60;
-        --od-blue: #0a7489;
-        --od-purple: #6246ea;
-        --od-cyan: #0a7489;
-        --od-orange: #c47c1d;
+
+        --os-paper: #fffffe;
+        --os-paper-2: #e9f2ee;
+        --os-desktop: #4D4DFF;
+        --os-desktop-dot: #0a5450;
+        --os-line: #4D4DFF;
+        --os-highlight: #f9bc60; /* 選択・アクティブ = この世界の「esc」 */
+        --os-text: #16413c;
+        --os-dim: #53716a; /* 小サイズテキストでも 4.5:1 を満たす */
+        --os-red: #d14d61;
+        --os-green: #00795c;
+        --os-yellow: #f9bc60;
+        --os-blue: #0a7489;
+        --os-purple: #6246ea;
+        --os-orange: #c47c1d;
+        --os-focus: #00ebc7;
         --mono: 'IBM Plex Mono', monospace;
         --jp: 'Noto Sans JP', sans-serif;
+        --dot: 'DotGothic16', 'IBM Plex Mono', monospace;
+        --menubar-h: 28px;
       }
 
       * {
@@ -404,8 +418,8 @@ const fileMeta = [
         font-family: var(--mono), var(--jp);
         font-size: 0.88rem;
         line-height: 1.85;
-        color: var(--od-text);
-        background: var(--od-desktop);
+        color: var(--os-text);
+        background: var(--os-desktop);
         overflow: hidden;
         height: 100svh;
         -webkit-font-smoothing: antialiased;
@@ -415,48 +429,60 @@ const fileMeta = [
         background: rgba(249, 188, 96, 0.55);
       }
 
-      /* ---- menubar ---- */
+      :focus-visible {
+        outline: 2px solid var(--os-focus);
+        outline-offset: 2px;
+      }
+
+      /* ---- menubar（白いバー・ピクセル文字） ---- */
       .menubar {
         position: fixed;
         inset-inline: 0;
         top: 0;
         z-index: 50;
-        height: 34px;
+        height: var(--menubar-h);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-inline: 0.9rem;
-        background: #001e1d;
-        font-size: 0.72rem;
-        color: #abd1c6;
+        padding-inline: 0.8rem;
+        background: var(--os-paper);
+        border-bottom: 2px solid var(--os-line);
+        font-family: var(--dot);
+        font-size: 0.78rem;
+        color: var(--os-line);
       }
 
       .menubar__left {
         display: flex;
         align-items: center;
-        gap: 1.1rem;
+        gap: 1rem;
       }
 
       .menubar__logo {
-        width: 18px;
-        height: 18px;
+        width: 15px;
+        height: 15px;
         display: block;
       }
 
       .menubar__left strong {
-        color: #fffffe;
-        font-weight: 600;
+        font-weight: 400;
       }
 
       .menubar__menu {
-        opacity: 0.6;
+        color: var(--os-dim);
       }
 
-      /* ---- desktop ---- */
+      .menubar__right {
+        font-family: var(--dot);
+      }
+
+      /* ---- desktop（ティール＋ディザ風ドット） ---- */
       .desktop {
         position: fixed;
-        inset: 34px 0 0;
-        background: var(--od-desktop);
+        inset: var(--menubar-h) 0 0;
+        background:
+          radial-gradient(var(--os-desktop-dot) 1px, transparent 1px) 0 0 / 4px 4px,
+          var(--os-desktop);
       }
 
       .desktop__icons {
@@ -472,47 +498,50 @@ const fileMeta = [
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.45rem;
-        width: 86px;
+        gap: 0.5rem;
+        width: 92px;
         background: none;
         border: 0;
         cursor: pointer;
         text-decoration: none;
-        border-radius: 8px;
         padding: 0.5rem 0.2rem;
       }
 
-      .dicon:hover {
-        background: rgba(255, 255, 254, 0.16);
-      }
-
       .dicon__img svg {
-        width: 52px;
+        width: 50px;
         height: auto;
         display: block;
       }
 
       .dicon__label {
-        font-size: 0.68rem;
+        font-family: var(--dot);
+        font-size: 0.72rem;
         letter-spacing: 0.04em;
-        color: #fffffe;
+        color: var(--os-paper);
+        padding: 0.05rem 0.35rem;
       }
 
-      /* ---- window ---- */
+      .dicon:hover .dicon__label,
+      .dicon:focus-visible .dicon__label {
+        background: var(--os-highlight);
+        color: var(--os-line);
+      }
+
+      /* ---- window（角ばった書類ウィンドウ・ハードシャドウ） ---- */
       .window {
         position: fixed;
         left: 50%;
         top: 54%;
-        transform: translate(-50%, -50%) scale(0.96);
+        transform: translate(-50%, -50%) scale(0.98);
         width: min(920px, 94vw);
         height: min(620px, 80vh);
         display: flex;
         flex-direction: column;
-        background: var(--od-bg);
-        border: 2px solid var(--od-line);
-        border-radius: 10px;
+        background: var(--os-paper);
+        border: 2px solid var(--os-line);
+        box-shadow: 4px 4px 0 rgba(0, 30, 29, 0.45);
         opacity: 0;
-        transition: opacity 0.18s ease, transform 0.18s ease;
+        transition: opacity 0.18s ease-out, transform 0.18s ease-out;
         overflow: hidden;
       }
 
@@ -526,20 +555,21 @@ const fileMeta = [
       }
 
       .window.is-max {
-        inset: 34px 10px 10px !important;
+        inset: var(--menubar-h) 8px 8px !important;
         width: auto;
         height: auto;
         transform: none !important;
       }
 
+      /* ---- titlebar（横ストライプ＋中央タイトル＋左クローズ/右ズームの四角） ---- */
       .window__titlebar {
         display: flex;
         align-items: center;
-        gap: 1rem;
-        height: 38px;
-        padding-inline: 0.9rem;
-        background: #f9bc60;
-        border-bottom: 2px solid var(--od-line);
+        gap: 0.6rem;
+        height: 30px;
+        padding-inline: 0.55rem;
+        background: var(--os-paper);
+        border-bottom: 2px solid var(--os-line);
         cursor: grab;
         user-select: none;
         touch-action: none;
@@ -550,29 +580,65 @@ const fileMeta = [
         cursor: grabbing;
       }
 
-      .tl {
-        display: flex;
-        gap: 8px;
+      .window__stripes {
+        flex: 1;
+        height: 13px;
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--os-line) 0 1px,
+          transparent 1px 3px
+        );
+        min-width: 12px;
       }
 
-      .tl__btn {
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        border: 2px solid var(--od-line);
+      .window__title {
+        font-family: var(--dot);
+        font-size: 0.8rem;
+        color: var(--os-line);
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+
+      .wbox {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        background: var(--os-paper);
+        border: 2px solid var(--os-line);
         cursor: pointer;
         padding: 0;
       }
 
-      .tl__btn--red { background: #e06c75; }
-      .tl__btn--yellow { background: #e5c07b; }
-      .tl__btn--green { background: #98c379; }
+      .wbox:hover {
+        background: var(--os-highlight);
+      }
 
-      .window__title {
+      .wbox--zoom {
+        position: relative;
+      }
+
+      .wbox--zoom::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-right: 2px solid var(--os-line);
+        border-bottom: 2px solid var(--os-line);
+        width: 55%;
+        height: 55%;
+      }
+
+      /* ---- info bar（Finderの「6 items, XXK available」風） ---- */
+      .window__info {
+        display: flex;
+        justify-content: center;
+        gap: 1.6rem;
+        padding: 0.18rem 0.9rem;
+        background: var(--os-paper-2);
+        border-bottom: 2px solid var(--os-line);
+        font-family: var(--dot);
         font-size: 0.72rem;
-        color: var(--od-line);
-        font-weight: 600;
-        letter-spacing: 0.05em;
+        color: var(--os-text);
+        flex-shrink: 0;
       }
 
       .window__body {
@@ -581,41 +647,34 @@ const fileMeta = [
         min-height: 0;
       }
 
-      /* ---- explorer ---- */
+      /* ---- explorer → ディスクのリストビュー ---- */
       .explorer {
-        width: 170px;
+        width: 172px;
         flex-shrink: 0;
-        background: var(--od-bg-deep);
-        border-right: 2px solid var(--od-line);
-        padding: 0.8rem 0;
+        background: var(--os-paper);
+        border-right: 2px solid var(--os-line);
+        padding: 0.6rem 0;
         overflow-y: auto;
       }
 
       .explorer__head {
-        font-size: 0.62rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--od-dim);
-        padding-inline: 1rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .explorer__dir {
+        font-family: var(--dot);
         font-size: 0.74rem;
-        color: var(--od-line);
-        padding-inline: 1rem;
-        margin-bottom: 0.2rem;
+        color: var(--os-line);
+        padding: 0 0.9rem 0.4rem;
+        border-bottom: 1px dotted var(--os-dim);
+        margin-bottom: 0.4rem;
       }
 
       .explorer__file {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.55rem;
         width: 100%;
-        padding: 0.28rem 1rem 0.28rem 1.6rem;
+        padding: 0.3rem 0.9rem;
         background: none;
         border: 0;
-        color: var(--od-text);
+        color: var(--os-text);
         font-family: var(--mono);
         font-size: 0.76rem;
         cursor: pointer;
@@ -623,27 +682,55 @@ const fileMeta = [
       }
 
       .explorer__file:hover {
-        background: var(--od-highlight);
+        background: var(--os-paper-2);
+      }
+
+      .explorer__file:active,
+      .tab:active,
+      .dicon:active,
+      .wbox:active {
+        background: var(--os-highlight);
       }
 
       .explorer__file.is-active {
-        background: #f9bc60;
-        color: var(--od-line);
+        background: var(--os-line);
+        color: var(--os-paper);
       }
 
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
+      /* ピクセル書類アイコン（折り目付き） */
+      .doc {
+        width: 10px;
+        height: 12px;
         flex-shrink: 0;
+        border: 1px solid currentColor;
+        position: relative;
+        background: linear-gradient(135deg, transparent 0 3px, var(--doc-color, currentColor) 3px 5px, transparent 5px);
       }
 
-      .dot--md { background: var(--od-blue); }
-      .dot--ts { background: var(--od-cyan); }
-      .dot--json { background: var(--od-yellow); }
-      .dot--yml { background: var(--od-red); }
-      .dot--log { background: var(--od-green); }
-      .dot--sh { background: var(--od-purple); }
+      .doc::after {
+        content: '';
+        position: absolute;
+        left: 1px;
+        right: 1px;
+        bottom: 2px;
+        height: 1px;
+        background: var(--doc-color, currentColor);
+      }
+
+      .doc--md { --doc-color: var(--os-blue); }
+      .doc--ts { --doc-color: var(--os-blue); }
+      .doc--json { --doc-color: var(--os-orange); }
+      .doc--yml { --doc-color: var(--os-red); }
+      .doc--log { --doc-color: var(--os-green); }
+      .doc--sh { --doc-color: var(--os-purple); }
+
+      .explorer__file.is-active .doc {
+        background: linear-gradient(135deg, transparent 0 3px, var(--os-paper) 3px 5px, transparent 5px);
+      }
+
+      .explorer__file.is-active .doc::after {
+        background: var(--os-paper);
+      }
 
       /* ---- editor ---- */
       .editor {
@@ -653,10 +740,13 @@ const fileMeta = [
         min-width: 0;
       }
 
+      /* ---- tabbar → System 7のフォルダタブ ---- */
       .tabbar {
         display: flex;
-        background: var(--od-bg-deep);
-        border-bottom: 2px solid var(--od-line);
+        gap: 4px;
+        padding: 6px 8px 0;
+        background: var(--os-paper-2);
+        border-bottom: 2px solid var(--os-line);
         overflow-x: auto;
         flex-shrink: 0;
       }
@@ -665,21 +755,23 @@ const fileMeta = [
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 0.9rem;
-        background: none;
-        border: 0;
-        border-right: 1px solid #c4d9d1;
-        color: var(--od-dim);
-        font-family: var(--mono);
+        padding: 0.28rem 0.7rem;
+        background: var(--os-paper-2);
+        border: 2px solid var(--os-line);
+        border-bottom: 0;
+        margin-bottom: -2px;
+        color: var(--os-dim);
+        font-family: var(--dot);
         font-size: 0.74rem;
         cursor: pointer;
         white-space: nowrap;
       }
 
       .tab.is-active {
-        background: var(--od-bg);
-        color: var(--od-line);
-        box-shadow: inset 0 3px 0 var(--od-desktop);
+        background: var(--os-paper);
+        color: var(--os-line);
+        position: relative;
+        z-index: 1;
       }
 
       .tab__close {
@@ -689,7 +781,7 @@ const fileMeta = [
 
       .tab__close:hover {
         opacity: 1;
-        color: var(--od-red);
+        color: var(--os-red);
       }
 
       /* ---- panes / code ---- */
@@ -697,6 +789,7 @@ const fileMeta = [
         flex: 1;
         overflow: auto;
         min-height: 0;
+        background: var(--os-paper);
       }
 
       .pane--welcome {
@@ -705,14 +798,17 @@ const fileMeta = [
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 1.4rem;
-        color: var(--od-dim);
+        gap: 0.8rem;
+        color: var(--os-dim);
         font-size: 0.8rem;
         font-family: var(--jp);
       }
 
-      .welcome__rings {
-        width: 120px;
+      .welcome__mark {
+        font-family: var(--dot);
+        font-size: 2.4rem;
+        line-height: 1;
+        color: var(--os-text);
       }
 
       .code {
@@ -739,47 +835,25 @@ const fileMeta = [
         left: 0;
         width: 2.3rem;
         text-align: right;
-        color: #9db8b1;
+        color: var(--os-dim);
         font-size: 0.72rem;
         user-select: none;
       }
 
-      /* One Dark tokens */
-      .tk-blue { color: var(--od-blue); }
-      .tk-green { color: var(--od-green); }
-      .tk-red { color: var(--od-red); }
-      .tk-purple { color: var(--od-purple); }
-      .tk-orange { color: var(--od-orange); }
-      .tk-str { color: var(--od-green); }
-      .tk-comment { color: var(--od-dim); font-style: italic; }
-      .tk-bold { font-weight: 700; color: var(--od-line); }
+      /* tokens */
+      .tk-blue { color: var(--os-blue); }
+      .tk-green { color: var(--os-green); }
+      .tk-red { color: var(--os-red); }
+      .tk-purple { color: var(--os-purple); }
+      .tk-orange { color: var(--os-orange); }
+      .tk-str { color: var(--os-green); }
+      .tk-comment { color: var(--os-dim); font-style: italic; }
+      .tk-bold { font-weight: 700; color: var(--os-line); }
 
       .code .tk-link {
-        color: var(--od-blue);
+        color: var(--os-blue);
         text-underline-offset: 3px;
       }
-
-      /* works.log */
-      .commit {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.3rem 0.8rem;
-        align-items: baseline;
-        padding: 0.45rem 1rem;
-        text-decoration: none;
-        color: var(--od-text);
-        font-size: 0.8rem;
-      }
-
-      .commit:hover {
-        background: var(--od-highlight);
-      }
-
-      .commit__hash { color: var(--od-orange); font-size: 0.76rem; }
-      .commit__year { color: var(--od-dim); font-size: 0.76rem; }
-      .commit__title { font-weight: 500; font-family: var(--jp); }
-      .commit:hover .commit__title { color: var(--od-blue); text-decoration: underline; text-underline-offset: 3px; }
-      .commit__role { color: var(--od-dim); font-size: 0.74rem; font-family: var(--jp); }
 
       /* contact.sh */
       .contact-line { padding-block: 0.6rem; }
@@ -787,33 +861,13 @@ const fileMeta = [
       .contact-link {
         font-size: clamp(1.3rem, 4vw, 2rem);
         font-weight: 700;
-        color: var(--od-line);
+        color: var(--os-line);
         text-decoration: none;
       }
 
-      .contact-link:hover { color: var(--od-blue); }
+      .contact-link:hover { color: var(--os-blue); }
 
-      /* ---- statusbar ---- */
-      .window__statusbar {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 0.3rem 0.9rem;
-        background: #001e1d;
-        border-top: 2px solid var(--od-line);
-        font-size: 0.68rem;
-        color: #abd1c6;
-        flex-shrink: 0;
-      }
-
-      .statusbar__left,
-      .statusbar__right {
-        display: flex;
-        gap: 1.1rem;
-        white-space: nowrap;
-      }
-
-      /* ---- toast ---- */
+      /* ---- toast（System 7風アラート） ---- */
       .toast {
         position: absolute;
         top: 1.2rem;
@@ -822,25 +876,26 @@ const fileMeta = [
         align-items: center;
         gap: 0.7rem;
         padding: 0.7rem 1rem;
-        background: var(--od-bg);
-        border: 2px solid var(--od-line);
-        border-radius: 10px;
+        background: var(--os-paper);
+        border: 2px solid var(--os-line);
+        box-shadow: 3px 3px 0 rgba(0, 30, 29, 0.45);
         font-size: 0.74rem;
         font-family: var(--jp);
-        animation: toast-in 0.5s ease 0.8s backwards;
+        animation: toast-in 0.5s ease-out 0.8s backwards;
         max-width: min(340px, 84vw);
       }
 
       .toast strong {
-        color: var(--od-line);
-        font-family: var(--mono);
-        font-size: 0.7rem;
+        color: var(--os-line);
+        font-family: var(--dot);
+        font-size: 0.74rem;
+        font-weight: 400;
       }
 
       .toast button {
         background: none;
         border: 0;
-        color: var(--od-dim);
+        color: var(--os-dim);
         cursor: pointer;
         font-size: 0.9rem;
       }
@@ -855,15 +910,22 @@ const fileMeta = [
 
       /* ---- mobile ---- */
       @media (max-width: 700px) {
+        .menubar__menu {
+          display: none;
+        }
+
+        .menubar__left {
+          gap: 0.6rem;
+        }
+
         .window,
         .window.is-open {
-          inset: 34px 0 0;
-          left: auto;
-          top: auto;
+          /* ドラッグで付くインラインの left/top も !important で打ち消して全面表示にする */
+          inset: var(--menubar-h) 0 0 !important;
           width: auto;
           height: auto;
-          transform: none;
-          border-radius: 0;
+          transform: none !important;
+          box-shadow: none;
         }
 
         .window__body {
@@ -877,12 +939,11 @@ const fileMeta = [
           gap: 0.2rem;
           padding: 0.4rem 0.6rem;
           border-right: 0;
-          border-bottom: 1px solid var(--od-line);
+          border-bottom: 2px solid var(--os-line);
           overflow-x: auto;
         }
 
-        .explorer__head,
-        .explorer__dir {
+        .explorer__head {
           display: none;
         }
 
@@ -891,11 +952,15 @@ const fileMeta = [
           padding: 0.3rem 0.6rem;
           white-space: nowrap;
         }
+
+        .window__info {
+          gap: 1rem;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
         .window {
-          transition: none;
+          transition: opacity 150ms linear;
         }
         .toast {
           animation: none;

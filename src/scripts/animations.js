@@ -3,7 +3,29 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// キーキャップが「reproots↵」を自動で打鍵し続けるループ
+/* テキストノードを1文字ずつ span.char に分割する（.en などの子要素は温存） */
+function splitChars(el) {
+  const chars = [];
+  [...el.childNodes].forEach((node) => {
+    if (node.nodeType !== Node.TEXT_NODE) return;
+    const frag = document.createDocumentFragment();
+    [...node.textContent].forEach((ch) => {
+      if (!ch.trim()) {
+        frag.append(ch);
+        return;
+      }
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch;
+      frag.append(span);
+      chars.push(span);
+    });
+    node.replaceWith(frag);
+  });
+  return chars;
+}
+
+// キーキャップが「reproots↵」を自動で打鍵し続けるループ（ブランドの常時モーション）
 // （キー配列: esc R E P / ⌘ R O O / ⇧ T S ↵ のうち文字キー＋Enter）
 function startKeyTypingLoop() {
   const keys = gsap.utils.toArray('.keycap');
@@ -16,13 +38,24 @@ function startKeyTypingLoop() {
     tl.call(() => el.classList.add('is-pressed'), null, t);
     tl.call(() => el.classList.remove('is-pressed'), null, t + 0.13);
   });
+
+  // WCAG 2.2.2: 自動で動き続けるコンテンツはホバー中に一時停止できるようにする
+  const keyboard = document.querySelector('.keyboard');
+  if (keyboard) {
+    keyboard.addEventListener('pointerenter', () => tl.pause());
+    keyboard.addEventListener('pointerleave', () => tl.resume());
+  }
 }
 
 export function animate() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
+  if (reduceMotion) return; // CSSは最終状態のまま。空間モーションは一切走らせない
 
-  /* ---- ヒーロー: コマンドをタイプ → タイトルがせり上がる ---- */
+  /* ================================================================
+     全ビューポート共通
+     ================================================================ */
+
+  /* ---- エントランス: コマンドをタイプ → タイトルが立ち上がる ---- */
   const typing = document.querySelector('[data-typing]');
   const fullText = typing?.dataset.text ?? '';
   const intro = gsap.timeline({ delay: 0.3 });
@@ -42,155 +75,248 @@ export function animate() {
   intro.from('[data-hero-title] .line > span', {
     yPercent: 110,
     duration: 1.0,
-    ease: 'power4.out',
+    ease: 'expo.out',
     stagger: 0.12,
-  }, '+=0.15');
+  }, '+=0.1');
 
-  // キーキャップ: 落ちてきたあと、自動打鍵ループ開始
+  // キーキャップ: 落ちて据わったあと、自動打鍵ループ開始
   gsap.from('.keycap', {
-    y: -24,
+    y: -20,
     opacity: 0,
-    duration: 0.5,
-    ease: 'back.out(2)',
-    stagger: 0.06,
-    delay: 0.6,
+    duration: 0.45,
+    ease: 'power3.out',
+    stagger: 0.05,
+    delay: 0.5,
     clearProps: 'transform,opacity',
     onComplete: startKeyTypingLoop,
   });
 
-  /* ---- ヒーロー: スクロールで行ごとに違う速度で流れる（scrub） ---- */
-  const heroScrub = {
-    trigger: '.hero',
-    start: 'top top',
-    end: 'bottom top',
-    scrub: true,
-  };
-  gsap.to('[data-hero-title] .line:nth-child(1)', { yPercent: -40, ease: 'none', scrollTrigger: heroScrub });
-  gsap.to('[data-hero-title] .line:nth-child(2)', { yPercent: -80, ease: 'none', scrollTrigger: { ...heroScrub } });
-
-  /* ---- ステートメント: ピン留めして1行ずつ現れる（scrub） ---- */
-  const statement = document.querySelector('[data-statement]');
-  if (statement) {
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: statement,
-        start: 'top top',
-        end: '+=160%',
-        scrub: true,
-        pin: true,
-      },
-    })
-      .from(statement.querySelectorAll('.statement__line'), {
-        opacity: 0.07,
-        y: 56,
-        duration: 1,
-        stagger: 0.9,
-        ease: 'none',
-      })
-      .from(statement.querySelector('.statement__sub'), {
-        opacity: 0,
-        duration: 0.7,
-        ease: 'none',
-      });
+  /* ---- 序文タイトル: 1文字ずつ立ち上がる（once） ---- */
+  const introTitle = document.querySelector('.intro__title');
+  if (introTitle) {
+    const chars = [...introTitle.querySelectorAll('.u-block')].flatMap((b) => splitChars(b));
+    gsap.from(chars, {
+      yPercent: 110,
+      autoAlpha: 0,
+      duration: 0.7,
+      ease: 'expo.out',
+      stagger: 0.025,
+      scrollTrigger: { trigger: introTitle, start: 'top 85%', once: true },
+    });
   }
 
-  /* ---- 汎用: .reveal はスクロールでふわっと1回表示 ---- */
-  gsap.utils.toArray('.reveal').forEach((el) => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
+  /* ---- 汎用reveal: 一度だけふわっと立ち上がる ---- */
+  gsap.utils.toArray('[data-reveal]').forEach((el) => {
+    gsap.from(el, {
+      y: 40,
+      autoAlpha: 0,
       duration: 0.9,
       ease: 'power3.out',
       scrollTrigger: { trigger: el, start: 'top 85%', once: true },
     });
   });
 
-  gsap.utils.toArray('.section-label').forEach((el) => {
-    gsap.from(el, {
-      x: -24,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
-  });
+  /* ---- 工程カード内: ルールのスイープ → 内容 → 線画描画（once） ---- */
+  gsap.utils.toArray('[data-step]').forEach((step) => {
+    const rule = step.querySelector('.step__rule');
+    const grid = step.querySelector('.step__grid');
+    const paths = [...step.querySelectorAll('.iso-icon path:not(.dashed)')];
+    const dashed = step.querySelectorAll('.iso-icon path.dashed');
 
-  /* ---- Skills: 行が左からスクロール連動でスライドイン（scrub） ---- */
-  gsap.utils.toArray('.skill-row').forEach((row) => {
-    gsap.from(row, {
-      x: -56,
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: { trigger: row, start: 'top 94%', end: 'top 60%', scrub: true },
-    });
-  });
-
-  /* ---- Works: カードが下からスクロール連動で立ち上がる（scrub） ---- */
-  gsap.utils.toArray('.work-card').forEach((card) => {
-    gsap.from(card, {
-      y: 56,
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: { trigger: card, start: 'top 96%', end: 'top 62%', scrub: true },
-    });
-  });
-
-  /* ---- Contact: 巨大タイトルがスクロールでせり上がる（scrub） ---- */
-  gsap.from('.contact__title', {
-    y: 80,
-    scale: 0.94,
-    opacity: 0.2,
-    transformOrigin: 'left bottom',
-    ease: 'none',
-    scrollTrigger: { trigger: '.contact', start: 'top 90%', end: 'top 35%', scrub: true },
-  });
-
-  /* ---- 斜めの連結線: スクロールに合わせて根のように伸びる（scrub） ---- */
-  gsap.utils.toArray('.diag line').forEach((line) => {
-    const len = line.getTotalLength();
-    line.style.strokeDasharray = len;
-    line.style.strokeDashoffset = len;
-    gsap.to(line, {
-      strokeDashoffset: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: line.closest('.diag'),
-        start: 'top 88%',
-        end: 'bottom 50%',
-        scrub: true,
-      },
-    });
-  });
-
-  /* ---- アイソメトリックアイコン: 線が描かれていく（stroke-dashoffset） ---- */
-  gsap.utils.toArray('.iso-icon').forEach((icon) => {
-    const paths = [...icon.querySelectorAll('path:not(.dashed)')];
-    const dashed = icon.querySelectorAll('path.dashed');
     paths.forEach((p) => {
       const len = p.getTotalLength();
       p.style.strokeDasharray = len;
       p.style.strokeDashoffset = len;
     });
     if (dashed.length) gsap.set(dashed, { opacity: 0 });
+
     const tl = gsap.timeline({
-      scrollTrigger: { trigger: icon, start: 'top 85%', once: true },
-    }).to(paths, {
-      strokeDashoffset: 0,
-      duration: 1.4,
-      ease: 'power2.inOut',
-      stagger: 0.18,
+      scrollTrigger: { trigger: step, start: 'top 60%', once: true },
     });
-    if (dashed.length) tl.to(dashed, { opacity: 1, duration: 0.4 }, '-=0.5');
+    tl.from(rule, {
+      scaleX: 0,
+      transformOrigin: 'left center',
+      duration: 0.7,
+      ease: 'expo.out',
+    })
+      .from(grid, {
+        y: 32,
+        autoAlpha: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      }, '-=0.35')
+      .to(paths, {
+        strokeDashoffset: 0,
+        duration: 1.1,
+        ease: 'power2.inOut',
+        stagger: 0.14,
+      }, '-=0.4');
+    if (dashed.length) tl.to(dashed, { opacity: 1, duration: 0.3 }, '-=0.4');
   });
 
-  /* ---- ターミナル: 1行ずつタイピング風表示 ---- */
-  const terminalLines = gsap.utils.toArray('.terminal__body > div');
-  if (terminalLines.length) {
-    gsap.from(terminalLines, {
-      opacity: 0,
-      duration: 0.01,
-      stagger: 0.45,
-      scrollTrigger: { trigger: '.terminal', start: 'top 80%', once: true },
+  /* ---- 序文の斜め線: 根が伸びるように一度だけ描画 ---- */
+  gsap.utils.toArray('.diag line').forEach((line) => {
+    const len = line.getTotalLength();
+    line.style.strokeDasharray = len;
+    line.style.strokeDashoffset = len;
+    gsap.to(line, {
+      strokeDashoffset: 0,
+      duration: 1.2,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: line.closest('.diag'), start: 'top 85%', once: true },
     });
-  }
+  });
+
+  /* ================================================================
+     ScrollTrigger 演出（scrub / pin）— ステートメント文字は先に分割しておく
+     ================================================================ */
+  const statement = document.querySelector('[data-statement]');
+  const statementLines = statement
+    ? [...statement.querySelectorAll('.statement__line')].map((line) => ({
+        line,
+        chars: splitChars(line),
+        en: line.querySelector('.en'),
+      }))
+    : [];
+
+  const mm = gsap.matchMedia();
+
+  /* ---- デスクトップ: pin + scrub をフルに使う ---- */
+  mm.add('(min-width: 48rem)', () => {
+    // ヒーロータイトル: 行ごとに違う速度で流れるパララックス
+    const heroScrub = {
+      trigger: '.hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+    };
+    gsap.to('[data-hero-title] .line:nth-child(1)', { yPercent: -35, ease: 'none', scrollTrigger: heroScrub });
+    gsap.to('[data-hero-title] .line:nth-child(2)', { yPercent: -70, ease: 'none', scrollTrigger: { ...heroScrub } });
+
+    // ステートメント: ピン留めして、スクロール量に応じて1文字ずつ現れる
+    if (statement) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: statement,
+          start: 'top top',
+          end: '+=180%',
+          scrub: true,
+          pin: true,
+        },
+      });
+      statementLines.forEach(({ chars, en }) => {
+        tl.from(chars, {
+          yPercent: 120,
+          autoAlpha: 0,
+          stagger: 0.08,
+          duration: 1,
+          ease: 'none',
+        });
+        if (en) tl.from(en, { autoAlpha: 0, x: -16, duration: 0.5, ease: 'none' }, '<0.5');
+      });
+      tl.from(statement.querySelector('.statement__sub'), { autoAlpha: 0, y: 24, duration: 0.8, ease: 'none' });
+    }
+
+    // 工程: カードをピン留めして、次の工程がスクロールで上に重なっていく
+    const cards = gsap.utils.toArray('[data-step]');
+    cards.forEach((card) => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top top',
+        pin: true,
+        pinSpacing: false,
+        endTrigger: '[data-steps]',
+        end: 'bottom bottom',
+      });
+    });
+
+    // 仕様表: 行がスクロール量に合わせて左から揃う
+    gsap.utils.toArray('.spec-sheet tr').forEach((row) => {
+      gsap.from(row, {
+        x: -56,
+        autoAlpha: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: row, start: 'top 94%', end: 'top 62%', scrub: true },
+      });
+    });
+
+    // Contact: 巨大タイトルがスクロールでせり上がる
+    gsap.from('.contact__title', {
+      y: 80,
+      scale: 0.96,
+      autoAlpha: 0.2,
+      transformOrigin: 'left bottom',
+      ease: 'none',
+      scrollTrigger: { trigger: '.contact', start: 'top 90%', end: 'top 40%', scrub: true },
+    });
+
+    // レティクル: 方眼紙の上をページ全体のスクロールに追従して移動
+    const tracker = document.querySelector('.tracker');
+    if (tracker) {
+      gsap.to(tracker, {
+        keyframes: [
+          { x: '-32vw', y: '26vh' },
+          { x: '4vw', y: '52vh' },
+          { x: '-38vw', y: '18vh' },
+          { x: '-10vw', y: '44vh' },
+        ],
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'main',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1.2,
+        },
+      });
+    }
+  });
+
+  /* ---- モバイル: pin/scrubは使わず、一回きりのrevealに置き換える ---- */
+  mm.add('(max-width: 47.99rem)', () => {
+    statementLines.forEach(({ chars, en }, i) => {
+      gsap.from(chars, {
+        yPercent: 110,
+        autoAlpha: 0,
+        duration: 0.7,
+        ease: 'expo.out',
+        stagger: 0.04,
+        delay: i * 0.15,
+        scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+      });
+      if (en) {
+        gsap.from(en, {
+          autoAlpha: 0,
+          duration: 0.5,
+          delay: i * 0.15 + 0.4,
+          scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+        });
+      }
+    });
+    if (statement) {
+      gsap.from(statement.querySelector('.statement__sub'), {
+        autoAlpha: 0,
+        y: 20,
+        duration: 0.7,
+        delay: 0.6,
+        scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+      });
+    }
+
+    gsap.from('.spec-sheet tr', {
+      x: -40,
+      autoAlpha: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+      stagger: 0.09,
+      scrollTrigger: { trigger: '.spec-sheet', start: 'top 82%', once: true },
+    });
+
+    gsap.from('.contact__title', {
+      y: 48,
+      autoAlpha: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.contact', start: 'top 80%', once: true },
+    });
+  });
 }
