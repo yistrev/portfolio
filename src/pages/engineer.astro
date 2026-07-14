@@ -15,7 +15,7 @@ const aboutLines = [
   '<span class="tk-green">&gt; プロジェクトに翻訳者を置かずに済む——二つの肩書きを名乗る理由です。</span>',
   '',
   '「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を',
-  'ビジネスの場できちんと機能する強固なシステムへと育てること。',
+  'ビジネスの場できちんと機能する確かなシステムへと育てること。',
   'それが、この場所における物作りのスタンスです。',
   '',
   '- github: <a class="tk-link" href="https://github.com/yistrev" target="_blank" rel="noopener">yistrev</a>',
@@ -40,7 +40,7 @@ const serviceLines = [
 
 const skillsLines = [
   '{',
-  '  <span class="tk-red">"name"</span>: <span class="tk-str">"reproots"</span>,',
+  '  <span class="tk-red">"name"</span>: <span class="tk-str">"rootscion"</span>,',
   '  <span class="tk-red">"dependencies"</span>: {',
   '    <span class="tk-comment">// markup</span>',
   '    <span class="tk-red">"html"</span>: <span class="tk-str">"living-standard"</span>,',
@@ -69,7 +69,7 @@ const skillsLines = [
 ];
 
 const profileLines = [
-  '<span class="tk-red">handle</span>: <span class="tk-str">reproots</span>',
+  '<span class="tk-red">handle</span>: <span class="tk-str">rootscion</span>',
   '<span class="tk-red">name</span>: <span class="tk-str">YURI ISHIKAWA</span>',
   '<span class="tk-red">role</span>: <span class="tk-str">Web Engineer / Technical Director</span>',
   '<span class="tk-red">approach</span>: <span class="tk-purple">&gt;</span>',
@@ -103,8 +103,8 @@ const fileMeta = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>reproots OS 7 | engineer mode</title>
-    <meta name="description" content="reproots — 仮想レトロデスクトップで閲覧するポートフォリオ（engineer mode）" />
+    <title>rootscion OS 7 | engineer mode</title>
+    <meta name="description" content="rootscion — 仮想レトロデスクトップで閲覧するポートフォリオ（engineer mode）" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -118,7 +118,7 @@ const fileMeta = [
     <header class="menubar">
       <div class="menubar__left">
         <img src="/favicon.svg" alt="" class="menubar__logo" />
-        <strong>reproots OS 7</strong>
+        <strong>cion OS 7</strong>
         <span class="menubar__menu">File</span>
         <span class="menubar__menu">Edit</span>
         <span class="menubar__menu">View</span>
@@ -158,7 +158,7 @@ const fileMeta = [
         </a>
       </div>
 
-      <!-- editor window（reproots製の架空エディタ。VSCodeではなくSystem 7の書類ウィンドウ） -->
+      <!-- editor window（rootscion製の架空エディタ。VSCodeではなくSystem 7の書類ウィンドウ） -->
       <section class="window" id="editor-window" hidden aria-label="code editor">
         <div class="window__titlebar" id="editor-titlebar">
           <button class="wbox" data-win-close aria-label="閉じる"></button>
@@ -233,8 +233,8 @@ const fileMeta = [
                   <div class="code__line"><span class="tk-comment"># 「まだ相談レベル」が、いちばん歓迎です。</span></div>
                   <div class="code__line">&nbsp;</div>
                   <div class="code__line contact-line">
-                    <a href="mailto:hello@reproots.net" class="contact-link">
-                      mail <span class="tk-red">--to</span> reproots <span class="tk-green">↵</span>
+                    <a href="mailto:hello@rootscion.com" class="contact-link">
+                      mail <span class="tk-red">--to</span> rootscion <span class="tk-green">↵</span>
                     </a>
                   </div>
                 </div>
@@ -246,7 +246,7 @@ const fileMeta = [
 
       <!-- hint（System 7風アラート） -->
       <div class="toast" id="hint-toast" role="status">
-        <strong>reproots OS 7</strong>
+        <strong>cion OS 7</strong>
         <span>code.app を開くと、ポートフォリオを閲覧できます</span>
         <button data-toast-close aria-label="閉じる">×</button>
       </div>
@@ -375,28 +375,36 @@ const fileMeta = [
 
     <style is:global>
       /* Hallmark · genre: n/a (app page · retro-OS world) · design-system: design.md · designed-as-app
-       * theme: reproots OS 7 — Happy Hues #10 ティール深化 · System 7風チローム
+       * theme: cion OS 7 — Happy Hues #10 ティール深化 · System 7風チローム
        * display/chrome: DotGothic16 · code: IBM Plex Mono · prose: Noto Sans JP
        * メインサイトと配色を揃えないのは意図（モード切替の演出）。共有するのはロゴと
        * 「ハイライトだけ違う色（yellow = escの思想）」・フォーカス規律・reduced-motion
        */
       :root {
+       /* 1. ベース（動画の完璧な重低音ダークネイビーを維持） */
+       --os-desktop: #070a13;
+        --os-desktop-dot: #1a2235;
+        --os-paper: #0c1220;
+        --os-paper-2: #161f33;
 
-        --os-paper: #fffffe;
-        --os-paper-2: #e9f2ee;
-        --os-desktop: #4D4DFF;
-        --os-desktop-dot: #0a5450;
-        --os-line: #4D4DFF;
-        --os-highlight: #f9bc60; /* 選択・アクティブ = この世界の「esc」 */
-        --os-text: #16413c;
-        --os-dim: #53716a; /* 小サイズテキストでも 4.5:1 を満たす */
-        --os-red: #d14d61;
-        --os-green: #00795c;
-        --os-yellow: #f9bc60;
-        --os-blue: #0a7489;
-        --os-purple: #6246ea;
-        --os-orange: #c47c1d;
-        --os-focus: #00ebc7;
+        /* 2. テキスト・液晶表示（【修正】シアンからライム系へ変革） */
+        --os-text: #adff2f;          /* グリーンイエロー：闇の中で最も美しく発光する、有機EL調のネオンライム */
+        --os-line: #39ff14;          /* ネオンライム：境界線は、よりパキッとした蛍光ライムグリーンに（不透明度を少し下げても美しい） */
+        --os-dim: #416266;           /* サブテキスト：ライムの裏側に潜む、少し緑がかったダークブルーグレー */
+
+        /* 3. アイデンティティ＆アラート（サイバーパンクの毒気を加速） */
+        --os-highlight: #ff0055;     /* パステルマゼンタ：ライムの反対色である「マゼンタピンク」をここに！緑✕ピンクの組み合わせは最高にサイバーパンクになります */
+        --os-focus: #fcee09;         /* サイバーイエロー：フォーカスや警告、Escキーなどのアクセントに */
+
+        /* 4. システムカラー */
+        --os-red: #ff3366;
+        --os-green: #39ff14;         /* ネオンライム */
+        --os-yellow: #fcee09;        /* ブランドイエロー */
+        --os-blue: #00f0ff;          /* シアンはサブカラーとしてアイコン等に少し残すと深みが出ます */
+        --os-purple: #9d4edd;
+        --os-orange: #ff5500;
+
+        /* 5. フォント・その他（現状の素晴らしい指定を維持） */
         --mono: 'IBM Plex Mono', monospace;
         --jp: 'Noto Sans JP', sans-serif;
         --dot: 'DotGothic16', 'IBM Plex Mono', monospace;
@@ -517,7 +525,7 @@ const fileMeta = [
         font-family: var(--dot);
         font-size: 0.72rem;
         letter-spacing: 0.04em;
-        color: var(--os-paper);
+        color: var(--os-line);
         padding: 0.05rem 0.35rem;
       }
 

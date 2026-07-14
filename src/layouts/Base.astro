@@ -6,7 +6,7 @@ interface Props {
 
 const {
   title,
-  description = 'reproots — 要件定義からフロントエンド実装、チームマネジメントまで並走する Web Engineer / Technical Director のポートフォリオサイト',
+  description = 'rootscion（ルーツサイオン） — 要件定義からフロントエンド実装、チームマネジメントまで並走する Web Engineer / Technical Director のポートフォリオサイト',
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -23,7 +23,7 @@ const year = new Date().getFullYear();
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Elms+Sans:wght@100..900&family=Geist+Mono&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Elms+Sans:wght@100..900&family=Geist+Mono:wght@400;500&family=DotGothic16&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -32,10 +32,9 @@ const year = new Date().getFullYear();
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/" class="site-header__logo">
-          <img src="/logo.svg" alt="reproots" class="logo-wordmark" width="761" height="220" />
+          <img src="/logo.svg" alt="rootscion" class="logo-wordmark" width="513" height="95" />
         </a>
         <div class="site-header__right">
-          <a href="/engineer" class="site-header__mode">Mode: engineer →</a>
           <button
             class="menu-toggle"
             data-menu-toggle
@@ -51,7 +50,7 @@ const year = new Date().getFullYear();
     <div class="menu" id="site-menu" hidden>
       <div class="menu__inner">
         <div class="menu__top">
-          <span class="menu__brand">reproots — index</span>
+          <span class="menu__brand">rootscion — index</span>
           <button class="menu__esc" data-menu-close aria-label="メニューを閉じる">esc</button>
         </div>
         <nav class="menu__nav" aria-label="サイト内メニュー">
@@ -68,15 +67,12 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
-    <!-- 方眼紙の上を追跡する計測円（レティクル）。本文の背面に固定 -->
-    <div class="tracker" aria-hidden="true"></div>
-
     <slot />
 
     <!-- Ft4 dense colophon: 索引・クレジット・ビルド情報をひとつの銘板ブロックで -->
     <footer class="site-footer">
       <p class="colophon">
-        <span class="stripes" aria-hidden="true"></span>Unit R-{year}. &copy; {year} reproots.
+        <span class="stripes" aria-hidden="true"></span>Unit R-{year}. &copy; {year} rootscion.
         <span class="dim">
           <a href="/engineer">Mode: engineer</a>
         </span>

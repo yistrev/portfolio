@@ -47,9 +47,66 @@ function startKeyTypingLoop() {
   }
 }
 
+/* SERVICE: ホバー/フォーカス/タップで液晶が起動する（開閉は機能なので reduced-motion でも動かす） */
+function setupService(reduceMotion) {
+  const pool = '█▓▒░<>/+*#01';
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  document.querySelectorAll('[data-svc]').forEach((row) => {
+    const btn = row.querySelector('.svc__head');
+    const title = row.querySelector('[data-glitch]');
+    const original = title.textContent;
+    let glitchTimer = null;
+
+    const open = () => {
+      if (row.classList.contains('is-on')) return;
+      row.classList.add('is-on');
+      btn.setAttribute('aria-expanded', 'true');
+
+      // 起動ノイズ: 一瞬グリッチしてから DotGothic16 の表示に落ち着く
+      if (!reduceMotion) {
+        let frame = 0;
+        clearInterval(glitchTimer);
+        glitchTimer = setInterval(() => {
+          frame += 1;
+          if (frame > 6) {
+            clearInterval(glitchTimer);
+            title.textContent = original;
+            return;
+          }
+          title.textContent = [...original]
+            .map((ch) => (Math.random() < frame / 7 ? ch : pool[(Math.random() * pool.length) | 0]))
+            .join('');
+        }, 40);
+      }
+    };
+
+    const close = () => {
+      row.classList.remove('is-on');
+      btn.setAttribute('aria-expanded', 'false');
+      clearInterval(glitchTimer);
+      title.textContent = original;
+    };
+
+    if (fine) {
+      row.addEventListener('pointerenter', open);
+      row.addEventListener('pointerleave', close);
+    }
+    btn.addEventListener('click', () => (row.classList.contains('is-on') ? close() : open()));
+    row.addEventListener('focusin', open);
+    row.addEventListener('focusout', (e) => {
+      if (!row.contains(e.relatedTarget)) close();
+    });
+  });
+}
+
 export function animate() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return; // CSSは最終状態のまま。空間モーションは一切走らせない
+
+  // 液晶起動はコンテンツ開閉なので、モーション設定に関わらず必ず配線する
+  setupService(reduceMotion);
+
+  if (reduceMotion) return; // 以降の空間モーションは一切走らせない
 
   /* ================================================================
      全ビューポート共通
@@ -116,44 +173,6 @@ export function animate() {
     });
   });
 
-  /* ---- 工程カード内: ルールのスイープ → 内容 → 線画描画（once） ---- */
-  gsap.utils.toArray('[data-step]').forEach((step) => {
-    const rule = step.querySelector('.step__rule');
-    const grid = step.querySelector('.step__grid');
-    const paths = [...step.querySelectorAll('.iso-icon path:not(.dashed)')];
-    const dashed = step.querySelectorAll('.iso-icon path.dashed');
-
-    paths.forEach((p) => {
-      const len = p.getTotalLength();
-      p.style.strokeDasharray = len;
-      p.style.strokeDashoffset = len;
-    });
-    if (dashed.length) gsap.set(dashed, { opacity: 0 });
-
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: step, start: 'top 60%', once: true },
-    });
-    tl.from(rule, {
-      scaleX: 0,
-      transformOrigin: 'left center',
-      duration: 0.7,
-      ease: 'expo.out',
-    })
-      .from(grid, {
-        y: 32,
-        autoAlpha: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-      }, '-=0.35')
-      .to(paths, {
-        strokeDashoffset: 0,
-        duration: 1.1,
-        ease: 'power2.inOut',
-        stagger: 0.14,
-      }, '-=0.4');
-    if (dashed.length) tl.to(dashed, { opacity: 1, duration: 0.3 }, '-=0.4');
-  });
-
   /* ---- 序文の斜め線: 根が伸びるように一度だけ描画 ---- */
   gsap.utils.toArray('.diag line').forEach((line) => {
     const len = line.getTotalLength();
@@ -217,19 +236,6 @@ export function animate() {
       tl.from(statement.querySelector('.statement__sub'), { autoAlpha: 0, y: 24, duration: 0.8, ease: 'none' });
     }
 
-    // 工程: カードをピン留めして、次の工程がスクロールで上に重なっていく
-    const cards = gsap.utils.toArray('[data-step]');
-    cards.forEach((card) => {
-      ScrollTrigger.create({
-        trigger: card,
-        start: 'top top',
-        pin: true,
-        pinSpacing: false,
-        endTrigger: '[data-steps]',
-        end: 'bottom bottom',
-      });
-    });
-
     // 仕様表: 行がスクロール量に合わせて左から揃う
     gsap.utils.toArray('.spec-sheet tr').forEach((row) => {
       gsap.from(row, {
@@ -250,9 +256,9 @@ export function animate() {
       scrollTrigger: { trigger: '.contact', start: 'top 90%', end: 'top 40%', scrub: true },
     });
 
-    // レティクル: 方眼紙の上をページ全体のスクロールに追従して移動
+    // レティクル: 方眼紙の上をページ全体のスクロールに追従（displayがnoneなら何もしない）
     const tracker = document.querySelector('.tracker');
-    if (tracker) {
+    if (tracker && getComputedStyle(tracker).display !== 'none') {
       gsap.to(tracker, {
         keyframes: [
           { x: '-32vw', y: '26vh' },
