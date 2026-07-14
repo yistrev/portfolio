@@ -703,6 +703,7 @@ a {
 
 /* システムログ風マーキー（液晶の起動メッセージ） */
 .svc__log {
+  display: flex;
   overflow: hidden;
   white-space: nowrap;
   border-top: var(--rule-hairline) solid color-mix(in oklch, var(--color-accent-ink) 35%, transparent);
@@ -713,14 +714,16 @@ a {
   letter-spacing: 0.12em;
 }
 
+/* 同一コピーを2本並べ、それぞれを-100%流す（幅計算に依存しない継ぎ目なしループ） */
 .svc__log-track {
-  display: inline-block;
+  flex-shrink: 0;
+  padding-right: 1.4em;
   animation: svc-marquee 18s linear infinite;
 }
 
 @keyframes svc-marquee {
   to {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
@@ -1318,9 +1321,20 @@ body.menu-open {
     font-size: var(--text-xs);
   }
 
+  /* SPは行間を開けて詰まりを解消 */
+  .hero__title {
+    line-height: 1.12;
+  }
+
+  /* 技術のわかる / ディレクター、/ ビジネスのわかる / エンジニア。の4行に */
+  .intro__title .u-block {
+    display: block;
+  }
+
   .diag {
     margin-left: var(--space-lg);
-    width: 60%;
+    width: 78%;
+    height: clamp(110px, 30vw, 170px);
   }
 
   .spec-sheet,
@@ -1329,12 +1343,21 @@ body.menu-open {
     display: block;
   }
 
-  .spec-sheet th,
-  .spec-sheet td {
+  .spec-sheet th {
     display: block;
     width: auto;
     border-bottom: 0;
     padding-block: var(--space-2xs);
+  }
+
+  /* タグはSPでもflex+gapのまま（余白を潰さない） */
+  .spec-sheet td {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    width: auto;
+    border-bottom: 0;
+    padding-block: var(--space-2xs) var(--space-xs);
   }
 
   .spec-sheet tr {
@@ -1342,24 +1365,14 @@ body.menu-open {
     padding-block: var(--space-sm);
   }
 
+  /* SPのアイソメsvgは少し大きめに */
+  .svc__figure .iso-icon {
+    width: clamp(120px, 36vw, 160px);
+  }
+
   .profile__list > div {
     grid-template-columns: 1fr;
     gap: var(--space-2xs);
-  }
-
-  .step__en {
-    flex-basis: 100%;
-    margin-left: 0;
-    margin-top: var(--space-2xs);
-  }
-
-  .step__num {
-    margin-right: var(--space-md);
-  }
-
-  .step {
-    min-height: auto;
-    padding: var(--space-sec-sm) var(--page-gutter);
   }
 
   .menu__nav a {

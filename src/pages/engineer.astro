@@ -1,4 +1,6 @@
 ---
+import { SITE_NAME, GTM_ID, GTM_ENABLED, OGP_IMAGE } from '../consts';
+
 // 各「ファイル」の中身（シンタックスハイライト済みHTML）
 // ※ index.astro のコンテンツと同期させること
 const aboutLines = [
@@ -17,6 +19,8 @@ const aboutLines = [
   '「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を',
   'ビジネスの場できちんと機能する確かなシステムへと育てること。',
   'それが、この場所における物作りのスタンスです。',
+  '',
+  '<span class="tk-green">&gt; roots + (s)cion — 広げた興味の根から、たしかな「幹」を育てる</span>',
   '',
   '- github: <a class="tk-link" href="https://github.com/yistrev" target="_blank" rel="noopener">yistrev</a>',
 ];
@@ -73,9 +77,10 @@ const profileLines = [
   '<span class="tk-red">name</span>: <span class="tk-str">YURI ISHIKAWA</span>',
   '<span class="tk-red">role</span>: <span class="tk-str">Web Engineer / Technical Director</span>',
   '<span class="tk-red">approach</span>: <span class="tk-purple">&gt;</span>',
-  '  設計から実装、運用にいたる「つくる工程と構造」のすべてに',
-  '  高い解像度で向き合う。破綻のないシステム設計と、細部まで',
-  '  美しく機能する実装を両立させる職人気質を軸とする。',
+  '  「単に動くものを作る」だけではなく、設計から実装、運用に',
+  '  いたる「つくる工程と構造」のすべてに高い解像度で向き合う。',
+  '  破綻のないシステム設計と、細部まで美しく機能する実装を',
+  '  両立させる職人気質を軸とする。',
   '<span class="tk-red">favorites</span>: [<span class="tk-str">gadget</span>, <span class="tk-str">tactile-audio-gear</span>]',
   '<span class="tk-red">now</span>: <span class="tk-str">learning Blender</span>',
 ];
@@ -96,6 +101,11 @@ const fileMeta = [
   { id: 'works-log', name: 'works.log', dot: 'log', lang: 'Log' },
   { id: 'contact-sh', name: 'contact.sh', dot: 'sh', lang: 'Shell Script' },
 ];
+
+const pageTitle = 'rootscion OS 7 | engineer mode';
+const pageDescription = 'rootscion — 仮想レトロデスクトップで閲覧するポートフォリオ（engineer mode）';
+const canonical = new URL('/engineer/', Astro.site);
+const ogImage = new URL(OGP_IMAGE, Astro.site);
 ---
 
 <!doctype html>
@@ -103,9 +113,28 @@ const fileMeta = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rootscion OS 7 | engineer mode</title>
-    <meta name="description" content="rootscion — 仮想レトロデスクトップで閲覧するポートフォリオ（engineer mode）" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {
+      GTM_ENABLED && (
+        <script is:inline define:vars={{ gtmId: GTM_ID }}>
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',gtmId);`}
+        </script>
+      )
+    }
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -114,11 +143,24 @@ const fileMeta = [
     />
   </head>
   <body>
+    {
+      GTM_ENABLED && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="gtm"
+          />
+        </noscript>
+      )
+    }
     <!-- menubar（System 7風・白いメニューバー） -->
     <header class="menubar">
       <div class="menubar__left">
         <img src="/favicon.svg" alt="" class="menubar__logo" />
-        <strong>cion OS 7</strong>
+        <strong>rootscion OS 7</strong>
         <span class="menubar__menu">File</span>
         <span class="menubar__menu">Edit</span>
         <span class="menubar__menu">View</span>
@@ -246,7 +288,7 @@ const fileMeta = [
 
       <!-- hint（System 7風アラート） -->
       <div class="toast" id="hint-toast" role="status">
-        <strong>cion OS 7</strong>
+        <strong>rootscion OS 7</strong>
         <span>code.app を開くと、ポートフォリオを閲覧できます</span>
         <button data-toast-close aria-label="閉じる">×</button>
       </div>

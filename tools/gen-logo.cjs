@@ -74,10 +74,14 @@ ${letters}
 `;
 }
 
-const out = path.join(__dirname, "../public");
-fs.writeFileSync(path.join(out, "logo.svg"), lockup({ ink: INK, blue: BLUE, orange: ORANGE }, "light"));
-fs.writeFileSync(path.join(out, "logo-mark.svg"), markSvg);
-fs.writeFileSync(path.join(out, "favicon.svg"), favSvg);
-fs.writeFileSync(path.join(out, "logo-dark.svg"),
-  lockup({ ink: "#f4f6fa", blue: "#7da2e8", orange: "#dd7a60" }, "dark"));
-console.log("written: logo.svg, logo-mark.svg, favicon.svg, logo-dark.svg");
+if (require.main === module) {
+  const out = path.join(__dirname, "../public");
+  fs.writeFileSync(path.join(out, "logo.svg"), lockup({ ink: INK, blue: BLUE, orange: ORANGE }, "light"));
+  fs.writeFileSync(path.join(out, "logo-mark.svg"), markSvg);
+  fs.writeFileSync(path.join(out, "favicon.svg"), favSvg);
+  fs.writeFileSync(path.join(out, "logo-dark.svg"),
+    lockup({ ink: "#f4f6fa", blue: "#7da2e8", orange: "#dd7a60" }, "dark"));
+  console.log("written: logo.svg, logo-mark.svg, favicon.svg, logo-dark.svg");
+}
+
+module.exports = { mark, lockup, glyphs, BLUE, ORANGE, INK };

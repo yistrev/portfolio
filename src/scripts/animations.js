@@ -25,11 +25,11 @@ function splitChars(el) {
   return chars;
 }
 
-// キーキャップが「reproots↵」を自動で打鍵し続けるループ（ブランドの常時モーション）
-// （キー配列: esc R E P / ⌘ R O O / ⇧ T S ↵ のうち文字キー＋Enter）
+// キーキャップが「rootscion↵」を自動で打鍵し続けるループ（ブランドの常時モーション）
+// （キー配列: esc R O O T S / ⇧ C I O N ↵ のうち文字キー＋Enter）
 function startKeyTypingLoop() {
   const keys = gsap.utils.toArray('.keycap');
-  const sequence = [1, 2, 3, 5, 6, 7, 9, 10, 11]; // R E P R O O T S ↵
+  const sequence = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11]; // R O O T S C I O N ↵
   const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.8, delay: 0.6 });
   sequence.forEach((idx, i) => {
     const el = keys[idx];
@@ -56,28 +56,57 @@ function setupService(reduceMotion) {
     const btn = row.querySelector('.svc__head');
     const title = row.querySelector('[data-glitch]');
     const original = title.textContent;
+    const paths = [...row.querySelectorAll('.iso-icon path:not(.dashed)')];
+    const dashed = row.querySelectorAll('.iso-icon path.dashed');
     let glitchTimer = null;
+    let openedByFocus = false;
+
+    // アイソメ線画: 開くたびに描き直せるよう線長を仕込んでおく
+    if (!reduceMotion) {
+      paths.forEach((p) => {
+        const len = p.getTotalLength();
+        p.dataset.len = len;
+        p.style.strokeDasharray = len;
+        p.style.strokeDashoffset = len;
+      });
+      if (dashed.length) gsap.set(dashed, { opacity: 0 });
+    }
 
     const open = () => {
       if (row.classList.contains('is-on')) return;
+      // 排他制御: 開いている別の行は同時に閉じる（SPの1タップ開閉を確実に）
+      document.querySelectorAll('[data-svc].is-on').forEach((other) => {
+        if (other !== row) other.dispatchEvent(new CustomEvent('svc-close'));
+      });
       row.classList.add('is-on');
       btn.setAttribute('aria-expanded', 'true');
 
-      // 起動ノイズ: 一瞬グリッチしてから DotGothic16 の表示に落ち着く
       if (!reduceMotion) {
+        // 起動ノイズ: ゆっくりめのグリッチを経て DotGothic16 の表示に落ち着く
         let frame = 0;
         clearInterval(glitchTimer);
         glitchTimer = setInterval(() => {
           frame += 1;
-          if (frame > 6) {
+          if (frame > 9) {
             clearInterval(glitchTimer);
             title.textContent = original;
             return;
           }
           title.textContent = [...original]
-            .map((ch) => (Math.random() < frame / 7 ? ch : pool[(Math.random() * pool.length) | 0]))
+            .map((ch) => (Math.random() < frame / 10 ? ch : pool[(Math.random() * pool.length) | 0]))
             .join('');
-        }, 40);
+        }, 55);
+
+        // アイソメ線画がストロークで描かれていく
+        gsap.to(paths, {
+          strokeDashoffset: 0,
+          duration: 1.1,
+          ease: 'power2.inOut',
+          stagger: 0.14,
+          delay: 0.25,
+          overwrite: 'auto',
+        });
+        if (dashed.length) gsap.to(dashed, { opacity: 1, duration: 0.3, delay: 1.1, overwrite: 'auto' });
       }
     };
 
@@ -86,14 +115,37 @@ function setupService(reduceMotion) {
       btn.setAttribute('aria-expanded', 'false');
       clearInterval(glitchTimer);
       title.textContent = original;
+      if (!reduceMotion) {
+        // 次に開いたときに再度描画されるようリセット
+        paths.forEach((p) => {
+          gsap.set(p, { strokeDashoffset: p.dataset.len, overwrite: 'auto' });
+        });
+        if (dashed.length) gsap.set(dashed, { opacity: 0, overwrite: 'auto' });
+      }
     };
+
+    row.addEventListener('svc-close', close);
 
     if (fine) {
       row.addEventListener('pointerenter', open);
       row.addEventListener('pointerleave', close);
     }
-    btn.addEventListener('click', () => (row.classList.contains('is-on') ? close() : open()));
-    row.addEventListener('focusin', open);
+
+    // タップ時: focusin が open 済みなら click では閉じない（SPの「2タップ必要」問題の解消）
+    row.addEventListener('focusin', () => {
+      if (!row.classList.contains('is-on')) {
+        open();
+        openedByFocus = true;
+        setTimeout(() => { openedByFocus = false; }, 500);
+      }
+    });
+    btn.addEventListener('click', () => {
+      if (openedByFocus) {
+        openedByFocus = false;
+        return;
+      }
+      row.classList.contains('is-on') ? close() : open();
+    });
     row.addEventListener('focusout', (e) => {
       if (!row.contains(e.relatedTarget)) close();
     });
@@ -287,14 +339,14 @@ export function animate() {
         ease: 'expo.out',
         stagger: 0.04,
         delay: i * 0.15,
-        scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+        scrollTrigger: { trigger: statement, start: 'top 55%', once: true },
       });
       if (en) {
         gsap.from(en, {
           autoAlpha: 0,
           duration: 0.5,
           delay: i * 0.15 + 0.4,
-          scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+          scrollTrigger: { trigger: statement, start: 'top 55%', once: true },
         });
       }
     });
@@ -304,7 +356,7 @@ export function animate() {
         y: 20,
         duration: 0.7,
         delay: 0.6,
-        scrollTrigger: { trigger: statement, start: 'top 75%', once: true },
+        scrollTrigger: { trigger: statement, start: 'top 55%', once: true },
       });
     }
 

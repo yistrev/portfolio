@@ -1,15 +1,16 @@
 ---
+import { SITE_NAME, SITE_DESCRIPTION, GTM_ID, GTM_ENABLED, OGP_IMAGE } from '../consts';
+
 interface Props {
   title: string;
   description?: string;
 }
 
-const {
-  title,
-  description = 'rootscion（ルーツサイオン） — 要件定義からフロントエンド実装、チームマネジメントまで並走する Web Engineer / Technical Director のポートフォリオサイト',
-} = Astro.props;
+const { title, description = SITE_DESCRIPTION } = Astro.props;
 
 const year = new Date().getFullYear();
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(OGP_IMAGE, Astro.site);
 ---
 
 <!doctype html>
@@ -19,7 +20,26 @@ const year = new Date().getFullYear();
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {
+      GTM_ENABLED && (
+        <script is:inline define:vars={{ gtmId: GTM_ID }}>
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',gtmId);`}
+        </script>
+      )
+    }
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,6 +48,19 @@ const year = new Date().getFullYear();
     />
   </head>
   <body>
+    {
+      GTM_ENABLED && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="gtm"
+          />
+        </noscript>
+      )
+    }
     <!-- 追従ヘッダー: ロゴ左・モード切替＋キーキャップ型メニュートリガー右 -->
     <header class="site-header">
       <div class="site-header__inner">

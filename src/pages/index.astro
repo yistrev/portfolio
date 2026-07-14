@@ -149,8 +149,8 @@ const keyboard = [
     <!-- 序文（About） -->
     <section class="intro" id="about">
       <h2 class="intro__title">
-        <span class="u-block">技術のわかるディレクター、</span><br />
-        <span class="u-block">ビジネスのわかるエンジニア。</span>
+        <span class="u-block">技術のわかる</span><span class="u-block">ディレクター、</span><br />
+        <span class="u-block">ビジネスのわかる</span><span class="u-block">エンジニア。</span>
       </h2>
       <svg class="diag" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"></line>
@@ -217,7 +217,8 @@ const keyboard = [
                     <figure class="svc__figure" set:html={step.icon} />
                   </div>
                   <p class="svc__log" aria-hidden="true">
-                    <span class="svc__log-track">{step.log}{step.log}</span>
+                    <span class="svc__log-track">{step.log}</span>
+                    <span class="svc__log-track">{step.log}</span>
                   </p>
                 </div>
               </div>
