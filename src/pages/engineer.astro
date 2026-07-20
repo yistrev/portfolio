@@ -6,40 +6,35 @@ import { SITE_NAME, GTM_ID, GTM_ENABLED, OGP_IMAGE } from '../consts';
 const aboutLines = [
   '<span class="tk-blue"># about</span>',
   '',
-  '<span class="tk-bold">技術のわかるディレクター、ビジネスのわかるエンジニア。</span>',
+  '<span class="tk-bold">仕様書の行間まで読んで、コードに落とす。</span>',
   '',
-  '単に指示された仕様通りにコードを書くプログラマーではなく、',
-  '仕様書の向こう側にあるクライアントの意図や課題を紐解く',
-  '<span class="tk-bold">「テクニカルディレクション」</span>の視点を大切にしています。',
+  '仕様書の通りに組むだけでなく、',
+  'その行間にある課題やクライアントの真意まで',
+  '汲み取ってコードに落とし込む。',
+  'それが、この場所の<span class="tk-bold">エンジニアリングの流儀</span>です。',
   '',
-  '<span class="tk-green">&gt; 仕様書の行間とコードの中身、その両方が読めるから、</span>',
-  '<span class="tk-green">&gt; 「決める人」と「つくる人」のあいだで話が途切れません。</span>',
-  '<span class="tk-green">&gt; プロジェクトに翻訳者を置かずに済む——二つの肩書きを名乗る理由です。</span>',
-  '',
-  '「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を',
-  'ビジネスの場できちんと機能する確かなシステムへと育てること。',
-  'それが、この場所における物作りのスタンスです。',
+  '<span class="tk-green">&gt; 設計から実装、公開後の運用まで。</span>',
+  '<span class="tk-green">&gt; 「つくる工程」の全域に高い解像度で向き合い、</span>',
+  '<span class="tk-green">&gt; 対話から生まれた思考の根（ルーツ）を、</span>',
+  '<span class="tk-green">&gt; ビジネスの場で駆動する確かな「幹（サイオン）」へと育てます。</span>',
   '',
   '<span class="tk-green">&gt; roots + (s)cion — 広げた興味の根から、たしかな「幹」を育てる</span>',
   '',
-  '- github: <a class="tk-link" href="https://github.com/yistrev" target="_blank" rel="noopener">yistrev</a>',
+  '- <a class="tk-link" href="https://github.com/yistrev" target="_blank" rel="noopener">Github →</a>',
 ];
 
 const serviceLines = [
-  '<span class="tk-comment">/** 01. ヒアリング・要件定義 — アイデアの根を紐解き、仕様へ翻訳する */</span>',
-  '<span class="tk-red">export const</span> <span class="tk-purple">listen</span> = (worry: <span class="tk-orange">Worry</span>): <span class="tk-orange">Requirement</span> =&gt; clarify(worry);',
-  '<span class="tk-comment">// 仕様書の向こう側にある本音を対話から汲み取り、フィジビリティを</span>',
-  '<span class="tk-comment">// 考慮した破綻のない要件定義で、プロジェクトの土台を設計する。</span>',
-  '',
-  '<span class="tk-comment">/** 02. ディレクション・進行管理 — ビジネスと実装を境目なくつなぐ舵取り */</span>',
-  '<span class="tk-red">export const</span> <span class="tk-purple">direct</span> = (req: <span class="tk-orange">Requirement</span>): <span class="tk-orange">Blueprint</span> =&gt; plan(req);',
-  '<span class="tk-comment">// 立場の異なるメンバーの架け橋となり、技術的な壁打ち相手として、</span>',
-  '<span class="tk-comment">// ドキュメンテーションと品質管理を徹底し公開まで並走する。</span>',
-  '',
-  '<span class="tk-comment">/** 03. フロントエンド実装 — 運用の先を見据えた、破綻のない構築と運用支援 */</span>',
+  '<span class="tk-comment">/** 01. フロントエンド実装 — HTML / CSS / JavaScript、GSAPによるインタラクティブなUI実装 */</span>',
   '<span class="tk-red">export const</span> <span class="tk-purple">build</span> = (bp: <span class="tk-orange">Blueprint</span>): <span class="tk-orange">Website</span> =&gt; implement(bp);',
-  '<span class="tk-comment">// CMS設計からUI実装、サーバー移行まで一気通貫。公開後のSEO・</span>',
-  '<span class="tk-comment">// セキュリティなど、持続可能な運用の環境整備まで支え続ける。</span>',
+  '',
+  '<span class="tk-comment">/** 02. CMS設計・構築 — WordPress自作テーマの設計と構築、既存サイトの改修 */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">cms</span> = (spec: <span class="tk-orange">Spec</span>): <span class="tk-orange">Theme</span> =&gt; scaffold(spec);',
+  '',
+  '<span class="tk-comment">/** 03. 要件整理・設計 — ヒアリングから仕様定義・設計、実現可能性を踏まえた見積もりの構造化 */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">plan</span> = (worry: <span class="tk-orange">Worry</span>): <span class="tk-orange">Requirement</span> =&gt; clarify(worry);',
+  '',
+  '<span class="tk-comment">/** 04. 運用・保守 — サーバー移行、SEO・セキュリティ対応、公開後の環境整備 */</span>',
+  '<span class="tk-red">export const</span> <span class="tk-purple">ops</span> = (site: <span class="tk-orange">Website</span>): <span class="tk-orange">Sustainable</span> =&gt; maintain(site);',
 ];
 
 const skillsLines = [
@@ -56,6 +51,7 @@ const skillsLines = [
   '    <span class="tk-red">"jquery"</span>: <span class="tk-str">"legacy-support"</span>,',
   '    <span class="tk-red">"gsap"</span>: <span class="tk-str">"^3.12"</span>,',
   '    <span class="tk-red">"php"</span>: <span class="tk-str">"^8"</span>,',
+  '    <span class="tk-red">"vue-nuxt"</span>: <span class="tk-str">"3.5.40"</span>,',
   '    <span class="tk-comment">// cms / framework</span>',
   '    <span class="tk-red">"wordpress"</span>: <span class="tk-str">"custom-theme"</span>,',
   '    <span class="tk-red">"tailwindcss"</span>: <span class="tk-str">"utility-first"</span>,',
@@ -66,23 +62,26 @@ const skillsLines = [
   '    <span class="tk-red">"react-nextjs"</span>: <span class="tk-str">"learning"</span>,',
   '    <span class="tk-red">"typescript"</span>: <span class="tk-str">"learning"</span>,',
   '    <span class="tk-red">"threejs-webgl"</span>: <span class="tk-str">"learning"</span>,',
-  '    <span class="tk-red">"vue-nuxt"</span>: <span class="tk-str">"learning"</span>,',
   '    <span class="tk-red">"blender"</span>: <span class="tk-str">"learning"</span>',
   '  }',
   '}',
 ];
 
 const profileLines = [
-  '<span class="tk-red">handle</span>: <span class="tk-str">rootscion</span>',
-  '<span class="tk-red">name</span>: <span class="tk-str">YURI ISHIKAWA</span>',
-  '<span class="tk-red">role</span>: <span class="tk-str">Web Engineer / Technical Director</span>',
   '<span class="tk-red">approach</span>: <span class="tk-purple">&gt;</span>',
-  '  「単に動くものを作る」だけではなく、設計から実装、運用に',
-  '  いたる「つくる工程と構造」のすべてに高い解像度で向き合う。',
-  '  破綻のないシステム設計と、細部まで美しく機能する実装を',
-  '  両立させる職人気質を軸とする。',
-  '<span class="tk-red">favorites</span>: [<span class="tk-str">gadget</span>, <span class="tk-str">tactile-audio-gear</span>]',
-  '<span class="tk-red">now</span>: <span class="tk-str">learning Blender</span>',
+  '  Web制作に携わって約10年。受託制作の現場で要件定義や運用・構築の基礎を学んだのち、',
+  '  現在はデザイン会社でWebエンジニアとして制作に携わっています。',
+  '  デザインの意図や繊細なニュアンスを汲み取りながら、',
+  '  仕組みを緻密に組み上げていく「つくる工程」そのものが自分の原点です。',
+  '  技術やトレンドが変わっても、手がけたWebサイトが誰かの役に立ち、',
+  '  日々を少し良くする瞬間を楽しみにコードを書いています。',
+  '<span class="tk-red">handle</span>: <span class="tk-str">rootscion（ルーツサイオン）</span>',
+  '<span class="tk-red">name</span>: <span class="tk-str">YURI ISHIKAWA</span>',
+  '<span class="tk-red">role</span>: <span class="tk-str">Web Engineer</span>',
+  '<span class="tk-red">experience</span>: <span class="tk-str">10+ years in Web Development</span>',
+  '<span class="tk-red">background</span>: <span class="tk-str">Contract Production → Design Studio</span>',
+  '<span class="tk-red">favorites</span>: [<span class="tk-str">gadget</span>, <span class="tk-str">tactile-audio-gear</span>, <span class="tk-str">minimalist setups</span>]',
+  '<span class="tk-red">now</span>: <span class="tk-str">learning Blender & 3D Web Graphics</span>',
 ];
 
 const worksLines = [
@@ -95,7 +94,7 @@ const worksLines = [
 
 const fileMeta = [
   { id: 'about-md', name: 'about.md', dot: 'md', lang: 'Markdown' },
-  { id: 'service-ts', name: 'service.ts', dot: 'ts', lang: 'TypeScript' },
+  { id: 'capability-ts', name: 'capability.ts', dot: 'ts', lang: 'TypeScript' },
   { id: 'skills-json', name: 'skills.json', dot: 'json', lang: 'JSON' },
   { id: 'profile-yml', name: 'profile.yml', dot: 'yml', lang: 'YAML' },
   { id: 'works-log', name: 'works.log', dot: 'log', lang: 'Log' },
@@ -190,10 +189,15 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </button>
         <a class="dicon" href="/">
           <span class="dicon__img" aria-hidden="true">
-            <svg viewBox="0 0 44 36">
-              <rect x="1" y="1" width="42" height="34" fill="#fffffe" stroke="#001e1d" stroke-width="2" />
-              <circle cx="17" cy="18" r="7" fill="none" stroke="#0a7489" stroke-width="4" />
-              <circle cx="28" cy="18" r="7" fill="none" stroke="#c47c1d" stroke-width="4" />
+            <!-- メインサイトのロゴマーク（favicon簡略版）をレトロ配色に合わせたもの -->
+            <svg viewBox="0 0 96 96">
+              <g fill="none" stroke="#0a7489" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter">
+                <path d="M48 47 L64.45 37.5 V18.5 L48 9 L31.55 18.5 V37.5 Z" />
+                <path d="M48 47 V28 M48 28 L64.45 18.5 M48 28 L31.55 18.5" />
+                <path d="M23.5 55 L48 69.14 L72.5 55" />
+                <path d="M23.5 55 L48 82 L72.5 55" />
+              </g>
+              <path d="M41.5 56 L48 52.25 L54.5 56 L48 59.75 Z" fill="#c47c1d" />
             </svg>
           </span>
           <span class="dicon__label">Mode:portfolio</span>
@@ -249,7 +253,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
                   {aboutLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
                 </div>
               </div>
-              <div class="pane" data-pane="service-ts" hidden>
+              <div class="pane" data-pane="capability-ts" hidden>
                 <div class="code">
                   {serviceLines.map((line) => <div class="code__line" set:html={line || '&nbsp;'} />)}
                 </div>

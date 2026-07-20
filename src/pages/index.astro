@@ -6,266 +6,286 @@ const works = (await getCollection('works')).sort(
   (a, b) => a.data.order - b.data.order
 );
 
-// アイソメトリックな線画アイコン（stroke-dashoffset で描画アニメーション）
+// アイソメトリックな線画アイコン（ロゴと同族の30°線画。stroke-dashoffset で描画アニメーション。
+// g.dock = ホバーで本体へスライドして「接ぎ木」される可動パーツ）
 const isoIcons = {
-  // 1.0 聞く: キューブ（スピーカー）＋広がる音波
-  listen: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M46 18l26 15-26 15-26-15Z" />
-    <path d="M20 33v22l26 15V48Z" />
-    <path d="M72 33v22l-26 15V48Z" />
-    <path class="accent" d="M84 38c7 5 7 11 0 16" />
-    <path class="accent" d="M93 33c11 8 11 18 0 26" />
-    <path class="accent" d="M102 28c15 11 15 25 0 36" />
-  </svg>`,
-  // 2.0 整える: 大きさの違うレイヤーが積み上がって整う
-  shape: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M60 42l38 22-38 22-38-22Z" />
-    <path class="accent" d="M60 26l28 16-28 16-28-16Z" />
-    <path d="M60 12l18 10-18 10-18-10Z" />
-  </svg>`,
-  // 3.0 かたちにする: ベースのキューブに、最後のピースがはまる
+  // フロントエンド実装: ベースのキューブに、最後のピースがはまる
   build: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M52 36l26 15-26 15-26-15Z" />
     <path d="M26 51v20l26 15V66Z" />
     <path d="M78 51v20l-26 15V66Z" />
     <path class="dashed" d="M88 41v16" />
-    <path class="accent" d="M88 10l12 7-12 7-12-7Z" />
-    <path class="accent" d="M76 17v10l12 7V24Z" />
-    <path class="accent" d="M100 17v10l-12 7V24Z" />
+    <g class="dock" data-dx="0" data-dy="25">
+      <path class="accent" d="M88 10l12 7-12 7-12-7Z" />
+      <path class="accent" d="M76 17v10l12 7V24Z" />
+      <path class="accent" d="M100 17v10l-12 7V24Z" />
+    </g>
+  </svg>`,
+  // CMS設計・構築: 大きさの違うレイヤーが積み上がって整う
+  cms: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M60 42l38 22-38 22-38-22Z" />
+    <g class="dock" data-dx="0" data-dy="7">
+      <path class="accent" d="M60 26l28 16-28 16-28-16Z" />
+    </g>
+    <path d="M60 12l18 10-18 10-18-10Z" />
+  </svg>`,
+  // 要件整理・設計: キューブ（スピーカー）＋広がる音波 = 対話を聞き取る
+  plan: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M46 18l26 15-26 15-26-15Z" />
+    <path d="M20 33v22l26 15V48Z" />
+    <path d="M72 33v22l-26 15V48Z" />
+    <g class="dock" data-dx="-7" data-dy="0">
+      <path class="accent" d="M84 38c7 5 7 11 0 16" />
+      <path class="accent" d="M93 33c11 8 11 18 0 26" />
+      <path class="accent" d="M102 28c15 11 15 25 0 36" />
+    </g>
+  </svg>`,
+  // 運用・保守: サーバーキューブの周りを巡回する軌道
+  ops: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M60 24l26 15-26 15-26-15Z" />
+    <path d="M34 39v20l26 15V54Z" />
+    <path d="M86 39v20l-26 15V54Z" />
+    <path class="accent" d="M40 49l9 5" />
+    <path class="accent" d="M40 56l9 5" />
+    <path class="accent dashed" d="M16 56C8 40 28 24 50 20" />
+    <g class="dock" data-dx="-5" data-dy="4">
+      <path class="accent" d="M104 40c8 16-12 32-34 36" />
+      <path class="accent" d="M70 76l-7 2 3-7" />
+    </g>
   </svg>`,
 };
 
-// 工程 = サービス。1.0 → 2.0 → 3.0 の順序そのものがページの背骨
-const steps = [
+// Nº02 Capability = できることの一覧表。売り文句は書かず、1行の説明とタグだけ
+const capabilities = [
   {
     num: '01',
-    verb: '聞く',
-    en: 'Listen',
-    icon: isoIcons.listen,
-    service: 'ヒアリング・要件定義',
-    lead: 'アイデアの根を紐解き、仕様へ翻訳する',
-    body: '仕様書の向こう側にある、クライアントの本音やプロジェクトの目的を丁寧に対話から汲み取ります。技術的な実現可能性（フィジビリティ）を考慮した破綻のない要件定義、仕組み化による現実的な見積もり算出など、開発者目線の解像度でプロジェクトの強固な土台を設計します。',
-    log: 'BOOT LISTEN.SYS ... OK / INPUT: 対話・ヒアリング / PARSE: 本音 → 要件定義 / FEASIBILITY: CHECKED / ESTIMATE: STRUCTURED // ',
+    title: 'フロントエンド実装',
+    desc: 'HTML / CSS / JavaScript、GSAPによるインタラクティブなUI実装',
+    tag: 'BUILD',
+    icon: isoIcons.build,
   },
   {
     num: '02',
-    verb: '整える',
-    en: 'Shape',
-    icon: isoIcons.shape,
-    service: 'ディレクション・進行管理',
-    lead: 'ビジネスと実装を境目なくつなぐ舵取り',
-    body: 'クライアント、デザイナー、外部エンジニアといった立場の異なるメンバーの架け橋となり、プロジェクトを停滞させずに前進させます。チームの技術的な壁打ち相手となりながら、ドキュメンテーションやクオリティ管理を徹底し、公開までスムーズに並走します。',
-    log: 'BOOT SHAPE.SYS ... OK / BRIDGE: CLIENT ⇄ DESIGN ⇄ DEV / QUEUE: 停滞ナシ / DOCS: 整備済 / QA: PASSING // ',
+    title: 'CMS設計・構築',
+    desc: 'WordPress自作テーマの設計と構築、既存サイトの改修',
+    tag: 'CMS',
+    icon: isoIcons.cms,
   },
   {
     num: '03',
-    verb: 'かたちにする',
-    en: 'Build',
-    icon: isoIcons.build,
-    service: 'フロントエンド実装',
-    lead: '運用の先を見据えた、破綻のない構築と運用支援',
-    body: 'WordPressをはじめとするCMS設計から、美しく機能するインタラクティブなUI実装、そしてサイト運用やサーバー移行まで一気通貫で対応します。単に「動くサイトを作る」だけでなく、公開後のSEO対策やセキュリティ対応など、持続可能な運用のための環境整備まで技術面から支え続けます。',
-    log: 'BOOT BUILD.SYS ... OK / STACK: WORDPRESS · JS · GSAP / A11Y: CONSIDERED / SEO: TUNED / OPS: SUSTAINABLE // ',
+    title: '要件整理・設計',
+    desc: 'ヒアリングから仕様定義・設計、実現可能性を踏まえた見積もりの構造化',
+    tag: 'PLAN',
+    icon: isoIcons.plan,
+  },
+  {
+    num: '04',
+    title: '運用・保守',
+    desc: 'サーバー移行、SEO・セキュリティ対応、公開後の環境整備',
+    tag: 'OPS',
+    icon: isoIcons.ops,
   },
 ];
 
-// 仕様表（F3 tabular spec sheet）
+// Nº03 Spec（仕様表）
 const spec = [
   { label: 'Markup', items: ['HTML', 'CSS / Sass', 'BEM', 'レスポンシブ対応', 'アクセシビリティ'] },
-  { label: 'Program', items: ['JavaScript', 'jQuery', 'GSAP', 'PHP'] },
+  { label: 'Program', items: ['JavaScript', 'jQuery', 'GSAP', 'PHP', 'Vue.js / Nuxt.js'] },
   { label: 'CMS / FW', items: ['WordPress 自作テーマ', 'Tailwind CSS', 'Bulma'] },
-  { label: 'Learning', items: ['React / Next.js', 'TypeScript', 'Three.js / WebGL', 'Vue.js / Nuxt.js', 'Blender'], learning: true },
+  { label: 'Learning', items: ['React / Next.js', 'TypeScript', 'Three.js / WebGL', 'Blender'], learning: true },
 ];
 
-const keyboard = [
-  [
-    { label: 'esc', variant: 'orange' },
-    { label: 'R' },
-    { label: 'O' },
-    { label: 'O' },
-    { label: 'T' },
-    { label: 'S' },
-  ],
-  [
-  { label: '⇧', variant: 'grey' },
-  { label: 'C' },
-    { label: 'I' },
-    { label: 'O' },
-    { label: 'N' },
-    { label: '↵', variant: 'blue' },
-  ],
-];
+// マーキー帯（装飾・aria-hidden）。2連結でシームレスにループする
+const marqueeWords = ['Web Engineer', 'Rootscion', 'Build It Right'];
 ---
 
-<Base title="rootscion | Web Engineer / Technical Director">
+<Base title="rootscion | Web Engineer">
   <main>
+    <!-- 背景テクスチャ文字（roots + scion の R/S/C/N。読ませない・グラフィック） -->
+    <div class="bg-letters" aria-hidden="true">
+      <span class="l1" data-speed="-0.35">R</span>
+      <span class="l2 solid" data-speed="0.5">S</span>
+      <span class="l3" data-speed="-0.6">C</span>
+      <span class="l4" data-speed="0.4">N</span>
+    </div>
+
+    <!-- 極小アノテーション（図面のシステム注記。余白の設計図的な説得力） -->
+    <div class="annots" aria-hidden="true">
+      <span class="annot annot--a1"><span class="cross">+</span>REF_01_ROOT_SYS</span>
+      <span class="annot annot--a2">[ LAT 34.6937 / LON 135.5023 ]</span>
+      <span class="annot annot--a3">GRID 48PX — PLAN R-4</span>
+      <span class="annot annot--a4"><span class="cross">+</span>REF_04_SCION_SYS</span>
+      <span class="annot annot--a5">SCALE 1:1</span>
+      <span class="annot annot--a6">UNIT: KEYCAP / MAT: PBT</span>
+    </div>
     <section class="hero">
       <div class="hero__meta">
-        <span>roots + (s)cion</span>
+        <span>rootscion — web engineer</span>
         <span><a href="/engineer">Mode: engineer →</a></span>
       </div>
       <p class="hero__cmd">
         <span class="prompt">rootscion@web</span>:~$
-        <span data-typing data-text="./init --mode=engineer+director">./init --mode=engineer+director</span><span class="block-cursor" aria-hidden="true"></span>
+        <span data-typing data-text="./init --mode=engineer">./init --mode=engineer</span><span class="block-cursor" aria-hidden="true"></span>
       </p>
       <h1 class="hero__title" data-hero-title>
         <span class="line"><span>Root the web,</span></span>
-        <span class="line"><span>grow it <em>right</em>.</span></span>
+        <span class="line"><span>grow it <span class="u-accent">right.</span></span></span>
       </h1>
       <div class="hero__bottom">
         <div class="hero__left">
+          <span class="hero__chip">Web Engineer</span>
           <p class="hero__lead">
-            <span>Webサイトの構築において、</span>
-            <span>「言葉」と「実装」のあいだで熱量がすり減っていくのを防ぎたい。</span>
-            <span>だからこそ、対話から生まれたアイデアの「根（ルーツ）」を深く理解し、</span>
-            <span>その本質的な意図をそのままフロントエンドのコードやシステム設計へと直結させます。</span>
-            <span>技術のわかるディレクターとして、そしてビジネスを解するエンジニアとして、</span>
-            <span>プロジェクトを強固で確かな形へと育て上げます。</span>
+            対話から生まれたアイデアの「根（ルーツ）」を、確かな構造のコードへ。
+            設計から実装、運用まで——Webサイトの「つくる工程」に
+            高い解像度で向き合い、かたちにします。
           </p>
           <span class="hero__scroll">Scroll</span>
         </div>
-        <div class="hero__side" data-hero-side>
-          <p class="hero__plate" aria-hidden="true">
-            <span class="stripes"></span>
-            Warning ⊙ do not look directly into the source code
-          </p>
-          <div class="keyboard" aria-hidden="true">
-            {
-              keyboard.map((row) => (
-                <div class="keyboard__row">
-                  {row.map((key) => (
-                    <div class={`keycap${key.variant ? ` keycap--${key.variant}` : ''}`}>
-                      {key.label}
-                    </div>
-                  ))}
-                </div>
-              ))
-            }
-          </div>
+        <div class="hero__side">
+          <figure class="hero3d">
+            <div class="hero3d__stage" data-hero-3d></div>
+            <figcaption class="hero3d__caption">
+              <span>OBJ: keycap — drag to rotate</span>
+              <span>three.js</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <!-- 序文（About） -->
-    <section class="intro" id="about">
-      <h2 class="intro__title">
-        <span class="u-block">技術のわかる</span><span class="u-block">ディレクター、</span><br />
-        <span class="u-block">ビジネスのわかる</span><span class="u-block">エンジニア。</span>
-      </h2>
-      <svg class="diag" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"></line>
-      </svg>
-      <div class="intro__text" data-reveal>
-        <p>
-          単に指示された仕様通りにコードを書くプログラマーではなく、
-          仕様書の向こう側にあるクライアントの意図や課題を紐解く
-          <span class="accent">「テクニカルディレクション」</span>の視点を大切にしています。
-        </p>
-        <p>
-          仕様書の行間とコードの中身、その両方が読めるから、<br /><span class="accent">「決める人」と「つくる人」のあいだ</span>で話が途切れません。<br />
-          プロジェクトに翻訳者を置かずに済む——それが、二つの肩書きを名乗る理由です。
-        </p>
-        <p>
-          「つくる工程」のすべてに深く関わり、アイデアの根（ルーツ）を<br />
-          ビジネスの場できちんと機能する確かなシステムへと育てること。<br />
-          それが、この場所における物作りのスタンスです。
-        </p>
-        <p class="intro__origin">
-          roots + scion — 広げた興味の根から、たしかな「幹」を育てる
-          <span class="stripes" aria-hidden="true"></span>
-        </p>
-        <p class="intro__links">
-          <a class="link" href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
-        </p>
-      </div>
-    </section>
-
-    <!-- ステートメント（pin + scrub で1文字ずつ立ち上がる） -->
-    <section class="statement" id="process" data-statement>
-      <div>
-        <h2 class="statement__title">
-          <span class="statement__line">聞いて、<span class="en">Listen</span></span>
-          <span class="statement__line">整えて、<span class="en">Shape</span></span>
-          <span class="statement__line">かたちに。<span class="en">Build</span></span>
-        </h2>
-        <p class="statement__sub">
-          それが、私のWeb制作の進めかたです
-          <span class="stripes" aria-hidden="true"></span>
-        </p>
-      </div>
-    </section>
-
-    <!-- SERVICE: 等幅の水平スプリット。ホバー/タップで液晶が起動する -->
-    <section class="service">
-      <h2 class="sec-label" data-reveal>Service</h2>
-      <ol class="svc">
+    <!-- マーキー帯（あしらい・装飾） -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
         {
-          steps.map((step, i) => (
-            <li class="svc__row" data-svc>
-              <button class="svc__head" aria-expanded="false" aria-controls={`svc-panel-${i}`}>
-                <span class="svc__num">{step.num}</span>
-                <span class="svc__title" data-glitch>{step.service}</span>
-                <span class="svc__en">{step.en}</span>
-              </button>
-              <div class="svc__panel" id={`svc-panel-${i}`}>
-                <div class="svc__panel-inner">
-                  <div class="svc__cols">
-                    <div>
-                      <p class="svc__lead">{step.lead}</p>
-                      <p class="svc__body">{step.body}</p>
-                    </div>
-                    <figure class="svc__figure" set:html={step.icon} />
-                  </div>
-                  <p class="svc__log" aria-hidden="true">
-                    <span class="svc__log-track">{step.log}</span>
-                    <span class="svc__log-track">{step.log}</span>
-                  </p>
-                </div>
-              </div>
-            </li>
+          [0, 1].map(() => (
+            <span class="marquee__item">
+              {marqueeWords.map((word, i) => (
+                <>
+                  <span class={i === 0 ? 'solid' : undefined}>{word}</span>
+                  <span class="dot" />
+                </>
+              ))}
+            </span>
           ))
         }
-      </ol>
+      </div>
+    </div>
+
+    <!-- Nº01 About（QUIET: 非対称グリッド — ラベル左上・オーナメント右上・本文は右へオフセット） -->
+    <section class="about" id="about">
+      <div class="about__grid">
+        <p class="sec-label"><span class="num">Nº01</span>About</p>
+        <figure class="about__geo" aria-hidden="true">
+          <!-- 幹のブロックが根のグリッドに降りる、ロゴと同族のアイソメ構成画 -->
+          <svg class="geo-orn" data-orn viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+            <path d="M110 14l44 25-44 25-44-25Z" />
+            <path d="M66 39v44l44 25V64Z" />
+            <path d="M154 39v44l-44 25V64Z" />
+            <path class="accent" d="M184 8l22 13-22 13-22-13Z" />
+            <path class="accent" d="M162 21v18l22 13V34Z" />
+            <path class="accent" d="M206 21v18l-22 13V34Z" />
+            <path class="dashed" d="M184 56v26" />
+            <path d="M30 124l30 17 30-17-30-17Z" />
+            <path class="dashed" d="M96 141l30 17 30-17-30-17Z" />
+            <path class="esc" d="M110 116l7 4-7 4-7-4Z" />
+          </svg>
+        </figure>
+        <h2 class="about__pull" data-pull>
+          <span class="u-block">仕様書の行間まで読んで、</span><span class="u-block u-underline">コードに落とす。</span>
+        </h2>
+        <div class="about__text" data-reveal>
+        <p>
+          仕様書の通りに組むだけでなく、その行間にある課題やクライアントの真意まで
+          汲み取ってコードに落とし込む。それが、この場所の<span class="accent">エンジニアリングの流儀</span>です。
+        </p>
+        <p>
+          設計から実装、公開後の運用まで。
+          「つくる工程」の全域に高い解像度で向き合い、
+          対話から生まれた思考の根（ルーツ）を、
+          ビジネスの場で駆動する確かな「幹（サイオン）」へと育てます。
+        </p>
+        <p class="about__origin">
+          roots + (s)cion — 広げた興味の根から、たしかな「幹」を育てる
+          <span class="stripes" aria-hidden="true"></span>
+        </p>
+        <p class="about__links">
+          <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
+        </p>
+        </div>
+      </div>
     </section>
 
-    <!-- 仕様（Skills / F3 tabular spec sheet） -->
+    <!-- Nº02 Capability（VOID: 漆黒インバート。境界にdifferenceの跨ぎ文字） -->
+    <section class="capability" id="capability">
+      <p class="invert-strad" aria-hidden="true">rootscion</p>
+      <h2 class="sec-label"><span class="num">Nº02</span>Capability</h2>
+      <ul class="cap-list">
+        {
+          capabilities.map((cap, i) => (
+            <>
+              <li class={`cap-card cap-card--w${[7, 5, 5, 4][i]}`} data-cap>
+                <div class="cap-card__head">
+                  <span class="cap-card__num" aria-hidden="true">{cap.num}</span>
+                  <span class="cap-card__tag">{cap.tag}</span>
+                </div>
+                <span class="cap-card__icon" set:html={cap.icon} />
+                <div class="cap-card__body">
+                  <h3 class="cap-card__title">{cap.title}</h3>
+                  <p class="cap-card__desc">{cap.desc}</p>
+                </div>
+              </li>
+              {i === 2 && <li class="cap-card cap-card--w3 cap-card--geo geo--cross" aria-hidden="true" />}
+            </>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Nº03 Spec（QUIET: 左にハッチ帯＋縦書きラベル、表は右へオフセット） -->
     <section class="spec" id="skills">
-      <h2 class="sec-label" data-reveal>Specifications</h2>
-      <table class="spec-sheet">
-        <tbody>
-          {
-            spec.map((row) => (
-              <tr class={row.learning ? 'is-learning' : undefined}>
-                <th scope="row">{row.label}</th>
-                <td>
-                  {row.items.map((item) => (
-                    <span class="tag">{item}</span>
-                  ))}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+      <h2 class="sec-label"><span class="num">Nº03</span>Spec</h2>
+      <div class="spec__grid">
+        <div class="spec__aside geo--hatch" aria-hidden="true">
+          <span class="spec__aside-label">Spec Sheet</span>
+        </div>
+        <table class="spec-sheet">
+          <tbody>
+            {
+              spec.map((row) => (
+                <tr class={row.learning ? 'is-learning' : undefined}>
+                  <th scope="row">{row.label}</th>
+                  <td>
+                    {row.items.map((item) => (
+                      <span class="tag">{item}</span>
+                    ))}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
       <p class="spec__footnote">
         Learning = いま root を伸ばしている領域
         <span class="stripes" aria-hidden="true"></span>
       </p>
     </section>
 
-    <!-- Profile -->
+    <!-- Nº04 Profile -->
     <section class="profile" id="profile">
-      <div class="profile__inner" data-reveal>
-        <h2 class="sec-label">Profile</h2>
-        <p class="profile__intro">
-          Web制作の現場で、設計から実装までを領域横断的に行き来しています。<br />
-          ツールの枠に捉われず、お気に入りの道具やワークスペースを整え、仕組みを緻密に組み上げていく「つくる工程」そのものが、自分のものづくりの原点。<br />
-          そうして手がけた仕組みやWebサイトが、誰かの役に立ち、誰かの日々を少し良くする瞬間を、何よりのエネルギーにしています。
-        </p>
-        <dl class="profile__list">
+      <div class="profile__inner">
+        <h2 class="sec-label"><span class="num">Nº04</span>Profile</h2>
+        <div class="profile__grid">
+          <p class="profile__intro" data-reveal>
+            Web制作に携わって約10年。受託制作の現場で要件定義や運用・構築の基礎を学んだのち、現在はデザイン会社でWebエンジニアとして制作に携わっています。<br /><br />
+            デザインの意図や繊細なニュアンスを汲み取りながら、仕組みを緻密に組み上げていく「つくる工程」そのものが自分の原点です。<br />
+            技術やトレンドが変わっても、手がけたWebサイトが誰かの役に立ち、日々を少し良くする瞬間を楽しみにコードを書いています。
+          </p>
+        <div>
+        <dl class="profile__list" data-reveal>
           <div>
             <dt>Handle</dt>
-            <dd>rootscion</dd>
+            <dd>rootscion（ルーツサイオン）</dd>
           </div>
           <div>
             <dt>Name</dt>
@@ -273,30 +293,32 @@ const keyboard = [
           </div>
           <div>
             <dt>Role</dt>
-            <dd>Web Engineer / Technical Director</dd>
+            <dd>Web Engineer</dd>
           </div>
           <div>
-            <dt>Approach</dt>
-            <dd>
-              「単に動くものを作る」だけではなく、設計から実装、運用にいたる
-              “つくる工程と構造” のすべてに高い解像度で向き合う。
-              破綻のないシステム設計と、細部まで美しく機能する実装を両立させる職人気質を軸とする。
-            </dd>
+            <dt>Experience</dt>
+            <dd>10+ years in Web Development</dd>
+          </div>
+          <div>
+            <dt>Background</dt>
+            <dd>Contract Production → Design Studio</dd>
           </div>
           <div>
             <dt>Favorites</dt>
-            <dd>gadget / tactile audio gear</dd>
+            <dd>gadgets / tactile audio gear / minimalist setups</dd>
           </div>
           <div>
             <dt>Now</dt>
-            <dd><span class="live-dot" aria-hidden="true"></span>Blenderを学習中。</dd>
+            <dd><span class="live-dot" aria-hidden="true"></span>Blender & 3D Web Graphics を学習中</dd>
           </div>
         </dl>
         <p class="profile__label">— profile / rootscion unit</p>
+        </div>
+        </div>
       </div>
     </section>
 
-    <!-- Works: 実績は溜まったら公開
+    <!-- Works: 実績は溜まったら公開-
     <section class="band" id="works">
       {
         works.map((work) => (
@@ -309,23 +331,30 @@ const keyboard = [
         ))
       }
     </section>
-    -->
+    ->
 
-    <!-- Contact（銘板ダークバンド） -->
+    <!-- Nº05 Contact（アクセント青のベタ面スラブ） -->
     <section class="contact" id="contact">
       <div class="contact__inner">
+        <p class="sec-label"><span class="num">Nº05</span>Contact</p>
         <h2 class="contact__title">
           <a href="mailto:hello.rootscion@gmail.com">Let's talk ↗</a>
         </h2>
-        <p class="contact__note" data-reveal>
-          「まだ相談レベル」が、いちばん歓迎です。
-        </p>
+        <div class="contact__foot">
+          <div class="contact__geo" aria-hidden="true"></div>
+          <p class="contact__note" data-reveal>
+            「まだ相談レベル」が、いちばん歓迎です。
+          </p>
+        </div>
       </div>
     </section>
   </main>
 
   <script>
     import { animate } from '../scripts/animations';
+    import { initHero3D } from '../scripts/hero3d';
+
     animate();
+    initHero3D(document.querySelector('[data-hero-3d]'));
   </script>
 </Base>
