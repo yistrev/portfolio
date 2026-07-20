@@ -4,7 +4,7 @@
 export const SITE_NAME = 'rootscion';
 
 export const SITE_DESCRIPTION =
-  'rootscion（ルーツサイオン） — 要件定義からフロントエンド実装、チームマネジメントまで並走する Web Engineer / Technical Director のポートフォリオサイト';
+  'rootscion（ルーツサイオン） — 設計から実装、公開後の運用まで並走する Web Engineer のポートフォリオサイト';
 
 /** GTMコンテナID。取得したら 'GTM-XXXXXXX' を実IDに差し替えるとタグが有効になる */
 export const GTM_ID = 'GTM-XXXXXXX';
