@@ -2,13 +2,15 @@
 // paper + 48px blueprint grid + hairline plate frame + corner screws,
 // centered logo lockup, Geist Mono caption (pre-outlined in og-caption.json)
 // usage: node tools/gen-og.cjs        -> writes tools/og.svg
-//        PNG conversion (one-off):    sharp などで og.svg を public/ogp.png に 1200×630 で書き出す
+//        PNG (sharp・依存済み):
+//          node -e 'const s=require("sharp"),f=require("fs");s(f.readFileSync("tools/og.svg"),{density:200}).resize(1200,630,{fit:"fill"}).png().toFile("public/ogp.png").then(i=>console.log(i))'
+//        肩書きは og-caption.json（Geist Mono アウトライン）。文言変更時はこのJSONを差し替える
 const fs = require("fs");
 const path = require("path");
 const { lockup, INK, BLUE, ORANGE } = require("./gen-logo.cjs");
 
 const W = 1200, H = 630;
-const PAPER = "#f6f9fb"; // oklch(98% 0.004 250)
+const PAPER = "#eff0f2"; // ver4.4 コンクリート調グレー紙 oklch(95.5% 0.003 250)
 
 // ---- 48px grid (offset so rows sit symmetrically) ----
 let grid = "";
@@ -31,9 +33,9 @@ const caption = JSON.parse(fs.readFileSync(path.join(__dirname, "og-caption.json
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="${PAPER}" />
-  <path d="${grid}" stroke="rgba(31,36,45,0.05)" stroke-width="1" />
-  <rect x="28.5" y="28.5" width="${W - 57}" height="${H - 57}" fill="none" stroke="rgba(31,36,45,0.14)" stroke-width="1" />
-  <g fill="none" stroke="rgba(31,36,45,0.25)" stroke-width="1.5">
+  <path d="${grid}" stroke="rgba(31,36,45,0.07)" stroke-width="1" />
+  <rect x="28" y="28" width="${W - 56}" height="${H - 56}" fill="none" stroke="rgba(31,36,45,0.85)" stroke-width="2" />
+  <g fill="none" stroke="rgba(31,36,45,0.4)" stroke-width="1.5">
     ${screw(58, 58)}${screw(W - 58, 58)}${screw(58, H - 58)}${screw(W - 58, H - 58)}
   </g>
   ${lockupSvg}
