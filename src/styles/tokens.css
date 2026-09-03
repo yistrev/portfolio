@@ -1,112 +1,115 @@
-/* Hallmark · genre: editorial-brutal · macrostructure: Index型（連番索引・LOUD/VOID/QUIET律動） · design-system: design.md · designed-as-app
- * theme: custom · vibe: "ネオ・ブルータリズム、コンクリートの作業台、計器の声" · paper: oklch(95.5% 0.003 250) · accent: oklch(48% 0.17 259)
- * void: oklch(0% 0 0) + lime oklch(91% 0.21 122)（Capability専用） · display: Archivo variable · body: Zen Kaku Gothic New · mono: Geist Mono
- * nav: N7 brutal slab · footer: Ft1 minimal bar · enrichment: Three.js hero 3D (glb-swappable) + marquee band + bg-letters + annots
- * studied: no · context: owner-provided references (studiodunbar / pxpush / haoqi ほか) · esc: oklch(64% 0.145 33) kept as the "one different key"
+/* Hallmark · genre: postmodern-editorial (Memphis) · macrostructure: Exhibition型（展示室の連なり） · design-system: design.md
+ * theme: custom · vibe: "美術館の展示室、メンフィスの色面、作品キャプションの声" · axes: light-neutral / display-heavy / polychrome
+ * paper: #eeeeee（展示室のグレー壁） · warm: #fff9f6（キャプション紙） · ink: #1a1a1a
+ * palette: Memphis 9色（yellow / pink / blue / olive / orange / turquoise / peri / mint / slate）— 部屋ごとに1色を割り当てる
+ * display: Syne 600–800（偏心グロテスク） · body: Zen Kaku Gothic New 400–900 · mono: Geist Mono（作品キャプション専用）
+ * ver5（2026-09-03）: ver4のネオ・ブルータリズム（コンクリート紙×テックブルー1色×2px枠×ハードシャドウ）から全面転換。
+ *   枠線とハードシャドウをやめ、「ベタの色面」と「サイズ差の激しいタイポグラフィ」だけで律動をつくる。
  */
 :root {
-  /* ---- color (OKLCH only / concrete-grey paper + brand tech-blue + esc orange)
-     ver4.4: クリーム紙を廃止 — コンクリート調のクールグレー紙へ ---- */
-  --color-paper: oklch(95.5% 0.003 250);
-  --color-paper-2: oklch(92% 0.005 250);
-  --color-ink: oklch(22% 0.015 260);
-  --color-ink-2: oklch(42% 0.018 258);
-  --color-muted: oklch(48% 0.016 256);
-  --color-rule: var(--color-ink);
-  --color-grid: oklch(30% 0.03 258 / 0.07);
-  --color-live: oklch(66% 0.19 150);
+  /* ================================================================
+     Color — Memphis / Sottsass
+     ベタ面のみ。グラデーション・ぼかし影・半透明の重ねは禁止。
+     ================================================================ */
+  /* 地 */
+  --c-paper: #eeeeee;        /* 展示室のグレー壁（基準の地） */
+  --c-warm: #fff9f6;         /* キャプション紙の温白（読み物の地） */
+  --c-ink: #1a1a1a;          /* 文字。純黒は使わない */
+  --c-ink-2: #5a5a5a;
+  --c-ink-on-color: #1a1a1a; /* 明るい色面の上の文字 */
+  --c-ink-inverse: #fff9f6;  /* 暗い色面の上の文字 */
 
-  --color-accent: oklch(48% 0.17 259);
-  --color-accent-deep: oklch(39% 0.15 259);
-  --color-accent-pale: oklch(90% 0.045 255);
-  --color-accent-ink: oklch(97% 0.002 250);
-  --color-muted-on-accent: oklch(84% 0.06 255);
+  /* Memphis 9色。すべて等価な「部屋の色」で、主従はつけない */
+  --c-yellow: #f3f300;
+  --c-pink: #fdbac8;
+  --c-blue: #2170b4;
+  --c-olive: #73a11d;
+  --c-orange: #ff9000;
+  --c-coral: #ff9a66;
+  --c-turquoise: #62debb;
+  --c-peri: #7a8cff;
+  --c-mint: #bddac8;
+  --c-slate: #4a5159;        /* 暗室（Specの部屋） */
+  --c-rose: #dfa6b0;
+  --c-sky: #5cb6eb;
 
-  /* 漆黒セクション（明暗のインバート）: 黒地×白線×ネオライム */
-  --color-void: oklch(0% 0 0);
-  --color-void-ink: oklch(97% 0.002 250);
-  --color-void-muted: oklch(76% 0.006 250);
-  --color-lime: oklch(91% 0.21 122);
+  --c-focus: #2170b4;
+  --c-live: #73a11d;
 
-  /* esc — the one key that's a different colour */
-  --color-esc: oklch(64% 0.145 33);
-  --color-esc-deep: oklch(52% 0.13 33);
+  /* 各部屋に割り当てた色（セクションはこの変数だけ見る） */
+  --room-hero: var(--c-yellow);
+  --room-about: var(--c-pink);
+  --room-capability: var(--c-warm);
+  --room-spec: var(--c-slate);
+  --room-profile: var(--c-mint);
+  --room-contact: var(--c-blue);
 
-  --color-focus: oklch(54% 0.17 257);
+  /* 罫（キャプション表・仕様表の細罫だけ。囲みの枠には使わない） */
+  --rule: 1px solid currentColor;
+  --rule-hair: 1px solid color-mix(in srgb, currentColor 22%, transparent);
 
-  /* keycap greys（メニューのescキーキャップ用） */
-  --color-key: oklch(99% 0.002 250);
-  --color-key-shadow: oklch(84% 0.008 250);
-
-  /* ---- type ----
-     Archivo は可変ウェイトで読み込む。900（Black相当）は .marquee 専用 —
-     他の見出しは 500〜700 でサイズの大小によってメリハリをつける */
+  /* ================================================================
+     Type
+     欧文=Syne（偏心グロテスク・大きく組んで効く）／和文=Zen Kaku Gothic New
+     ／機械可読=Geist Mono（作品キャプション・メタ情報の声）
+     声量はウェイトではなく「サイズ差」でつける（display と caption の間に10倍の落差）
+     ================================================================ */
   --font-jp: 'Zen Kaku Gothic New';
-  --font-display: 'Archivo', var(--font-jp), sans-serif;
-  --font-hero: 'Work Sans', sans-serif;
+  --font-display: 'Syne', var(--font-jp), sans-serif;
   --font-body: var(--font-jp), sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
-  --text-3xs: 0.625rem;
-  --text-2xs: 0.6875rem;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-md: 1.25rem;
-  --text-lg: 1.5625rem;
-  --text-xl: 1.953rem;
-  --text-2xl: 2.441rem;
-  --text-3xl: 3.052rem;
-  --text-display-s: clamp(1.9rem, 2.6vw + 0.8rem, 2.9rem);
-  --text-display: clamp(2.8rem, 8.5vw + 0.4rem, 7.5rem);
-  --text-marquee: clamp(4rem, 12vw, 9rem);
-  /* 見出し（本文と明確に差をつけるメリハリ用スケール） */
-  --text-heading: clamp(2.1rem, 3.4vw + 0.6rem, 3.5rem);
-  --text-pull: clamp(1.5rem, 2.4vw + 0.7rem, 2.7rem);
-  --text-index-num: clamp(2.4rem, 4vw + 0.6rem, 4.2rem);
+  /* caption 系（極小・トラッキング広め） */
+  --t-plate: 0.6875rem;      /* 作品キャプション本体 */
+  --t-micro: 0.625rem;       /* 版権表記・単位 */
+  --t-label: 0.75rem;
 
-  /* ---- space (4pt) ---- */
-  --space-3xs: 0.125rem;
-  --space-2xs: 0.25rem;
-  --space-xs: 0.5rem;
-  --space-sm: 0.75rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2.5rem;
-  --space-2xl: 4rem;
-  --space-3xl: 6rem;
-  --space-4xl: 9rem;
-  --page-gutter: clamp(1.25rem, 4.5vw, 4rem);
-  /* セクションの律動（fluid・命名スケール） */
-  --space-sec-sm: clamp(4rem, 8vw, 7rem);
-  --space-sec-md: clamp(5rem, 10vw, 8.5rem);
-  --space-sec-lg: clamp(8rem, 13vw, 15rem);
+  /* 本文 */
+  --t-sm: 0.8125rem;
+  --t-base: 0.9375rem;
+  --t-lead: clamp(1rem, 0.4vw + 0.9rem, 1.125rem);
 
-  /* ---- brutal rules & shadows ----
-     太枠＋ハードシャドウは LOUD 要素（cap-list・3Dパネル・チップ・ボタン）専用。
-     QUIET セクション（Spec・Profile）の内側は --rule-thin で静かに組む */
-  /* ver4.4: 全体的に細く（heavy 3→2 / bold 2→1.5） */
-  --rule-thin: 0.5px;
-  --rule-bold: 1px;
-  --rule-heavy: 1.5px;
-  --shadow-hard: 0.375rem 0.375rem 0 var(--color-ink);
-  --shadow-hard-sm: 0.1875rem 0.1875rem 0 var(--color-ink);
-  --shadow-hard-lift: 0.5rem 0.5rem 0 var(--color-ink);
+  /* 展示（大きく組むための流体スケール。1440基準） */
+  --t-room-num: clamp(4.5rem, 13vw, 15rem);      /* Nº01 の巨大数字 */
+  --t-room-en: clamp(2rem, 5.2vw, 5.5rem);       /* 部屋名（欧文） */
+  --t-room-jp: clamp(1.125rem, 1.6vw, 1.75rem);  /* 部屋名（和文・小さく添える） */
+  --t-hero: clamp(2.25rem, 7vw, 7.5rem);         /* ヒーローの題字（4行のラグ組み・折り返さない） */
+  --t-statement: clamp(1.375rem, 3.2vw, 3rem);   /* 引用ステートメント */
+  --t-marquee: clamp(3.5rem, 11vw, 10rem);
+  --t-work-title: clamp(1.25rem, 2vw, 1.875rem);
 
-  /* ---- motion ---- */
+  --track-display: -0.03em;   /* Syne は詰める */
+  --track-mono: 0.14em;       /* mono は開く */
+  --track-jp: 0.04em;
+
+  /* ================================================================
+     Space
+     ================================================================ */
+  --s-3xs: 0.125rem;
+  --s-2xs: 0.25rem;
+  --s-xs: 0.5rem;
+  --s-sm: 0.75rem;
+  --s-md: 1rem;
+  --s-lg: 1.5rem;
+  --s-xl: 2.5rem;
+  --s-2xl: 4rem;
+  --s-3xl: 6rem;
+  --s-4xl: 9rem;
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --room-pad: clamp(4.5rem, 9vw, 9rem);   /* 展示室の天地余白 */
+
+  /* ================================================================
+     Motion — 直線的でスナップの効いた動き（弾ませない）
+     ================================================================ */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
   --dur-micro: 120ms;
-  --dur-short: 220ms;
-  --dur-long: 420ms;
+  --dur-short: 240ms;
+  --dur-long: 520ms;
 
-  /* ---- misc ---- */
-  --radius-key: 9px; /* escキーキャップだけの例外。パネル・チップは角丸なし */
   --z-base: 1;
   --z-raised: 10;
   --z-sticky: 200;
   --z-modal: 400;
-  --z-toast: 500;
   --z-noise: 600;
 }

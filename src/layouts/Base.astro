@@ -43,7 +43,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Geist+Mono:wght@400;500&family=Work+Sans:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -61,7 +61,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </noscript>
       )
     }
-    <!-- N7 brutal slab: 2px下線の追従ヘッダー。ロゴ左・太枠MENUボタン右 -->
+    <!-- 追従ヘッダー: 罫も影も持たず、ロゴとMenuの2つのピルだけを版面に浮かせる -->
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/" class="site-header__logo">
@@ -81,15 +81,15 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
     <div class="menu" id="site-menu" hidden>
       <div class="menu__inner">
         <div class="menu__top">
-          <span class="menu__brand">rootscion — index</span>
+          <span class="menu__brand">rootscion — index of rooms</span>
           <button class="menu__esc" data-menu-close aria-label="メニューを閉じる">esc</button>
         </div>
         <nav class="menu__nav" aria-label="サイト内メニュー">
-          <a href="/#about"><span class="idx">Nº01</span>About</a>
-          <a href="/#capability"><span class="idx">Nº02</span>Capability</a>
-          <a href="/#skills"><span class="idx">Nº03</span>Spec</a>
-          <a href="/#profile"><span class="idx">Nº04</span>Profile</a>
-          <a href="/#contact"><span class="idx">Nº05</span>Contact</a>
+          <a href="/#about"><span class="idx">Nº01</span><span>About</span><span class="jp">この場所について</span></a>
+          <a href="/#capability"><span class="idx">Nº02</span><span>Capability</span><span class="jp">できることの展示</span></a>
+          <a href="/#skills"><span class="idx">Nº03</span><span>Spec</span><span class="jp">仕様</span></a>
+          <a href="/#profile"><span class="idx">Nº04</span><span>Profile</span><span class="jp">作り手について</span></a>
+          <a href="/#contact"><span class="idx">Nº05</span><span>Contact</span><span class="jp">相談する</span></a>
         </nav>
         <p class="menu__meta">
           <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
@@ -100,10 +100,10 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
 
     <slot />
 
-    <!-- Ft1 minimal bar: 3px上枠の1行モノスペース銘板 -->
+    <!-- フッター: 墨のベタ面に1行のモノスペース銘板 -->
     <footer class="site-footer">
       <p class="footer-bar">
-        <span>Unit R-{year} &copy; {year} rootscion</span>
+        <span>rootscion — exhibition ver.5 &copy; {year}</span>
         <a href="/engineer">Mode: engineer →</a>
       </p>
     </footer>
