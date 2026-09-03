@@ -251,13 +251,14 @@ main {
 }
 
 .menu-toggle:hover {
-  background: var(--c-yellow);
+  background: var(--c-peri);
   color: var(--c-ink);
 }
 
 /* ================================================================
     Menu overlay — 墨のベタ面に索引を落とす。
-    イエローは Nº05 Contact と同じ塩梅で「連番・esc・ホバー」だけに差す
+    差し色は寒色（ペリウィンクル）。Nº05 Contact と同じ塩梅で
+    「連番・escピル・ホバー」だけに点で差す（面では使わない）
     ================================================================ */
 .menu {
   position: fixed;
@@ -291,7 +292,7 @@ main {
 
 .menu__esc {
   border: 0;
-  background: var(--c-yellow);
+  background: var(--c-peri);
   color: var(--c-ink);
   font-family: var(--font-mono);
   font-size: var(--t-label);
@@ -334,13 +335,13 @@ main {
   border-bottom: 1px solid color-mix(in srgb, var(--c-warm) 22%, transparent);
 }
 
-/* 連番だけイエロー — 面ではなく点で効かせる */
+/* 連番だけ差し色 — 面ではなく点で効かせる */
 .menu__nav a .idx {
   font-family: var(--font-mono);
   font-size: var(--t-label);
   font-weight: 400;
   letter-spacing: var(--track-mono);
-  color: var(--c-yellow);
+  color: var(--c-peri);
 }
 
 .menu__nav a .jp {
@@ -353,7 +354,7 @@ main {
 }
 
 .menu__nav a:hover {
-  color: var(--c-yellow);
+  color: var(--c-peri);
 }
 
 .menu__meta {
@@ -404,7 +405,7 @@ main {
 .hero__field {
   position: absolute;
   inset: 0;
-  background: var(--c-yellow);
+  background: var(--c-peri);
 }
 
 .hero__composition {
