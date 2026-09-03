@@ -56,7 +56,8 @@ a {
 
 /* 暗い部屋・濃い色面の上ではフォーカスリングを反転させる */
 .room--dark :focus-visible,
-.room--contact :focus-visible {
+.room--contact :focus-visible,
+.menu :focus-visible {
   outline-color: var(--c-yellow);
 }
 
@@ -255,14 +256,15 @@ main {
 }
 
 /* ================================================================
-    Menu overlay — イエローのベタ面に索引を落とす
+    Menu overlay — 墨のベタ面に索引を落とす。
+    イエローは Nº05 Contact と同じ塩梅で「連番・esc・ホバー」だけに差す
     ================================================================ */
 .menu {
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
-  background: var(--c-yellow);
-  color: var(--c-ink);
+  background: var(--c-ink);
+  color: var(--c-warm);
   overflow-y: auto;
 }
 
@@ -289,8 +291,8 @@ main {
 
 .menu__esc {
   border: 0;
-  background: var(--c-ink);
-  color: var(--c-yellow);
+  background: var(--c-yellow);
+  color: var(--c-ink);
   font-family: var(--font-mono);
   font-size: var(--t-label);
   letter-spacing: var(--track-mono);
@@ -301,7 +303,7 @@ main {
 }
 
 .menu__esc:hover {
-  background: var(--c-orange);
+  background: var(--c-warm);
   color: var(--c-ink);
 }
 
@@ -324,19 +326,21 @@ main {
   letter-spacing: var(--track-display);
   text-transform: uppercase;
   text-decoration: none;
-  border-top: 1px solid color-mix(in srgb, var(--c-ink) 25%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--c-warm) 22%, transparent);
   transition: color var(--dur-short) var(--ease-out);
 }
 
 .menu__nav a:last-child {
-  border-bottom: 1px solid color-mix(in srgb, var(--c-ink) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-warm) 22%, transparent);
 }
 
+/* 連番だけイエロー — 面ではなく点で効かせる */
 .menu__nav a .idx {
   font-family: var(--font-mono);
   font-size: var(--t-label);
   font-weight: 400;
   letter-spacing: var(--track-mono);
+  color: var(--c-yellow);
 }
 
 .menu__nav a .jp {
@@ -349,7 +353,7 @@ main {
 }
 
 .menu__nav a:hover {
-  color: var(--c-blue);
+  color: var(--c-yellow);
 }
 
 .menu__meta {
