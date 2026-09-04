@@ -107,6 +107,24 @@ export function animate() {
     );
   }
 
+  /* ---- 4b. ステートメントの背後の形（速度差でスクロールに連れて動く）
+       引用は白文字＋difference なので、形が動くほど「跨ぐ位置」が変わり、
+       文字の反転する箇所がスクロール中ずっと入れ替わる ---------- */
+  if (wide) {
+    gsap.utils.toArray('.statement .sh').forEach((sh) => {
+      gsap.to(sh, {
+        yPercent: Number(sh.dataset.shSpeed || 0),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.statement',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
+      });
+    });
+  }
+
   /* ---- 5. About のパル引用（文字の立ち上がり） ----------------- */
   const pull = document.querySelector('[data-pull]');
   if (pull) {

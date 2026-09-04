@@ -1,5 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
 
 /* ------------------------------------------------------------------
    メンフィス幾何コンポジション。
@@ -77,7 +80,7 @@ const exhibits = [
   {
     fig: 'Fig. 01',
     title: 'フロントエンド実装',
-    period: '2016年 —（設計 / 実装）',
+    period: '（設計 / 実装）',
     material: 'HTML, CSS / Sass, JavaScript, GSAP',
     note: 'インタラクティブなUIの実装',
     bg: 'var(--c-paper)',
@@ -86,7 +89,7 @@ const exhibits = [
   {
     fig: 'Fig. 02',
     title: 'CMS設計・構築',
-    period: '2017年 —（設計 / 構築 / 改修）',
+    period: '（設計 / 構築 / 改修）',
     material: 'WordPress 自作テーマ, PHP',
     note: '更新される前提の構造をつくる',
     bg: 'var(--c-mint)',
@@ -95,7 +98,7 @@ const exhibits = [
   {
     fig: 'Fig. 03',
     title: '要件整理・設計',
-    period: '2019年 —（要件定義 / 見積）',
+    period: '（要件定義 / 見積）',
     material: 'ヒアリング, 仕様定義, 実現可能性の検証',
     note: '行間を読んで仕様に書き起こす',
     bg: 'var(--c-paper)',
@@ -104,7 +107,7 @@ const exhibits = [
   {
     fig: 'Fig. 04',
     title: '運用・保守',
-    period: '2016年 —（移行 / 保守）',
+    period: '（移行 / 保守）',
     material: 'サーバー移行, SEO, セキュリティ対応',
     note: '公開後の環境を整え続ける',
     bg: 'var(--c-coral)',
@@ -182,8 +185,15 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </div>
 
-    <!-- ============ ステートメント（引用ひとつだけの部屋） ============ -->
+    <!-- ============ ステートメント（引用ひとつだけの部屋）
+         引用は白文字＋mix-blend-mode:difference。下地の色に応じて自動で反転するので、
+         墨の帯を跨ぐ瞬間だけ文字が白く抜ける ============ -->
     <section class="room statement">
+      <div class="statement__shapes" aria-hidden="true">
+        <span class="sh sh--disc" data-sh-speed="34"></span>
+        <span class="sh sh--bar" data-sh-speed="-26"></span>
+        <span class="sh sh--ring" data-sh-speed="-58"></span>
+      </div>
       <div class="room__inner">
         <blockquote class="statement__quote" data-statement>
           <span class="line">設計がはじまるのは、</span>
@@ -253,7 +263,6 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
                   <span class="plate__author">{ex.note}</span>
                   <span class="plate__row">{ex.period}</span>
                   <span class="plate__row">{ex.material}</span>
-                  <span class="plate__copy">© rootscion</span>
                 </div>
               </li>
             ))
@@ -262,13 +271,46 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº03 Spec（暗室） ============ -->
-    <section class="room spec room--dark" id="skills">
+    <!-- ============ Nº03 Works（目録）
+         Capability が「図版のある展示室」なのに対して、こちらは文字だけの目録。
+         スクリーンショットを持たないので、年・題・仕様の組版だけで見せる ============ -->
+    <section class="room works" id="works">
       <div class="room__inner">
         <div class="room-head">
           <p class="room-head__num" aria-hidden="true" data-room-num><span>03</span></p>
+          <h2 class="room-head__en">Works</h2>
+          <p class="room-head__jp">Nº03 — 手がけたもの</p>
+        </div>
+
+        <ul class="worklist">
+          {
+            works.map((work) => (
+              <li class="worklist__item">
+                <a href={`/works/${work.id}/`} class="worklist__link">
+                  <span class="worklist__year">{work.data.year}</span>
+                  <span class="worklist__body">
+                    <span class="worklist__title">{work.data.title}</span>
+                    <span class="worklist__desc">{work.data.description}</span>
+                    <span class="worklist__meta">
+                      {work.data.role} — {work.data.stack.join(', ')}
+                    </span>
+                  </span>
+                  <span class="worklist__arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Nº04 Spec（暗室） ============ -->
+    <section class="room spec room--dark" id="skills">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>04</span></p>
           <h2 class="room-head__en">Spec</h2>
-          <p class="room-head__jp">Nº03 — 仕様</p>
+          <p class="room-head__jp">Nº04 — 仕様</p>
         </div>
 
         <table class="spec-sheet">
@@ -291,13 +333,13 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº04 Profile ============ -->
+    <!-- ============ Nº05 Profile ============ -->
     <section class="room profile" id="profile">
       <div class="room__inner">
         <div class="room-head">
-          <p class="room-head__num" aria-hidden="true" data-room-num><span>04</span></p>
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>05</span></p>
           <h2 class="room-head__en">Profile</h2>
-          <p class="room-head__jp">Nº04 — 作り手について</p>
+          <p class="room-head__jp">Nº05 — 作り手について</p>
         </div>
 
         <div class="profile__grid">
@@ -326,13 +368,13 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº05 Contact ============ -->
+    <!-- ============ Nº06 Contact ============ -->
     <section class="room contact room--dark" id="contact">
       <div class="room__inner">
         <div class="room-head">
-          <p class="room-head__num" aria-hidden="true" data-room-num><span>05</span></p>
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>06</span></p>
           <h2 class="room-head__en">Contact</h2>
-          <p class="room-head__jp">Nº05 — 相談する</p>
+          <p class="room-head__jp">Nº06 — 相談する</p>
         </div>
 
         <p class="contact__title">

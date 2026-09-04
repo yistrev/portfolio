@@ -74,7 +74,7 @@
   --t-room-en: clamp(2rem, 5.2vw, 5.5rem);       /* 部屋名（欧文） */
   --t-room-jp: clamp(1.125rem, 1.6vw, 1.75rem);  /* 部屋名（和文・小さく添える） */
   --t-hero: clamp(2.25rem, 7vw, 7.5rem);         /* ヒーローの題字（4行のラグ組み・折り返さない） */
-  --t-statement: clamp(1.375rem, 3.2vw, 3rem);   /* 引用ステートメント */
+  --t-statement: clamp(1.5rem, 3.8vw, 3.5rem);   /* 引用ステートメント（差分ブレンドで跨がせる主役） */
   --t-marquee: clamp(3.5rem, 11vw, 10rem);
   --t-work-title: clamp(1.25rem, 2vw, 1.875rem);
 
