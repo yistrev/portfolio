@@ -2,7 +2,10 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
+/* draft:true は出さない。公開できる実績が0件のあいだ、Nº03 Works は「準備中」を出す */
+const works = (await getCollection('works'))
+  .filter((work) => !work.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
 
 /* ------------------------------------------------------------------
    メンフィス幾何コンポジション。
@@ -186,13 +189,13 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
     </div>
 
     <!-- ============ ステートメント（引用ひとつだけの部屋）
-         引用は白文字＋mix-blend-mode:difference。下地の色に応じて自動で反転するので、
-         墨の帯を跨ぐ瞬間だけ文字が白く抜ける ============ -->
+         引用は白文字＋mix-blend-mode:difference。下地の色に応じて自動で反転する。
+         ver5.4: 墨の帯は撤去（白抜きになる範囲が広く読みにくかった）。
+         残したピンクの円とイエローの輪の上でだけ、文字が深緑・青へ静かに転ぶ ============ -->
     <section class="room statement">
       <div class="statement__shapes" aria-hidden="true">
-        <span class="sh sh--disc" data-sh-speed="34"></span>
-        <span class="sh sh--bar" data-sh-speed="-26"></span>
-        <span class="sh sh--ring" data-sh-speed="-58"></span>
+        <span class="sh sh--disc" data-sh-speed="46"></span>
+        <span class="sh sh--ring" data-sh-speed="-72"></span>
       </div>
       <div class="room__inner">
         <blockquote class="statement__quote" data-statement>
@@ -281,6 +284,15 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
           <h2 class="room-head__en">Works</h2>
           <p class="room-head__jp">Nº03 — 手がけたもの</p>
         </div>
+
+        {works.length === 0 && (
+          <p class="works__pending">
+            <span class="works__pending-en">In preparation</span>
+            <span class="works__pending-jp">
+              この部屋は準備中です。お見せできる実績が整い次第、ここに並べます。
+            </span>
+          </p>
+        )}
 
         <ul class="worklist">
           {

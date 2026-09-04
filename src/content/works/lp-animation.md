@@ -5,6 +5,7 @@ year: 2024
 role: フロントエンド実装
 stack: [HTML, Sass, JavaScript, GSAP]
 order: 2
+draft: true
 ---
 
 ※ これはサンプルの実績です。実際の内容に書き換えてください。

@@ -72,7 +72,8 @@ export function animate() {
   /* ---- 2. 部屋番号のせり上がり -------------------------------- */
   gsap.utils.toArray('[data-room-num] span').forEach((num) => {
     gsap.from(num, {
-      yPercent: 105,
+      // マスクに逃げの padding を持たせたぶん、開始位置も深くしないと字面が覗く
+      yPercent: 130,
       duration: 0.9,
       ease: 'expo.out',
       scrollTrigger: { trigger: num, start: 'top 88%', once: true },

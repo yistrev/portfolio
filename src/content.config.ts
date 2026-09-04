@@ -11,6 +11,9 @@ const works = defineCollection({
     stack: z.array(z.string()),
     url: z.string().url().optional(),
     order: z.number().default(0),
+    /* true の間は一覧にも詳細ページにも出さない。
+       実績が揃ったら false にする（Nº03 Works は公開分が0件なら「準備中」を出す） */
+    draft: z.boolean().default(false),
   }),
 });
 

@@ -1,6 +1,7 @@
 /* Hallmark · genre: postmodern-editorial (Memphis) · macrostructure: Exhibition型 · design-system: design.md
  * theme: custom · vibe: "美術館の展示室、メンフィスの色面、作品キャプションの声"
- * display: Syne 600–800 · body: Zen Kaku Gothic New · mono: Geist Mono（キャプション専用）
+ * display: Syne 600–800 · numerals: Climate Crisis（部屋の連番専用）
+ * body: DNP 秀英角ゴシック銀 Std（Adobe Fonts kit oez8avv） · mono: Geist Mono（キャプション専用）
  * rhythm: 部屋ごとにベタの色面を替える。囲み枠とハードシャドウは使わず、面とサイズ差だけで律動をつくる
  * motion: room-num counter-slide / plate stagger / composition draw / marquee scrub / statement mask-reveal
  */
@@ -101,18 +102,26 @@ main {
 
 .room-head__num {
   grid-row: 1 / 3;
-  font-family: var(--font-display);
-  font-weight: 800;
+  /* 連番だけ Climate Crisis。極太で字幅が広く、Syne の部屋名と明確に別の声になる */
+  font-family: var(--font-num);
+  font-weight: 400;
   font-size: var(--t-room-num);
-  /* マスク（overflow:hidden）で数字の下端を切らないよう行送りに余裕を持たせ、
-     そのぶん負のマージンで視覚的な下端を英字のベースラインに合わせ直す */
-  line-height: 0.88;
-  margin-bottom: -0.12em;
-  letter-spacing: -0.05em;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   color: var(--room-accent, var(--c-ink));
-  /* 数字の左サイドベアリングを詰めて、版面の左端に食い込ませる */
-  margin-left: -0.06em;
+  /* せり上がりのマスク。数字がマスクに切られないよう内側に逃げをつくり、
+     同じ分だけ負のマージンで外へ引き戻して版面上の位置は変えない。
+
+     padding を持たせずに overflow:hidden すると、書体の字面によって下端が欠ける。
+     実測（canvas TextMetrics・100px時）:
+       Syne           ink 上78 / 下16.3 → line-height 0.88 だと下端が 0.05em はみ出す
+                      → 丸い 0/3/6/8/9 だけ切れる。これが「番号によっては見切れる」の正体
+       Climate Crisis ink 上78 / 下3    → 下の余白 0.18em で確実に収まる
+     下マージン -0.205em は、数字の字面の下端を行の底（＝部屋名のベースライン）に
+     合わせ直すための量。 */
   overflow: hidden;
+  padding: 0.08em 0.12em 0.18em;
+  margin: -0.08em -0.12em -0.205em -0.18em;
 }
 
 .room-head__num span {
@@ -526,13 +535,13 @@ main {
 
 /* ================================================================
     Statement — 引用ひとつだけの部屋。
-    引用は「白文字 × mix-blend-mode: difference」。下地が温白なら黒く沈み、
-    墨の帯を跨いだ瞬間だけ白く抜ける ＝ 重ね（差分）そのものを見せる。
-    差分の相手にしてよいのは、反転しても読める明暗の形だけ（下の対照表を参照）:
-      墨 #1a1a1a → 文字は (229,229,229)  約12:1
-      ピンク #fdbac8 → 文字は (2,69,55)   約6.7:1
-      イエロー #f3f300 → 文字は (12,12,255) 約8.9:1
-    ペリウィンクルやコーラルは反転後の差が小さく読めないので、ここでは使わない。
+    引用は「白文字 × mix-blend-mode: difference」。下地の色に応じて文字が反転する。
+    ver5.4: 墨の帯は撤去した。反転して白抜きになる範囲が広く、読みにくかったため。
+    いまの下地と反転後の文字:
+      温白 #fff9f6 → 文字は (0,6,9)      約19:1（ほぼ黒。地の文はここ）
+      ピンク #fdbac8 → 文字は (2,69,55)   約6.7:1（深緑に転ぶ）
+      イエロー #f3f300 → 文字は (12,12,255) 約8.9:1（青に転ぶ）
+    暗い面（墨・スレート）を下地にすると文字が白抜きになるので、この部屋では使わない。
     ================================================================ */
 .statement {
   --room-bg: var(--c-warm);
@@ -551,15 +560,6 @@ main {
 .sh {
   position: absolute;
   display: block;
-}
-
-/* 引用の中央を横切る墨の帯 — ここを跨ぐ瞬間が主役 */
-.sh--bar {
-  left: -5%;
-  top: 46%;
-  width: 110%;
-  height: clamp(3rem, 6vw, 6.5rem);
-  background: var(--c-ink);
 }
 
 .sh--disc {
@@ -587,7 +587,8 @@ main {
 }
 
 .statement__quote {
-  max-width: 48rem;
+  /* 「言われた通りに組む手が止まり、」が段落ちしない幅を確保する */
+  max-width: 56rem;
   margin-inline: auto;
   font-size: var(--t-statement);
   font-weight: 700;
@@ -789,6 +790,32 @@ main {
 .works {
   --room-bg: var(--c-paper);
   --room-accent: var(--c-coral);
+}
+
+/* 公開できる実績が0件のときの掲示。美術館の「この部屋は準備中です」の札 */
+.works__pending {
+  display: block;
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-top: var(--rule-hair);
+  border-bottom: var(--rule-hair);
+}
+
+.works__pending-en {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  color: var(--c-coral);
+}
+
+.works__pending-jp {
+  display: block;
+  margin-top: var(--s-md);
+  font-size: var(--t-sm);
+  line-height: 1.9;
 }
 
 .worklist {
