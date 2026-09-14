@@ -72,7 +72,6 @@ export function animate() {
     });
   });
 
-
   // 3. ステートメント
   const statementLines = gsap.utils.toArray('[data-statement] .line');
   if (statementLines.length) {
@@ -85,7 +84,6 @@ export function animate() {
       scrollTrigger: { trigger: '[data-statement]', start: 'top 82%', once: true },
     });
   }
-
 
   // 4. 題字の帯（スクロール連動）
   const band = document.querySelector('[data-marquee]');
@@ -101,7 +99,6 @@ export function animate() {
       }
     );
   }
-
 
   // 4b. ステートメントの形のパララックス
   if (wide) {
@@ -119,7 +116,6 @@ export function animate() {
     });
   }
 
-
   // 5. About のパル引用
   const pull = document.querySelector('[data-pull]');
   if (pull) {
@@ -135,7 +131,6 @@ export function animate() {
       scrollTrigger: { trigger: pull, start: 'top 82%', once: true },
     });
   }
-
 
   // 6. 展示物（台座 → 幾何形 → キャプション）
   gsap.utils.toArray('[data-exhibit]').forEach((ex) => {
@@ -163,7 +158,6 @@ export function animate() {
       .from(plate, { autoAlpha: 0, y: 14, duration: 0.5 }, '-=0.35');
   });
 
-
   // 7. data-reveal
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, {
@@ -174,7 +168,6 @@ export function animate() {
       scrollTrigger: { trigger: el, start: 'top 88%', once: true },
     });
   });
-
 
   // 8. 表紙のパララックス
   if (wide) {
