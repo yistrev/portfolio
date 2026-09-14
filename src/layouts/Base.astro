@@ -47,7 +47,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
       rel="stylesheet"
     />
 
-    <!-- 和文: Adobe Fonts（DNP 秀英角ゴシック銀 Std / kit oez8avv） -->
+    <!-- Adobe Fonts（和文） -->
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <script is:inline>
@@ -95,7 +95,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </noscript>
       )
     }
-    <!-- 追従ヘッダー: 罫も影も持たず、ロゴとMenuの2つのピルだけを版面に浮かせる -->
+    <!-- Header -->
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/" class="site-header__logo">
@@ -111,7 +111,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
       </div>
     </header>
 
-    <!-- 開閉メニュー（閉じるキーは esc） -->
+    <!-- Menu overlay -->
     <div class="menu" id="site-menu" hidden>
       <div class="menu__inner">
         <div class="menu__top">
@@ -135,7 +135,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
 
     <slot />
 
-    <!-- フッター: 墨のベタ面に1行のモノスペース銘板 -->
+    <!-- Footer -->
     <footer class="site-footer">
       <p class="footer-bar">
         <span>&copy; {year} rootscion</span>
@@ -159,8 +159,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         toggle.setAttribute('aria-expanded', 'true');
         document.body.classList.add('menu-open');
         if (!reduceMotion) {
-          // パネル自体の opacity は触らない。透過中に裏の LET'S TALK 等が透けるため、
-          // 不透明な墨の面のまま上から滑り込ませる（シャッター）
+          // パネルの opacity は触らない（透けるため。CLAUDE.md 実装メモ参照）
           gsap.fromTo(menu,
             { yPercent: -100 },
             { yPercent: 0, duration: 0.5, ease: 'expo.out' }
@@ -197,12 +196,11 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
       toggle.addEventListener('click', () => (isOpen ? closeMenu() : openMenu()));
       closeBtn.addEventListener('click', closeMenu);
 
-      // 世界観どおり esc キーでも閉じる
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen) closeMenu();
       });
 
-      // アンカー遷移時は即座に閉じる（スクロール先が見えるように）
+      // アンカー遷移時は即座に閉じる
       items.forEach((a) => {
         a.addEventListener('click', () => {
           isOpen = false;

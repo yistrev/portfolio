@@ -1,26 +1,12 @@
-/* Hallmark · genre: postmodern-editorial (Memphis) · macrostructure: Exhibition型（展示室の連なり） · design-system: design.md
- * theme: custom · vibe: "美術館の展示室、メンフィスの色面、作品キャプションの声" · axes: light-neutral / display-heavy / polychrome
- * paper: #eeeeee（展示室のグレー壁） · warm: #fff9f6（キャプション紙） · ink: #1a1a1a
- * palette: Memphis 9色（yellow / pink / blue / olive / orange / turquoise / peri / mint / slate）— 部屋ごとに1色を割り当てる
- * display: Syne 600–800（偏心グロテスク） · numerals: Climate Crisis（部屋の連番専用）
- * body: DNP 秀英角ゴシック銀 Std（Adobe Fonts / kit oez8avv） · mono: Geist Mono（作品キャプション専用）
- * ver5（2026-09-03）: ver4のネオ・ブルータリズム（コンクリート紙×テックブルー1色×2px枠×ハードシャドウ）から全面転換。
- *   枠線とハードシャドウをやめ、「ベタの色面」と「サイズ差の激しいタイポグラフィ」だけで律動をつくる。
- */
 :root {
-  /* ================================================================
-     Color — Memphis / Sottsass
-     ベタ面のみ。グラデーション・ぼかし影・半透明の重ねは禁止。
-     ================================================================ */
-  /* 地 */
-  --c-paper: #eeeeee;        /* 展示室のグレー壁（基準の地） */
-  --c-warm: #fff9f6;         /* キャプション紙の温白（読み物の地） */
-  --c-ink: #1a1a1a;          /* 文字。純黒は使わない */
+  /* ---- Color ---- */
+  --c-paper: #eeeeee;
+  --c-warm: #fff9f6;
+  --c-ink: #1a1a1a;
   --c-ink-2: #5a5a5a;
-  --c-ink-on-color: #1a1a1a; /* 明るい色面の上の文字 */
-  --c-ink-inverse: #fff9f6;  /* 暗い色面の上の文字 */
+  --c-ink-on-color: #1a1a1a;
+  --c-ink-inverse: #fff9f6;
 
-  /* Memphis 9色。すべて等価な「部屋の色」で、主従はつけない */
   --c-yellow: #f3f300;
   --c-pink: #fdbac8;
   --c-blue: #2170b4;
@@ -30,14 +16,14 @@
   --c-turquoise: #62debb;
   --c-peri: #7a8cff;
   --c-mint: #bddac8;
-  --c-slate: #4a5159;        /* 暗室（Specの部屋） */
+  --c-slate: #4a5159;
   --c-rose: #dfa6b0;
   --c-sky: #5cb6eb;
 
   --c-focus: #2170b4;
   --c-live: #73a11d;
 
-  /* 各部屋に割り当てた色（セクションはこの変数だけ見る） */
+  /* ---- Room colors ---- */
   --room-hero: var(--c-yellow);
   --room-about: var(--c-pink);
   --room-capability: var(--c-warm);
@@ -45,56 +31,41 @@
   --room-profile: var(--c-mint);
   --room-contact: var(--c-blue);
 
-  /* 罫（キャプション表・仕様表の細罫だけ。囲みの枠には使わない） */
+  /* ---- Rules ---- */
   --rule: 1px solid currentColor;
   --rule-hair: 1px solid color-mix(in srgb, currentColor 22%, transparent);
 
-  /* ================================================================
-     Type
-     欧文=Syne（偏心グロテスク・大きく組んで効く）／和文=DNP 秀英角ゴシック銀 Std
-     ／機械可読=Geist Mono（作品キャプション・メタ情報の声）
-     声量はウェイトではなく「サイズ差」でつける（display と caption の間に10倍の落差）
-     ================================================================ */
-  /* 和文は Adobe Fonts（kit oez8avv）の DNP 秀英角ゴシック銀 Std。
-     キットに入っているのは1ウェイトのみ。ドメイン未許可の環境では下の
-     フォールバックに落ちるので、素の游ゴシック/ヒラギノでも崩れない組みにしておく */
+  /* ---- Type ---- */
   --font-jp: 'dnp-shuei-gothic-gin-std', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
     sans-serif;
   --font-display: 'Syne', var(--font-jp);
   --font-body: var(--font-jp);
   --font-mono: 'Geist Mono', ui-monospace, monospace;
-  /* 部屋の連番専用。Climate Crisis（可変軸 YEAR。既定の1979が最も肉厚） */
+
   --font-num: 'Climate Crisis', var(--font-display);
 
-  /* caption 系（極小・トラッキング広め） */
-  --t-plate: 0.6875rem;      /* 作品キャプション本体 */
-  --t-micro: 0.625rem;       /* 版権表記・単位 */
+  --t-plate: 0.6875rem;
+  --t-micro: 0.625rem;
   --t-label: 0.75rem;
 
-  /* 本文 */
   --t-sm: 0.8125rem;
   --t-base: 0.9375rem;
   --t-lead: clamp(1rem, 0.4vw + 0.9rem, 1.125rem);
 
-  /* 展示（大きく組むための流体スケール。1440基準） */
-  --t-room-num: clamp(4.5rem, 9vw, 10rem);      /* Nº01 の巨大数字 */
-  --t-room-en: clamp(2rem, 5.2vw, 5.5rem);       /* 部屋名（欧文） */
-  --t-room-jp: clamp(1.125rem, 1.6vw, 1.75rem);  /* 部屋名（和文・小さく添える） */
-  --t-hero: clamp(2.25rem, 7vw, 7.5rem);         /* ヒーローの題字（4行のラグ組み・折り返さない） */
-  /* 引用ステートメント。最長行は約16.9em（palt適用後）なので、
-     どの画面幅でも「font-size × 16.9 ≦ 版面幅(最大56rem)」に収まる値に取る。
-     文言を今より長くするとまた段落ちするので、1行17em を上限の目安にする */
+  --t-room-num: clamp(4.5rem, 9vw, 10rem);
+  --t-room-en: clamp(2rem, 5.2vw, 5.5rem);
+  --t-room-jp: clamp(1.125rem, 1.6vw, 1.75rem);
+  --t-hero: clamp(2.25rem, 7vw, 7.5rem);
+
   --t-statement: clamp(1.1875rem, 3.45vw, 3.125rem);
   --t-marquee: clamp(3.5rem, 11vw, 10rem);
   --t-work-title: clamp(1.25rem, 2vw, 1.875rem);
 
-  --track-display: -0.03em;   /* Syne は詰める */
-  --track-mono: 0.14em;       /* mono は開く */
+  --track-display: -0.03em;
+  --track-mono: 0.14em;
   --track-jp: 0.04em;
 
-  /* ================================================================
-     Space
-     ================================================================ */
+  /* ---- Space ---- */
   --s-3xs: 0.125rem;
   --s-2xs: 0.25rem;
   --s-xs: 0.5rem;
@@ -106,17 +77,16 @@
   --s-3xl: 6rem;
   --s-4xl: 9rem;
   --gutter: clamp(1.25rem, 5vw, 5rem);
-  --room-pad: clamp(4.5rem, 9vw, 9rem);   /* 展示室の天地余白 */
+  --room-pad: clamp(4.5rem, 9vw, 9rem);
 
-  /* ================================================================
-     Motion — 直線的でスナップの効いた動き（弾ませない）
-     ================================================================ */
+  /* ---- Motion ---- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
   --dur-micro: 120ms;
   --dur-short: 240ms;
   --dur-long: 520ms;
 
+  /* ---- z-index ---- */
   --z-base: 1;
   --z-raised: 10;
   --z-sticky: 200;
