@@ -1,12 +1,6 @@
-/* Hallmark · genre: postmodern-editorial (Memphis) · macrostructure: Exhibition型 · design-system: design.md
- * theme: custom · vibe: "美術館の展示室、メンフィスの色面、作品キャプションの声"
- * display: Syne 600–800 · numerals: Climate Crisis（部屋の連番専用）
- * body: DNP 秀英角ゴシック銀 Std（Adobe Fonts kit oez8avv） · mono: Geist Mono（キャプション専用）
- * rhythm: 部屋ごとにベタの色面を替える。囲み枠とハードシャドウは使わず、面とサイズ差だけで律動をつくる
- * motion: room-num counter-slide / plate stagger / composition draw / marquee scrub / statement mask-reveal
- */
 @import "./tokens.css";
 
+/* ---- Reset / base ---- */
 * {
   margin: 0;
   padding: 0;
@@ -55,21 +49,17 @@ a {
   outline-offset: 3px;
 }
 
-/* 暗い部屋・濃い色面の上ではフォーカスリングを反転させる */
 .room--dark :focus-visible,
 .room--contact :focus-visible,
 .menu :focus-visible {
   outline-color: var(--c-yellow);
 }
 
-/* ================================================================
-    Layout primitives
-    ================================================================ */
 main {
   position: relative;
 }
 
-/* 展示室。全幅のベタ面 ＋ 内側のガター */
+/* ---- Layout: room（展示室） ---- */
 .room {
   position: relative;
   padding-block: var(--room-pad);
@@ -87,18 +77,6 @@ main {
   --room-fg: var(--c-ink-inverse);
 }
 
-/* ---- 版面の崩し（ver5.5）--------------------------------------
-   全部の部屋が 84rem の額縁に収まっていると律動が出ない。
-   幅のモードを3つ持ち、「狭い → 額装 → 全幅」を交互に置く:
-     狭い … Statement の引用（56rem・中央）
-     額装 … 既定（84rem・中央）
-     全幅 … .room--bleed
-
-   .room--bleed は上限を外すだけでなく、**ガターも通常より詰める**。
-   84rem の上限が効きはじめるのは約1470px以上なので、上限を外すだけだと
-   1280px前後では何も変わらない。ガターを詰めることで、どの幅でも
-   「この部屋は額縁から出ている」ことが分かるようにしている。
-   ------------------------------------------------------------- */
 .room--bleed {
   padding-inline: clamp(1rem, 2.2vw, 2.75rem);
 }
@@ -107,11 +85,7 @@ main {
   max-width: none;
 }
 
-/* ================================================================
-    Room head — ver5 の律動の核。
-    「巨大な連番 Nº0n」と「極小のモノスペース」を同じ行に同居させ、
-    サイズの落差（およそ10倍）そのものをリズムにする。
-    ================================================================ */
+/* ---- Room head（部屋の連番と名前） ---- */
 .room-head {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -122,23 +96,14 @@ main {
 
 .room-head__num {
   grid-row: 1 / 3;
-  /* 連番だけ Climate Crisis。極太で字幅が広く、Syne の部屋名と明確に別の声になる */
+
   font-family: var(--font-num);
   font-weight: 400;
   font-size: var(--t-room-num);
   line-height: 0.92;
   letter-spacing: -0.02em;
   color: var(--room-accent, var(--c-ink));
-  /* せり上がりのマスク。数字がマスクに切られないよう内側に逃げをつくり、
-     同じ分だけ負のマージンで外へ引き戻して版面上の位置は変えない。
 
-     padding を持たせずに overflow:hidden すると、書体の字面によって下端が欠ける。
-     実測（canvas TextMetrics・100px時）:
-       Syne           ink 上78 / 下16.3 → line-height 0.88 だと下端が 0.05em はみ出す
-                      → 丸い 0/3/6/8/9 だけ切れる。これが「番号によっては見切れる」の正体
-       Climate Crisis ink 上78 / 下3    → 下の余白 0.18em で確実に収まる
-     下マージン -0.205em は、数字の字面の下端を行の底（＝部屋名のベースライン）に
-     合わせ直すための量。 */
   overflow: hidden;
   padding: 0.08em 0.12em 0.18em;
   margin: -0.08em -0.12em -0.205em -0.18em;
@@ -179,11 +144,7 @@ main {
   background: currentColor;
 }
 
-/* ================================================================
-    Plate — 美術館の作品キャプション。
-    参照サイトが写真の下に置いていた「作品名 / 作者 / 年 / 製作 / ©」の組を、
-    このサイトでは "できること" と "実績" のラベルとして流用する。
-    ================================================================ */
+/* ---- Plate（作品キャプション） ---- */
 .plate {
   font-family: var(--font-mono);
   font-size: var(--t-plate);
@@ -217,10 +178,7 @@ main {
   display: block;
 }
 
-
-/* ================================================================
-    Header — 罫線も影も持たない。ロゴと Menu の2点だけを版面に置く
-    ================================================================ */
+/* ---- Header ---- */
 .site-header {
   position: fixed;
   inset-inline: 0;
@@ -244,7 +202,6 @@ main {
   pointer-events: auto;
 }
 
-/* ロゴとMenuは色面の上に浮くピル。部屋の色が何であっても読める */
 .site-header__logo {
   display: block;
   padding: 0.55rem 1.1rem;
@@ -278,11 +235,7 @@ main {
   color: var(--c-ink);
 }
 
-/* ================================================================
-    Menu overlay — 墨のベタ面に索引を落とす。
-    差し色は寒色（ペリウィンクル）。Nº05 Contact と同じ塩梅で
-    「連番・escピル・ホバー」だけに点で差す（面では使わない）
-    ================================================================ */
+/* ---- Menu overlay ---- */
 .menu {
   position: fixed;
   inset: 0;
@@ -358,7 +311,6 @@ main {
   border-bottom: 1px solid color-mix(in srgb, var(--c-warm) 22%, transparent);
 }
 
-/* 連番だけ差し色 — 面ではなく点で効かせる */
 .menu__nav a .idx {
   font-family: var(--font-mono);
   font-size: var(--t-label);
@@ -396,10 +348,7 @@ main {
   padding-bottom: 2px;
 }
 
-/* ================================================================
-    Nº00 Hero — 展覧会のタイトル面。
-    巨大な題字 ／ 極小のキャプション ／ 一枚のメンフィス色面
-    ================================================================ */
+/* ---- Hero（表紙） ---- */
 .hero {
   position: relative;
   background: var(--c-paper);
@@ -411,8 +360,6 @@ main {
   overflow: hidden;
 }
 
-/* 図版プレート: イエローのベタ面 ＋ その上に立つトーテム。
-   写真の代わりに「面と物体」で画面を持たせる一点 */
 .hero__plate {
   position: absolute;
   top: 0;
@@ -477,10 +424,9 @@ main {
 
 .hero__title .line > span {
   display: block;
-  /* マスク（.line の overflow:hidden）でグリフの下端やカンマが切れないよう、
-     行ボックスには 1em 以上の高さを持たせ、行間は負のマージンで詰め直す */
+
   line-height: 1.08;
-  /* 4行のラグ組みは折り返させない（行の長短そのものが構図） */
+
   white-space: nowrap;
 }
 
@@ -488,8 +434,6 @@ main {
   margin-top: -0.2em;
 }
 
-/* 偶数行だけウェイトを落として字送りを緩める。
-   サイズは変えずに「太い行／細い行」を交互に置き、4行のラグ組みに律動をつくる */
 .hero__title .line:nth-child(even) > span {
   font-weight: 600;
   letter-spacing: -0.008em;
@@ -545,19 +489,10 @@ main {
   }
 }
 
-/* ================================================================
-    Statement — 引用ひとつだけの部屋。
-    引用は「白文字 × mix-blend-mode: difference」。下地の色に応じて文字が反転する。
-    ver5.4: 墨の帯は撤去した。反転して白抜きになる範囲が広く、読みにくかったため。
-    いまの下地と反転後の文字:
-      温白 #fff9f6 → 文字は (0,6,9)      約19:1（ほぼ黒。地の文はここ）
-      ピンク #fdbac8 → 文字は (2,69,55)   約6.7:1（深緑に転ぶ）
-      イエロー #f3f300 → 文字は (12,12,255) 約8.9:1（青に転ぶ）
-    暗い面（墨・スレート）を下地にすると文字が白抜きになるので、この部屋では使わない。
-    ================================================================ */
+/* ---- Statement（引用の部屋） ---- */
 .statement {
   --room-bg: var(--c-warm);
-  /* 差分ブレンドをこの部屋の中だけに閉じ込める（ページ全体と混ざらせない） */
+
   isolation: isolate;
   overflow: hidden;
   text-align: center;
@@ -592,14 +527,11 @@ main {
   border: clamp(0.75rem, 1.6vw, 1.4rem) solid var(--c-yellow);
 }
 
-/* z-index は付けない。付けると重ね合わせ文脈が切れて difference が
-   形まで届かなくなる。DOM順（形 → 本文）と position:relative だけで前後を決める */
 .statement .room__inner {
   position: relative;
 }
 
 .statement__quote {
-  /* 「言われた通りに組む手が止まり、」が段落ちしない幅を確保する */
   max-width: 56rem;
   margin-inline: auto;
   font-size: var(--t-statement);
@@ -610,7 +542,6 @@ main {
   mix-blend-mode: difference;
 }
 
-/* 行はマスクで隠さず、素直に段落として置く（和文が折り返してもレイアウトが崩れない） */
 .statement__quote .line {
   display: block;
 }
@@ -624,9 +555,7 @@ main {
   line-height: 2;
 }
 
-/* ================================================================
-    Marquee — 題字の帯。スクロール量で流す（無限ループにしない）
-    ================================================================ */
+/* ---- Marquee（題字の帯） ---- */
 .marquee {
   overflow: hidden;
   padding-block: clamp(1rem, 2vw, 2rem);
@@ -654,7 +583,6 @@ main {
   white-space: nowrap;
 }
 
-/* 1語おきに中抜きにして、帯の中にも濃淡のリズムをつくる */
 .marquee__item .hollow {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--c-warm);
@@ -668,9 +596,7 @@ main {
   background: var(--c-orange);
 }
 
-/* ================================================================
-    Nº01 About — ピンクの部屋。大きな和文の一文と、脇に流す本文。
-    ================================================================ */
+/* ---- Nº01 About ---- */
 .about {
   --room-bg: var(--c-pink);
   --room-accent: var(--c-warm);
@@ -741,11 +667,7 @@ main {
   padding-bottom: 3px;
 }
 
-/* ================================================================
-    Nº02 Capability — 展示室そのもの。
-    「できること」を1点ずつの展示物として並べる:
-      メンフィス幾何コンポジション（写真の代役） ＋ 作品キャプション
-    ================================================================ */
+/* ---- Nº02 Capability（展示室） ---- */
 .capability {
   --room-bg: var(--c-warm);
   --room-accent: var(--c-blue);
@@ -762,13 +684,11 @@ main {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* 偶数番を落として格子に段差をつくる（写真がない分、配置で律動を出す） */
   .exhibit:nth-child(even) {
     margin-top: clamp(2rem, 6vw, 5rem);
   }
 }
 
-/* 全幅の恩恵が出る幅では、4点を横一列に。壁に並べて掛けた見立てになる */
 @media (min-width: 96rem) {
   .exhibits {
     grid-template-columns: repeat(4, 1fr);
@@ -796,17 +716,12 @@ main {
   margin-bottom: var(--s-sm);
 }
 
-/* ================================================================
-    Nº03 Works — 目録。
-    Capability が「図版のある展示室」なのに対し、こちらは文字だけで見せる。
-    スクリーンショットを持たないので、年・題・仕様の組版そのものを図版として扱う。
-    ================================================================ */
+/* ---- Nº03 Works（目録） ---- */
 .works {
   --room-bg: var(--c-paper);
   --room-accent: var(--c-coral);
 }
 
-/* 公開できる実績が0件のときの掲示。美術館の「この部屋は準備中です」の札 */
 .works__pending {
   display: block;
   padding-block: clamp(2rem, 5vw, 4rem);
@@ -901,9 +816,7 @@ main {
   transform: translate(0.25rem, -0.25rem);
 }
 
-/* ================================================================
-    Nº04 Spec — 暗室。白い文字の仕様表。
-    ================================================================ */
+/* ---- Nº04 Spec（暗室） ---- */
 .spec {
   --room-bg: var(--c-slate);
   --room-accent: var(--c-turquoise);
@@ -957,9 +870,7 @@ main {
   text-transform: uppercase;
 }
 
-/* ================================================================
-    Nº05 Profile — ミントの部屋。年譜のように読ませる。
-    ================================================================ */
+/* ---- Nº05 Profile ---- */
 .profile {
   --room-bg: var(--c-mint);
   --room-accent: var(--c-slate);
@@ -1027,9 +938,7 @@ main {
   }
 }
 
-/* ================================================================
-    Nº06 Contact — ブルーのベタ面。巨大なリンク1本だけを置く。
-    ================================================================ */
+/* ---- Nº06 Contact ---- */
 .contact {
   --room-bg: var(--c-blue);
   --room-fg: var(--c-warm);
@@ -1057,8 +966,6 @@ main {
   transform: translateX(0.06em);
 }
 
-/* 矢印は Syne に無いのでフォールバックに落ちる。
-   本文と同じ大きさでは異物になるため、小さく上付きにして記号として扱う */
 .contact__title .arrow {
   display: inline-block;
   font-size: 0.34em;
@@ -1071,10 +978,7 @@ main {
   transform: translate(0.12em, -0.12em);
 }
 
-
-/* ================================================================
-    Footer
-    ================================================================ */
+/* ---- Footer ---- */
 .site-footer {
   padding: var(--s-xl) var(--gutter);
   background: var(--c-ink);
@@ -1105,16 +1009,13 @@ main {
   color: var(--c-yellow);
 }
 
-/* ================================================================
-    Works detail（/works/[slug]）— 静かな読み物
-    ================================================================ */
+/* ---- Works detail（/works/[slug]） ---- */
 .container {
   max-width: 52rem;
   margin-inline: auto;
   padding: calc(var(--room-pad) * 1.2) var(--gutter) var(--room-pad);
 }
 
-/* 実績詳細は「グレーの壁に貼られた図録のページ」。温白の紙面を1枚だけ置く */
 .container.work-detail {
   background: var(--c-warm);
   padding-inline: clamp(1.5rem, 5vw, 4rem);
@@ -1139,7 +1040,6 @@ main {
   letter-spacing: 0.005em;
 }
 
-/* 図録ページの目印。イエローの短い帯を見出しの上に1本だけ */
 .work-detail h1::before {
   content: "";
   display: block;
@@ -1198,9 +1098,7 @@ main {
   padding-left: 1.2em;
 }
 
-/* ================================================================
-    Responsive
-    ================================================================ */
+/* ---- Responsive ---- */
 @media (max-width: 64rem) {
   .hero__plate {
     width: 42vw;
@@ -1222,7 +1120,6 @@ main {
     grid-row: auto;
   }
 
-  /* モバイルは重ねない: 本文 → 図版プレートの順に縦積みにする */
   .hero {
     min-height: auto;
     justify-content: flex-start;
@@ -1234,7 +1131,7 @@ main {
 
   .hero__plate {
     order: 2;
-    /* static にすると .hero__field の inset:0 が .hero を基準にしてしまうので relative のまま */
+
     position: relative;
     top: auto;
     right: auto;
@@ -1256,7 +1153,6 @@ main {
     display: none;
   }
 
-  /* 目録は年を1行落として、題と仕様に幅を渡す */
   .worklist__link {
     grid-template-columns: 1fr auto;
     row-gap: var(--s-xs);
@@ -1266,7 +1162,6 @@ main {
     grid-column: 1 / -1;
   }
 
-  /* 狭い画面では形が引用に被りすぎるので、輪は落として円を小さくする */
   .sh--ring {
     display: none;
   }
@@ -1276,9 +1171,7 @@ main {
   }
 }
 
-/* ================================================================
-    Reduced motion
-    ================================================================ */
+/* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

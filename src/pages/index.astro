@@ -2,19 +2,13 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-/* draft:true は出さない。公開できる実績が0件のあいだ、Nº03 Works は「準備中」を出す */
+// Worksが0件の場合は「準備中」を表示
 const works = (await getCollection('works'))
   .filter((work) => !work.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 
-/* ------------------------------------------------------------------
-   メンフィス幾何コンポジション。
-   写真素材が使えないので、展示物そのものをベタ色の幾何形で描く。
-   共通の語彙: 台座のバー ／ 円 ／ 三角 ／ 縞 ／ うねる線 ／ 点列。
-   色は tokens.css の CSS 変数を参照（インラインSVGなので継承される）。
------------------------------------------------------------------- */
 const art = {
-  // 積み上がるブロック — フロントエンド実装
+  // フロントエンド実装
   build: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="34" y="26" width="58" height="58" fill="var(--c-blue)" />
     <path d="M92 26h62l-30 58H92z" fill="var(--c-yellow)" />
@@ -25,8 +19,7 @@ const art = {
     <path d="M90 132h60v76H90z" fill="var(--c-pink)" />
     <rect x="34" y="208" width="172" height="14" fill="var(--c-ink)" />
   </svg>`,
-
-  // 縞の柱 — CMS設計・構築
+  // CMS設計・構築
   cms: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <circle cx="120" cy="40" r="30" fill="var(--c-turquoise)" />
     <rect x="82" y="74" width="76" height="18" fill="var(--c-ink)" />
@@ -38,8 +31,7 @@ const art = {
     <path d="M28 74l40 122H28z" fill="var(--c-pink)" />
     <path d="M212 74l-40 122h40z" fill="var(--c-pink)" />
   </svg>`,
-
-  // コンパスと扇 — 要件整理・設計
+  // 要件整理・設計
   plan: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M40 172a80 80 0 0 1 160 0z" fill="var(--c-yellow)" />
     <path d="M80 172a40 40 0 0 1 80 0z" fill="var(--c-blue)" />
@@ -49,8 +41,7 @@ const art = {
     <circle cx="44" cy="52" r="18" fill="var(--c-coral)" />
     <rect x="186" y="34" width="16" height="72" fill="var(--c-peri)" />
   </svg>`,
-
-  // 軌道と点列 — 運用・保守
+  // 運用・保守
   ops: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M28 96c26-44 76-44 102 0s76 44 102 0" stroke="var(--c-blue)" stroke-width="14" fill="none" />
     <path d="M28 140c26-44 76-44 102 0s76 44 102 0" stroke="var(--c-pink)" stroke-width="14" fill="none" />
@@ -60,10 +51,7 @@ const art = {
     <circle cx="192" cy="196" r="14" fill="var(--c-ink)" />
     <rect x="98" y="24" width="44" height="44" fill="var(--c-olive)" />
   </svg>`,
-
-  // ヒーローのトーテム（上の語彙を1本に積んだ主役の一点）
-  // 冠の円だけイエロー — 色面が寒色（ペリウィンクル）になったぶん、
-  // イエローは「面」から「その上に載る点」に役割を移した
+  // 表紙のトーテム
   totem: `<svg viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <circle cx="100" cy="40" r="34" fill="var(--c-yellow)" />
     <path d="M100 84l40 52H60z" fill="var(--c-orange)" />
@@ -78,7 +66,7 @@ const art = {
   </svg>`,
 };
 
-/* Nº02 Capability = 展示物のリスト。作品キャプションの体裁で淡々と並べる */
+// Nº02 Capability の展示物
 const exhibits = [
   {
     fig: 'Fig. 01',
@@ -102,40 +90,39 @@ const exhibits = [
     fig: 'Fig. 03',
     title: '要件整理・設計',
     period: '（要件定義 / 見積）',
-    material: 'ヒアリング, 仕様定義, 実現可能性の検証',
+    material: '対話からの要件定義、仕様策定、実現可能性を踏まえた見積り・構造化',
     note: '行間を読んで仕様に書き起こす',
     bg: 'var(--c-paper)',
     art: art.plan,
   },
   {
     fig: 'Fig. 04',
-    title: '運用・保守',
-    period: '（移行 / 保守）',
-    material: 'サーバー移行, SEO, セキュリティ対応',
-    note: '公開後の環境を整え続ける',
+    title: '進行管理・運用',
+    period: '（進行 / 管理 / 移行 / 保守）',
+    material: 'プロジェクトの進行管理・折衝、公開後のサーバー移行や保守運用',
+    note: '公開前・後の環境を整え続ける',
     bg: 'var(--c-coral)',
     art: art.ops,
   },
 ];
 
-/* Nº03 Spec（仕様表） */
+// Nº04 Spec
 const spec = [
+  { label: 'Management / Direction', items: ['要件定義', '顧客折衝', '進行管理', '仕様策定・見積り'] },
   { label: 'Markup', items: ['HTML', 'CSS / Sass', 'BEM', 'レスポンシブ対応', 'アクセシビリティ'] },
   { label: 'Program', items: ['JavaScript', 'jQuery', 'GSAP', 'PHP', 'Vue.js / Nuxt.js'] },
   { label: 'CMS / FW', items: ['WordPress 自作テーマ', 'Tailwind CSS', 'Bulma'] },
   { label: 'Learning', items: ['React / Next.js', 'TypeScript', 'Three.js / WebGL', 'Blender'], learning: true },
 ];
 
-/* 題字の帯（装飾・aria-hidden）。1語おきに中抜きにして濃淡をつける */
+// 題字の帯
 const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
 ---
 
 <Base title="rootscion | Web Engineer">
   <main>
-    <!-- ============ 表紙（展覧会のタイトル面） ============ -->
+    <!-- Hero（表紙） -->
     <section class="hero" id="top">
-      <!-- 図版プレート: イエローの色面と、その上に立つトーテム。
-           デスクトップは右上に絶対配置、モバイルは本文の下の帯になる（文字と重ねない） -->
       <div class="hero__plate" aria-hidden="true">
         <div class="hero__field"></div>
         <div class="hero__composition" data-composition set:html={art.totem} />
@@ -166,7 +153,6 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ 題字の帯（スクロール量で流す） ============ -->
     <div class="marquee" aria-hidden="true" data-marquee>
       <div class="marquee__track">
         {
@@ -184,10 +170,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </div>
 
-    <!-- ============ ステートメント（引用ひとつだけの部屋）
-         引用は白文字＋mix-blend-mode:difference。下地の色に応じて自動で反転する。
-         ver5.4: 墨の帯は撤去（白抜きになる範囲が広く読みにくかった）。
-         残したピンクの円とイエローの輪の上でだけ、文字が深緑・青へ静かに転ぶ ============ -->
+    <!-- Statement -->
     <section class="room statement">
       <div class="statement__shapes" aria-hidden="true">
         <span class="sh sh--disc" data-sh-speed="46"></span>
@@ -205,7 +188,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº01 About ============ -->
+    <!-- Nº01 About -->
     <section class="room about" id="about">
       <div class="room__inner">
         <div class="room-head">
@@ -239,7 +222,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº02 Capability（展示室） ============ -->
+    <!-- Nº02 Capability -->
     <section class="room room--bleed capability" id="capability">
       <div class="room__inner">
         <div class="room-head">
@@ -269,9 +252,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº03 Works（目録）
-         Capability が「図版のある展示室」なのに対して、こちらは文字だけの目録。
-         スクリーンショットを持たないので、年・題・仕様の組版だけで見せる ============ -->
+    <!-- Nº03 Works -->
     <section class="room works" id="works">
       <div class="room__inner">
         <div class="room-head">
@@ -311,7 +292,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº04 Spec（暗室） ============ -->
+    <!-- Nº04 Spec -->
     <section class="room room--bleed room--dark spec" id="skills">
       <div class="room__inner">
         <div class="room-head">
@@ -340,7 +321,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº05 Profile ============ -->
+    <!-- Nº05 Profile -->
     <section class="room profile" id="profile">
       <div class="room__inner">
         <div class="room-head">
@@ -362,10 +343,10 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
           <dl class="profile__list" data-reveal>
             <div><dt>Handle</dt><dd>rootscion（ルーツサイオン）</dd></div>
             <div><dt>Name</dt><dd>YURI ISHIKAWA</dd></div>
-            <div><dt>Role</dt><dd>Web Engineer</dd></div>
-            <div><dt>Experience</dt><dd>10+ years in Web Development</dd></div>
-            <div><dt>Background</dt><dd>Contract Production → Design Studio</dd></div>
-            <div><dt>Favorites</dt><dd>gadgets / tactile audio gear / minimalist setups</dd></div>
+            <div><dt>Role</dt><dd>Webエンジニア</dd></div>
+            <div><dt>Experience</dt><dd>Web開発歴10年以上</dd></div>
+            <div><dt>Background</dt><dd>受託制作 → デザイン会社</dd></div>
+            <div><dt>Favorites</dt><dd>ガジェット / オーディオ機器</dd></div>
             <div>
               <dt>Now</dt>
               <dd><span class="live-dot" aria-hidden="true"></span>Blender &amp; 3D Web Graphics を学習中</dd>
@@ -375,7 +356,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
       </div>
     </section>
 
-    <!-- ============ Nº06 Contact ============ -->
+    <!-- Nº06 Contact -->
     <section class="room room--bleed room--dark contact" id="contact">
       <div class="room__inner">
         <div class="room-head">
@@ -385,9 +366,7 @@ const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
         </div>
 
         <p class="contact__title">
-          <a href="mailto:hello.rootscion@gmail.com"
-            >Let's talk<span class="arrow" aria-hidden="true">↗</span></a
-          >
+          <a href="mailto:hello.rootscion@gmail.com">Let's talk<span class="arrow" aria-hidden="true">↗</span></a>
         </p>
       </div>
     </section>

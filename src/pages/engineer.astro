@@ -1,8 +1,7 @@
 ---
 import { SITE_NAME, GTM_ID, GTM_ENABLED, OGP_IMAGE } from '../consts';
 
-// 各「ファイル」の中身（シンタックスハイライト済みHTML）
-// ※ index.astro のコンテンツと同期させること
+// 各「ファイル」の中身（index.astro の文言と同期させる）
 const aboutLines = [
   '<span class="tk-blue"># about</span>',
   '',
@@ -189,7 +188,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </button>
         <a class="dicon" href="/">
           <span class="dicon__img" aria-hidden="true">
-            <!-- メインサイトのロゴマーク（favicon簡略版）をレトロ配色に合わせたもの -->
+            <!-- logo mark -->
             <svg viewBox="0 0 96 96">
               <g fill="none" stroke="#0a7489" stroke-width="6.5" stroke-linecap="butt" stroke-linejoin="miter">
                 <path d="M48 47 L64.45 37.5 V18.5 L48 9 L31.55 18.5 V37.5 Z" />
@@ -204,7 +203,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </a>
       </div>
 
-      <!-- editor window（rootscion製の架空エディタ。VSCodeではなくSystem 7の書類ウィンドウ） -->
+      <!-- editor window -->
       <section class="window" id="editor-window" hidden aria-label="code editor">
         <div class="window__titlebar" id="editor-titlebar">
           <button class="wbox" data-win-close aria-label="閉じる"></button>
@@ -420,37 +419,32 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
     </script>
 
     <style is:global>
-      /* Hallmark · genre: n/a (app page · retro-OS world) · design-system: design.md · designed-as-app
-       * theme: cion OS 7 — Happy Hues #10 ティール深化 · System 7風チローム
-       * display/chrome: DotGothic16 · code: IBM Plex Mono · prose: Noto Sans JP
-       * メインサイトと配色を揃えないのは意図（モード切替の演出）。共有するのはロゴと
-       * 「ハイライトだけ違う色（yellow = escの思想）」・フォーカス規律・reduced-motion
-       */
+      /* ---- cion OS 7 theme（メインと配色は共有しない） ---- */
       :root {
-       /* 1. ベース（動画の完璧な重低音ダークネイビーを維持） */
-       --os-desktop: #070a13;
+        /* base */
+        --os-desktop: #070a13;
         --os-desktop-dot: #1a2235;
         --os-paper: #0c1220;
         --os-paper-2: #161f33;
 
-        /* 2. テキスト・液晶表示（【修正】シアンからライム系へ変革） */
-        --os-text: #adff2f;          /* グリーンイエロー：闇の中で最も美しく発光する、有機EL調のネオンライム */
-        --os-line: #39ff14;          /* ネオンライム：境界線は、よりパキッとした蛍光ライムグリーンに（不透明度を少し下げても美しい） */
-        --os-dim: #416266;           /* サブテキスト：ライムの裏側に潜む、少し緑がかったダークブルーグレー */
+        /* text */
+        --os-text: #adff2f;
+        --os-line: #39ff14;
+        --os-dim: #416266;
 
-        /* 3. アイデンティティ＆アラート（サイバーパンクの毒気を加速） */
-        --os-highlight: #ff0055;     /* パステルマゼンタ：ライムの反対色である「マゼンタピンク」をここに！緑✕ピンクの組み合わせは最高にサイバーパンクになります */
-        --os-focus: #fcee09;         /* サイバーイエロー：フォーカスや警告、Escキーなどのアクセントに */
+        /* highlight / focus */
+        --os-highlight: #ff0055;
+        --os-focus: #fcee09;
 
-        /* 4. システムカラー */
+        /* system */
         --os-red: #ff3366;
-        --os-green: #39ff14;         /* ネオンライム */
-        --os-yellow: #fcee09;        /* ブランドイエロー */
-        --os-blue: #00f0ff;          /* シアンはサブカラーとしてアイコン等に少し残すと深みが出ます */
+        --os-green: #39ff14;
+        --os-yellow: #fcee09;
+        --os-blue: #00f0ff;
         --os-purple: #9d4edd;
         --os-orange: #ff5500;
 
-        /* 5. フォント・その他（現状の素晴らしい指定を維持） */
+        /* font */
         --mono: 'IBM Plex Mono', monospace;
         --jp: 'Noto Sans JP', sans-serif;
         --dot: 'DotGothic16', 'IBM Plex Mono', monospace;
@@ -463,7 +457,6 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         box-sizing: border-box;
       }
 
-      /* display指定より hidden 属性を優先させる */
       [hidden] {
         display: none !important;
       }
@@ -974,7 +967,6 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
 
         .window,
         .window.is-open {
-          /* ドラッグで付くインラインの left/top も !important で打ち消して全面表示にする */
           inset: var(--menubar-h) 0 0 !important;
           width: auto;
           height: auto;
