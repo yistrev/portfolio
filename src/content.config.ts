@@ -11,6 +11,8 @@ const works = defineCollection({
     stack: z.array(z.string()),
     url: z.string().url().optional(),
     order: z.number().default(0),
+    // true の間は一覧・詳細とも非公開
+    draft: z.boolean().default(false),
   }),
 });
 

@@ -43,9 +43,43 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Geist+Mono:wght@400;500&family=Work+Sans:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Climate+Crisis&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Adobe Fonts（和文） -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
+    <script is:inline>
+      (function (d) {
+        var config = {
+            kitId: 'oez8avv',
+            scriptTimeout: 3000,
+            async: true,
+          },
+          h = d.documentElement,
+          t = setTimeout(function () {
+            h.className = h.className.replace(/\bwf-loading\b/g, '') + ' wf-inactive';
+          }, config.scriptTimeout),
+          tk = d.createElement('script'),
+          f = false,
+          s = d.getElementsByTagName('script')[0],
+          a;
+        h.className += ' wf-loading';
+        tk.src = 'https://use.typekit.net/' + config.kitId + '.js';
+        tk.async = true;
+        tk.onload = tk.onreadystatechange = function () {
+          a = this.readyState;
+          if (f || (a && a != 'complete' && a != 'loaded')) return;
+          f = true;
+          clearTimeout(t);
+          try {
+            Typekit.load(config);
+          } catch (e) {}
+        };
+        s.parentNode.insertBefore(tk, s);
+      })(document);
+    </script>
   </head>
   <body>
     {
@@ -61,7 +95,7 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         </noscript>
       )
     }
-    <!-- N7 brutal slab: 2px下線の追従ヘッダー。ロゴ左・太枠MENUボタン右 -->
+    <!-- Header -->
     <header class="site-header">
       <div class="site-header__inner">
         <a href="/" class="site-header__logo">
@@ -77,19 +111,20 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
       </div>
     </header>
 
-    <!-- 開閉メニュー（閉じるキーは esc） -->
+    <!-- Menu overlay -->
     <div class="menu" id="site-menu" hidden>
       <div class="menu__inner">
         <div class="menu__top">
-          <span class="menu__brand">rootscion — index</span>
+          <span class="menu__brand">rootscion — index of rooms</span>
           <button class="menu__esc" data-menu-close aria-label="メニューを閉じる">esc</button>
         </div>
         <nav class="menu__nav" aria-label="サイト内メニュー">
-          <a href="/#about"><span class="idx">Nº01</span>About</a>
-          <a href="/#capability"><span class="idx">Nº02</span>Capability</a>
-          <a href="/#skills"><span class="idx">Nº03</span>Spec</a>
-          <a href="/#profile"><span class="idx">Nº04</span>Profile</a>
-          <a href="/#contact"><span class="idx">Nº05</span>Contact</a>
+          <a href="/#about"><span class="idx">Nº01</span><span>About</span><span class="jp">この場所について</span></a>
+          <a href="/#capability"><span class="idx">Nº02</span><span>Capability</span><span class="jp">できることの展示</span></a>
+          <a href="/#works"><span class="idx">Nº03</span><span>Works</span><span class="jp">手がけたもの</span></a>
+          <a href="/#skills"><span class="idx">Nº04</span><span>Spec</span><span class="jp">仕様</span></a>
+          <a href="/#profile"><span class="idx">Nº05</span><span>Profile</span><span class="jp">作り手について</span></a>
+          <a href="/#contact"><span class="idx">Nº06</span><span>Contact</span><span class="jp">相談する</span></a>
         </nav>
         <p class="menu__meta">
           <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
@@ -100,10 +135,10 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
 
     <slot />
 
-    <!-- Ft1 minimal bar: 3px上枠の1行モノスペース銘板 -->
+    <!-- Footer -->
     <footer class="site-footer">
       <p class="footer-bar">
-        <span>Unit R-{year} &copy; {year} rootscion</span>
+        <span>&copy; {year} rootscion</span>
         <a href="/engineer">Mode: engineer →</a>
       </p>
     </footer>
@@ -124,12 +159,16 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         toggle.setAttribute('aria-expanded', 'true');
         document.body.classList.add('menu-open');
         if (!reduceMotion) {
-          gsap.fromTo(menu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.28, ease: 'power2.out' });
+          // パネルの opacity は触らない（透けるため。CLAUDE.md 実装メモ参照）
+          gsap.fromTo(menu,
+            { yPercent: -100 },
+            { yPercent: 0, duration: 0.5, ease: 'expo.out' }
+          );
           gsap.fromTo(items,
             { yPercent: 70, autoAlpha: 0 },
-            { yPercent: 0, autoAlpha: 1, duration: 0.55, stagger: 0.06, ease: 'expo.out', delay: 0.08 }
+            { yPercent: 0, autoAlpha: 1, duration: 0.55, stagger: 0.06, ease: 'expo.out', delay: 0.18 }
           );
-          gsap.fromTo(meta, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.3 });
+          gsap.fromTo(meta, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.4 });
         }
         closeBtn.focus();
       }
@@ -140,9 +179,9 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
         document.body.classList.remove('menu-open');
         if (!reduceMotion) {
           gsap.to(menu, {
-            autoAlpha: 0,
-            duration: 0.22,
-            ease: 'power2.in',
+            yPercent: -100,
+            duration: 0.34,
+            ease: 'power3.in',
             onComplete: () => {
               menu.hidden = true;
               gsap.set([menu, items, meta], { clearProps: 'all' });
@@ -157,12 +196,10 @@ const ogImage = new URL(OGP_IMAGE, Astro.site);
       toggle.addEventListener('click', () => (isOpen ? closeMenu() : openMenu()));
       closeBtn.addEventListener('click', closeMenu);
 
-      // 世界観どおり esc キーでも閉じる
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen) closeMenu();
       });
 
-      // アンカー遷移時は即座に閉じる（スクロール先が見えるように）
       items.forEach((a) => {
         a.addEventListener('click', () => {
           isOpen = false;

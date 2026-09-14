@@ -2,166 +2,165 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-const works = (await getCollection('works')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+// Worksが0件の場合は「準備中」を表示
+const works = (await getCollection('works'))
+  .filter((work) => !work.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
 
-// アイソメトリックな線画アイコン（ロゴと同族の30°線画。stroke-dashoffset で描画アニメーション。
-// g.dock = ホバーで本体へスライドして「接ぎ木」される可動パーツ）
-const isoIcons = {
-  // フロントエンド実装: ベースのキューブに、最後のピースがはまる
-  build: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M52 36l26 15-26 15-26-15Z" />
-    <path d="M26 51v20l26 15V66Z" />
-    <path d="M78 51v20l-26 15V66Z" />
-    <path class="dashed" d="M88 41v16" />
-    <g class="dock" data-dx="0" data-dy="25">
-      <path class="accent" d="M88 10l12 7-12 7-12-7Z" />
-      <path class="accent" d="M76 17v10l12 7V24Z" />
-      <path class="accent" d="M100 17v10l-12 7V24Z" />
-    </g>
+const art = {
+  // フロントエンド実装
+  build: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="34" y="26" width="58" height="58" fill="var(--c-blue)" />
+    <path d="M92 26h62l-30 58H92z" fill="var(--c-yellow)" />
+    <circle cx="188" cy="55" r="29" fill="var(--c-orange)" />
+    <rect x="34" y="98" width="172" height="20" fill="var(--c-ink)" />
+    <rect x="56" y="132" width="34" height="76" fill="var(--c-slate)" />
+    <rect x="150" y="132" width="34" height="76" fill="var(--c-slate)" />
+    <path d="M90 132h60v76H90z" fill="var(--c-pink)" />
+    <rect x="34" y="208" width="172" height="14" fill="var(--c-ink)" />
   </svg>`,
-  // CMS設計・構築: 大きさの違うレイヤーが積み上がって整う
-  cms: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M60 42l38 22-38 22-38-22Z" />
-    <g class="dock" data-dx="0" data-dy="7">
-      <path class="accent" d="M60 26l28 16-28 16-28-16Z" />
-    </g>
-    <path d="M60 12l18 10-18 10-18-10Z" />
+  // CMS設計・構築
+  cms: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="120" cy="40" r="30" fill="var(--c-turquoise)" />
+    <rect x="82" y="74" width="76" height="18" fill="var(--c-ink)" />
+    <rect x="82" y="100" width="76" height="18" fill="var(--c-yellow)" />
+    <rect x="82" y="126" width="76" height="18" fill="var(--c-ink)" />
+    <rect x="82" y="152" width="76" height="18" fill="var(--c-orange)" />
+    <rect x="82" y="178" width="76" height="18" fill="var(--c-ink)" />
+    <path d="M28 204h184v18H28z" fill="var(--c-blue)" />
+    <path d="M28 74l40 122H28z" fill="var(--c-pink)" />
+    <path d="M212 74l-40 122h40z" fill="var(--c-pink)" />
   </svg>`,
-  // 要件整理・設計: キューブ（スピーカー）＋広がる音波 = 対話を聞き取る
-  plan: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M46 18l26 15-26 15-26-15Z" />
-    <path d="M20 33v22l26 15V48Z" />
-    <path d="M72 33v22l-26 15V48Z" />
-    <g class="dock" data-dx="-7" data-dy="0">
-      <path class="accent" d="M84 38c7 5 7 11 0 16" />
-      <path class="accent" d="M93 33c11 8 11 18 0 26" />
-      <path class="accent" d="M102 28c15 11 15 25 0 36" />
-    </g>
+  // 要件整理・設計
+  plan: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M40 172a80 80 0 0 1 160 0z" fill="var(--c-yellow)" />
+    <path d="M80 172a40 40 0 0 1 80 0z" fill="var(--c-blue)" />
+    <circle cx="120" cy="172" r="12" fill="var(--c-ink)" />
+    <path d="M120 24l34 60h-68z" fill="var(--c-olive)" />
+    <rect x="30" y="188" width="180" height="16" fill="var(--c-ink)" />
+    <circle cx="44" cy="52" r="18" fill="var(--c-coral)" />
+    <rect x="186" y="34" width="16" height="72" fill="var(--c-peri)" />
   </svg>`,
-  // 運用・保守: サーバーキューブの周りを巡回する軌道
-  ops: `<svg class="iso-icon" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M60 24l26 15-26 15-26-15Z" />
-    <path d="M34 39v20l26 15V54Z" />
-    <path d="M86 39v20l-26 15V54Z" />
-    <path class="accent" d="M40 49l9 5" />
-    <path class="accent" d="M40 56l9 5" />
-    <path class="accent dashed" d="M16 56C8 40 28 24 50 20" />
-    <g class="dock" data-dx="-5" data-dy="4">
-      <path class="accent" d="M104 40c8 16-12 32-34 36" />
-      <path class="accent" d="M70 76l-7 2 3-7" />
-    </g>
+  // 運用・保守
+  ops: `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M28 96c26-44 76-44 102 0s76 44 102 0" stroke="var(--c-blue)" stroke-width="14" fill="none" />
+    <path d="M28 140c26-44 76-44 102 0s76 44 102 0" stroke="var(--c-pink)" stroke-width="14" fill="none" />
+    <circle cx="60" cy="196" r="14" fill="var(--c-ink)" />
+    <circle cx="104" cy="196" r="14" fill="var(--c-ink)" />
+    <circle cx="148" cy="196" r="14" fill="var(--c-yellow)" />
+    <circle cx="192" cy="196" r="14" fill="var(--c-ink)" />
+    <rect x="98" y="24" width="44" height="44" fill="var(--c-olive)" />
+  </svg>`,
+  // 表紙のトーテム
+  totem: `<svg viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="40" r="34" fill="var(--c-yellow)" />
+    <path d="M100 84l40 52H60z" fill="var(--c-orange)" />
+    <rect x="46" y="146" width="108" height="14" fill="var(--c-ink)" />
+    <rect x="46" y="168" width="108" height="14" fill="var(--c-ink)" />
+    <rect x="46" y="190" width="108" height="14" fill="var(--c-ink)" />
+    <path d="M22 216h156v22H22z" fill="var(--c-pink)" />
+    <rect x="62" y="238" width="26" height="58" fill="var(--c-slate)" />
+    <rect x="112" y="238" width="26" height="58" fill="var(--c-slate)" />
+    <rect x="10" y="296" width="180" height="16" fill="var(--c-ink)" />
+    <circle cx="172" cy="112" r="16" fill="var(--c-olive)" />
   </svg>`,
 };
 
-// Nº02 Capability = できることの一覧表。売り文句は書かず、1行の説明とタグだけ
-const capabilities = [
+// Nº02 Capability の展示物
+const exhibits = [
   {
-    num: '01',
+    fig: 'Fig. 01',
     title: 'フロントエンド実装',
-    desc: 'HTML / CSS / JavaScript、GSAPによるインタラクティブなUI実装',
-    tag: 'BUILD',
-    icon: isoIcons.build,
+    period: '（設計 / 実装）',
+    material: 'HTML, CSS / Sass, JavaScript, GSAP',
+    note: 'インタラクティブなUIの実装',
+    bg: 'var(--c-paper)',
+    art: art.build,
   },
   {
-    num: '02',
+    fig: 'Fig. 02',
     title: 'CMS設計・構築',
-    desc: 'WordPress自作テーマの設計と構築、既存サイトの改修',
-    tag: 'CMS',
-    icon: isoIcons.cms,
+    period: '（設計 / 構築 / 改修）',
+    material: 'WordPress 自作テーマ, PHP',
+    note: '更新される前提の構造をつくる',
+    bg: 'var(--c-mint)',
+    art: art.cms,
   },
   {
-    num: '03',
+    fig: 'Fig. 03',
     title: '要件整理・設計',
-    desc: 'ヒアリングから仕様定義・設計、実現可能性を踏まえた見積もりの構造化',
-    tag: 'PLAN',
-    icon: isoIcons.plan,
+    period: '（要件定義 / 見積）',
+    material: '対話からの要件定義、仕様策定、実現可能性を踏まえた見積り・構造化',
+    note: '行間を読んで仕様に書き起こす',
+    bg: 'var(--c-paper)',
+    art: art.plan,
   },
   {
-    num: '04',
-    title: '運用・保守',
-    desc: 'サーバー移行、SEO・セキュリティ対応、公開後の環境整備',
-    tag: 'OPS',
-    icon: isoIcons.ops,
+    fig: 'Fig. 04',
+    title: '進行管理・運用',
+    period: '（進行 / 管理 / 移行 / 保守）',
+    material: 'プロジェクトの進行管理・折衝、公開後のサーバー移行や保守運用',
+    note: '公開前・後の環境を整え続ける',
+    bg: 'var(--c-coral)',
+    art: art.ops,
   },
 ];
 
-// Nº03 Spec（仕様表）
+// Nº04 Spec
 const spec = [
+  { label: 'Management / Direction', items: ['要件定義', '顧客折衝', '進行管理', '仕様策定・見積り'] },
   { label: 'Markup', items: ['HTML', 'CSS / Sass', 'BEM', 'レスポンシブ対応', 'アクセシビリティ'] },
   { label: 'Program', items: ['JavaScript', 'jQuery', 'GSAP', 'PHP', 'Vue.js / Nuxt.js'] },
   { label: 'CMS / FW', items: ['WordPress 自作テーマ', 'Tailwind CSS', 'Bulma'] },
   { label: 'Learning', items: ['React / Next.js', 'TypeScript', 'Three.js / WebGL', 'Blender'], learning: true },
 ];
 
-// マーキー帯（装飾・aria-hidden）。2連結でシームレスにループする
-const marqueeWords = ['Web Engineer', 'Rootscion', 'Build It Right'];
+// 題字の帯
+const marqueeWords = ['Rootscion', 'Web Engineer', 'Build It Right'];
 ---
 
 <Base title="rootscion | Web Engineer">
   <main>
-    <!-- 背景テクスチャ文字（roots + scion の R/S/C/N。読ませない・グラフィック） -->
-    <div class="bg-letters" aria-hidden="true">
-      <span class="l1" data-speed="-0.35">R</span>
-      <span class="l2 solid" data-speed="0.5">S</span>
-      <span class="l3" data-speed="-0.6">C</span>
-      <span class="l4" data-speed="0.4">N</span>
-    </div>
-
-    <!-- 極小アノテーション（図面のシステム注記。余白の設計図的な説得力） -->
-    <div class="annots" aria-hidden="true">
-      <span class="annot annot--a1"><span class="cross">+</span>REF_01_ROOT_SYS</span>
-      <span class="annot annot--a2">[ LAT 34.6937 / LON 135.5023 ]</span>
-      <span class="annot annot--a3">GRID 48PX — PLAN R-4</span>
-      <span class="annot annot--a4"><span class="cross">+</span>REF_04_SCION_SYS</span>
-      <span class="annot annot--a5">SCALE 1:1</span>
-      <span class="annot annot--a6">UNIT: KEYCAP / MAT: PBT</span>
-    </div>
-    <section class="hero">
-      <div class="hero__meta">
-        <span>rootscion — web engineer</span>
-        <span><a href="/engineer">Mode: engineer →</a></span>
+    <!-- Hero（表紙） -->
+    <section class="hero" id="top">
+      <div class="hero__plate" aria-hidden="true">
+        <div class="hero__field"></div>
+        <div class="hero__composition" data-composition set:html={art.totem} />
       </div>
-      <p class="hero__cmd">
-        <span class="prompt">rootscion@web</span>:~$
-        <span data-typing data-text="./init --mode=engineer">./init --mode=engineer</span><span class="block-cursor" aria-hidden="true"></span>
-      </p>
-      <h1 class="hero__title" data-hero-title>
-        <span class="line"><span>Root the web,</span></span>
-        <span class="line"><span>grow it <span class="u-accent">right.</span></span></span>
-      </h1>
-      <div class="hero__bottom">
-        <div class="hero__left">
-          <span class="hero__chip">Web Engineer</span>
-          <p class="hero__lead">
-            対話から生まれたアイデアの「根（ルーツ）」を、確かな構造のコードへ。
-            設計から実装、運用まで——Webサイトの「つくる工程」に
-            高い解像度で向き合い、かたちにします。
-          </p>
-          <span class="hero__scroll">Scroll</span>
-        </div>
-        <div class="hero__side">
-          <figure class="hero3d">
-            <div class="hero3d__stage" data-hero-3d></div>
-            <figcaption class="hero3d__caption">
-              <span>OBJ: keycap — drag to rotate</span>
-              <span>three.js</span>
-            </figcaption>
-          </figure>
+
+      <div class="hero__inner">
+        <p class="hero__eyebrow">
+          <span>rootscion — portfolio</span>
+          <span>Nº00 / Cover</span>
+          <span><a href="/engineer">Mode: engineer →</a></span>
+        </p>
+
+        <h1 class="hero__title" data-hero-title>
+          <span class="line"><span>Root</span></span>
+          <span class="line"><span>the web,</span></span>
+          <span class="line"><span>grow it</span></span>
+          <span class="line"><span><em>right.</em></span></span>
+        </h1>
+
+        <p class="hero__jp">
+          対話から生まれたアイデアの「根（ルーツ）」を、確かな構造のコードへ。
+          設計から実装、運用まで——Webサイトの「つくる工程」に高い解像度で向き合い、かたちにします。
+        </p>
+
+        <div class="hero__foot">
+          <p class="hero__scroll">Scroll</p>
         </div>
       </div>
     </section>
 
-    <!-- マーキー帯（あしらい・装飾） -->
-    <div class="marquee" aria-hidden="true">
+    <div class="marquee" aria-hidden="true" data-marquee>
       <div class="marquee__track">
         {
           [0, 1].map(() => (
             <span class="marquee__item">
               {marqueeWords.map((word, i) => (
                 <>
-                  <span class={i === 0 ? 'solid' : undefined}>{word}</span>
+                  <span class={i === 1 ? 'hollow' : undefined}>{word}</span>
                   <span class="dot" />
                 </>
               ))}
@@ -171,88 +170,142 @@ const marqueeWords = ['Web Engineer', 'Rootscion', 'Build It Right'];
       </div>
     </div>
 
-    <!-- Nº01 About（QUIET: 非対称グリッド — ラベル左上・オーナメント右上・本文は右へオフセット） -->
-    <section class="about" id="about">
-      <div class="about__grid">
-        <p class="sec-label"><span class="num">Nº01</span>About</p>
-        <figure class="about__geo" aria-hidden="true">
-          <!-- 幹のブロックが根のグリッドに降りる、ロゴと同族のアイソメ構成画 -->
-          <svg class="geo-orn" data-orn viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
-            <path d="M110 14l44 25-44 25-44-25Z" />
-            <path d="M66 39v44l44 25V64Z" />
-            <path d="M154 39v44l-44 25V64Z" />
-            <path class="accent" d="M184 8l22 13-22 13-22-13Z" />
-            <path class="accent" d="M162 21v18l22 13V34Z" />
-            <path class="accent" d="M206 21v18l-22 13V34Z" />
-            <path class="dashed" d="M184 56v26" />
-            <path d="M30 124l30 17 30-17-30-17Z" />
-            <path class="dashed" d="M96 141l30 17 30-17-30-17Z" />
-            <path class="esc" d="M110 116l7 4-7 4-7-4Z" />
-          </svg>
-        </figure>
-        <h2 class="about__pull" data-pull>
-          <span class="u-block">仕様書の行間まで読んで、</span><span class="u-block u-underline">コードに落とす。</span>
-        </h2>
-        <div class="about__text" data-reveal>
-        <p>
-          仕様書の通りに組むだけでなく、その行間にある課題やクライアントの真意まで
-          汲み取ってコードに落とし込む。それが、この場所の<span class="accent">エンジニアリングの流儀</span>です。
+    <!-- Statement -->
+    <section class="room statement">
+      <div class="statement__shapes" aria-hidden="true">
+        <span class="sh sh--disc" data-sh-speed="46"></span>
+        <span class="sh sh--ring" data-sh-speed="-72"></span>
+      </div>
+      <div class="room__inner">
+        <blockquote class="statement__quote" data-statement>
+          <span class="line">言われた通りに組むだけでなく、</span>
+          <span class="line">その行間まで汲み取ってカタチにする。</span>
+          <span class="line">それが、モノづくりのスタンスです。</span>
+        </blockquote>
+        <p class="statement__source">
+          rootscion — 制作のスタンス
         </p>
-        <p>
-          設計から実装、公開後の運用まで。
-          「つくる工程」の全域に高い解像度で向き合い、
-          対話から生まれた思考の根（ルーツ）を、
-          ビジネスの場で駆動する確かな「幹（サイオン）」へと育てます。
-        </p>
-        <p class="about__origin">
-          roots + (s)cion — 広げた興味の根から、たしかな「幹」を育てる
-          <span class="stripes" aria-hidden="true"></span>
-        </p>
-        <p class="about__links">
-          <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
-        </p>
+      </div>
+    </section>
+
+    <!-- Nº01 About -->
+    <section class="room about" id="about">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>01</span></p>
+          <h2 class="room-head__en">About</h2>
+          <p class="room-head__jp">Nº01 — この場所について</p>
+        </div>
+
+        <div class="about__grid">
+          <h3 class="about__pull" data-pull>
+            <span class="u-block">仕様書の行間まで読んで、</span><span class="u-block"
+              ><span class="u-mark">コードに落とす。</span></span
+            >
+          </h3>
+
+          <div class="about__text" data-reveal>
+            <p>
+              仕様書の通りに組むだけでなく、その行間にある課題やクライアントの真意まで
+              汲み取ってコードに落とし込む。それが、この場所の<span class="accent">エンジニアリングの流儀</span>です。
+            </p>
+            <p>
+              設計から実装、公開後の運用まで。「つくる工程」の全域に高い解像度で向き合い、
+              対話から生まれた思考の根（ルーツ）を、ビジネスの場で駆動する確かな「幹（サイオン）」へと育てます。
+            </p>
+            <p class="about__origin">roots + (s)cion — 広げた興味の根から、たしかな「幹」を育てる</p>
+            <p class="about__links">
+              <a href="https://github.com/yistrev" target="_blank" rel="noopener">GitHub →</a>
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Nº02 Capability（VOID: 漆黒インバート。境界にdifferenceの跨ぎ文字） -->
-    <section class="capability" id="capability">
-      <p class="invert-strad" aria-hidden="true">rootscion</p>
-      <h2 class="sec-label"><span class="num">Nº02</span>Capability</h2>
-      <ul class="cap-list">
-        {
-          capabilities.map((cap, i) => (
-            <>
-              <li class={`cap-card cap-card--w${[7, 5, 5, 4][i]}`} data-cap>
-                <div class="cap-card__head">
-                  <span class="cap-card__num" aria-hidden="true">{cap.num}</span>
-                  <span class="cap-card__tag">{cap.tag}</span>
+    <!-- Nº02 Capability -->
+    <section class="room room--bleed capability" id="capability">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>02</span></p>
+          <h2 class="room-head__en">Capability</h2>
+          <p class="room-head__jp">Nº02 — できることの展示</p>
+        </div>
+
+        <ul class="exhibits">
+          {
+            exhibits.map((ex) => (
+              <li class="exhibit" data-exhibit>
+                <div class="exhibit__stage" style={`--exhibit-bg:${ex.bg}`}>
+                  <Fragment set:html={ex.art} />
                 </div>
-                <span class="cap-card__icon" set:html={cap.icon} />
-                <div class="cap-card__body">
-                  <h3 class="cap-card__title">{cap.title}</h3>
-                  <p class="cap-card__desc">{cap.desc}</p>
+                <div class="plate">
+                  <span class="exhibit__no">{ex.fig}</span>
+                  <span class="plate__title">{ex.title}</span>
+                  <span class="plate__author">{ex.note}</span>
+                  <span class="plate__row">{ex.period}</span>
+                  <span class="plate__row">{ex.material}</span>
                 </div>
               </li>
-              {i === 2 && <li class="cap-card cap-card--w3 cap-card--geo geo--cross" aria-hidden="true" />}
-            </>
-          ))
-        }
-      </ul>
+            ))
+          }
+        </ul>
+      </div>
     </section>
 
-    <!-- Nº03 Spec（QUIET: 左にハッチ帯＋縦書きラベル、表は右へオフセット） -->
-    <section class="spec" id="skills">
-      <h2 class="sec-label"><span class="num">Nº03</span>Spec</h2>
-      <div class="spec__grid">
-        <div class="spec__aside geo--hatch" aria-hidden="true">
-          <span class="spec__aside-label">Spec Sheet</span>
+    <!-- Nº03 Works -->
+    <section class="room works" id="works">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>03</span></p>
+          <h2 class="room-head__en">Works</h2>
+          <p class="room-head__jp">Nº03 — 手がけたもの</p>
         </div>
+
+        {works.length === 0 && (
+          <p class="works__pending">
+            <span class="works__pending-en">In preparation</span>
+            <span class="works__pending-jp">
+              この部屋は準備中です。
+            </span>
+          </p>
+        )}
+
+        <ul class="worklist">
+          {
+            works.map((work) => (
+              <li class="worklist__item">
+                <a href={`/works/${work.id}/`} class="worklist__link">
+                  <span class="worklist__year">{work.data.year}</span>
+                  <span class="worklist__body">
+                    <span class="worklist__title">{work.data.title}</span>
+                    <span class="worklist__desc">{work.data.description}</span>
+                    <span class="worklist__meta">
+                      {work.data.role} — {work.data.stack.join(', ')}
+                    </span>
+                  </span>
+                  <span class="worklist__arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Nº04 Spec -->
+    <section class="room room--bleed room--dark spec" id="skills">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>04</span></p>
+          <h2 class="room-head__en">Spec</h2>
+          <p class="room-head__jp">Nº04 — 仕様</p>
+        </div>
+
         <table class="spec-sheet">
           <tbody>
             {
               spec.map((row) => (
-                <tr class={row.learning ? 'is-learning' : undefined}>
+                <tr class={row.learning ? 'is-learning' : undefined} data-reveal>
                   <th scope="row">{row.label}</th>
                   <td>
                     {row.items.map((item) => (
@@ -264,97 +317,63 @@ const marqueeWords = ['Web Engineer', 'Rootscion', 'Build It Right'];
             }
           </tbody>
         </table>
+        <p class="spec__footnote">Learning = いま root を伸ばしている領域</p>
       </div>
-      <p class="spec__footnote">
-        Learning = いま root を伸ばしている領域
-        <span class="stripes" aria-hidden="true"></span>
-      </p>
     </section>
 
-    <!-- Nº04 Profile -->
-    <section class="profile" id="profile">
-      <div class="profile__inner">
-        <h2 class="sec-label"><span class="num">Nº04</span>Profile</h2>
+    <!-- Nº05 Profile -->
+    <section class="room profile" id="profile">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>05</span></p>
+          <h2 class="room-head__en">Profile</h2>
+          <p class="room-head__jp">Nº05 — 作り手について</p>
+        </div>
+
         <div class="profile__grid">
           <p class="profile__intro" data-reveal>
-            Web制作に携わって約10年。受託制作の現場で要件定義や運用・構築の基礎を学んだのち、現在はデザイン会社でWebエンジニアとして制作に携わっています。<br /><br />
-            デザインの意図や繊細なニュアンスを汲み取りながら、仕組みを緻密に組み上げていく「つくる工程」そのものが自分の原点です。<br />
-            技術やトレンドが変わっても、手がけたWebサイトが誰かの役に立ち、日々を少し良くする瞬間を楽しみにコードを書いています。
+            Web制作に携わって約10年。受託制作の現場で要件定義や運用・構築の基礎を学んだのち、
+            現在はデザイン会社でWebエンジニアとして制作に携わっています。<br /><br />
+            デザインの意図や繊細なニュアンスを汲み取りながら、仕組みを緻密に組み上げていく
+            「つくる工程」そのものが自分の原点です。<br />
+            技術やトレンドが変わっても、手がけたWebサイトが誰かの役に立ち、
+            日々を少し良くする瞬間を楽しみにコードを書いています。
           </p>
-        <div>
-        <dl class="profile__list" data-reveal>
-          <div>
-            <dt>Handle</dt>
-            <dd>rootscion（ルーツサイオン）</dd>
-          </div>
-          <div>
-            <dt>Name</dt>
-            <dd>YURI ISHIKAWA</dd>
-          </div>
-          <div>
-            <dt>Role</dt>
-            <dd>Web Engineer</dd>
-          </div>
-          <div>
-            <dt>Experience</dt>
-            <dd>10+ years in Web Development</dd>
-          </div>
-          <div>
-            <dt>Background</dt>
-            <dd>Contract Production → Design Studio</dd>
-          </div>
-          <div>
-            <dt>Favorites</dt>
-            <dd>gadgets / tactile audio gear / minimalist setups</dd>
-          </div>
-          <div>
-            <dt>Now</dt>
-            <dd><span class="live-dot" aria-hidden="true"></span>Blender & 3D Web Graphics を学習中</dd>
-          </div>
-        </dl>
-        <p class="profile__label">— profile / rootscion unit</p>
-        </div>
+
+          <dl class="profile__list" data-reveal>
+            <div><dt>Handle</dt><dd>rootscion（ルーツサイオン）</dd></div>
+            <div><dt>Name</dt><dd>YURI ISHIKAWA</dd></div>
+            <div><dt>Role</dt><dd>Webエンジニア</dd></div>
+            <div><dt>Experience</dt><dd>Web開発歴10年以上</dd></div>
+            <div><dt>Background</dt><dd>受託制作 → デザイン会社</dd></div>
+            <div><dt>Favorites</dt><dd>ガジェット / オーディオ機器</dd></div>
+            <div>
+              <dt>Now</dt>
+              <dd><span class="live-dot" aria-hidden="true"></span>Blender &amp; 3D Web Graphics を学習中</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
 
-    <!-- Works: 実績は溜まったら公開-
-    <section class="band" id="works">
-      {
-        works.map((work) => (
-          <a href={`/works/${work.id}/`} class="work-card">
-            <span class="work-card__year">{work.data.year}</span>
-            <span class="work-card__title">{work.data.title}</span>
-            <span class="work-card__meta">{work.data.role}</span>
-            <span class="work-card__desc">{work.data.description}</span>
-          </a>
-        ))
-      }
-    </section>
-    ->
-
-    <!-- Nº05 Contact（アクセント青のベタ面スラブ） -->
-    <section class="contact" id="contact">
-      <div class="contact__inner">
-        <p class="sec-label"><span class="num">Nº05</span>Contact</p>
-        <h2 class="contact__title">
-          <a href="mailto:hello.rootscion@gmail.com">Let's talk ↗</a>
-        </h2>
-        <div class="contact__foot">
-          <div class="contact__geo" aria-hidden="true"></div>
-          <p class="contact__note" data-reveal>
-            「まだ相談レベル」が、いちばん歓迎です。
-          </p>
+    <!-- Nº06 Contact -->
+    <section class="room room--bleed room--dark contact" id="contact">
+      <div class="room__inner">
+        <div class="room-head">
+          <p class="room-head__num" aria-hidden="true" data-room-num><span>06</span></p>
+          <h2 class="room-head__en">Contact</h2>
+          <p class="room-head__jp">Nº06 — 相談する</p>
         </div>
+
+        <p class="contact__title">
+          <a href="mailto:hello.rootscion@gmail.com">Let's talk<span class="arrow" aria-hidden="true">↗</span></a>
+        </p>
       </div>
     </section>
   </main>
 
   <script>
     import { animate } from '../scripts/animations';
-    import { initHero3D } from '../scripts/hero3d';
-
     animate();
-    initHero3D(document.querySelector('[data-hero-3d]'));
   </script>
 </Base>
